@@ -5,7 +5,9 @@ use ic_stable_structures::memory_manager::{MemoryId, MemoryManager, VirtualMemor
 use ic_stable_structures::Storable;
 use ic_stable_structures::storable::Bound;
 
-
+use ic_stable_structures::{DefaultMemoryImpl, StableBTreeMap};
+use std::cell::RefCell;
+use std::borrow::Cow;
 
 type Memory = VirtualMemory<DefaultMemoryImpl>;
 use serde::Deserialize;
