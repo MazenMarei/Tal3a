@@ -1,4 +1,4 @@
-# Tala3a 🏆
+# Tal3a 🏆
 
 _Building the Future of Sports Communities in Egypt_
 
@@ -14,13 +14,13 @@ _Building the Future of Sports Communities in Egypt_
 
 </div>
 
-## 🎯 About Tala3a
+## 🎯 About Tal3a
 
 In Egypt, people who want to play sports or stay active often face a lack of organization, difficulty in finding local events or teammates, and limited access to safe, trusted, and verified communities. Whether it's joining a football match, organizing a cycling ride, or finding a fitness group, individuals struggle with scattered communication, trust issues, and no centralized platform to connect like-minded athletes.
 
-**Tala3a solves this by creating a decentralized, sport-specific social hub** where users can easily create, discover, and join verified sporting events and groups in their area. Through integrated tools like group chats, wallets, ride requests, and a recommendation system, Tala3a makes it easy for Egyptians to stay active, meet new people, and build a healthier, more connected community.
+**Tal3a solves this by creating a decentralized, sport-specific social hub** where users can easily create, discover, and join verified sporting events and groups in their area. Through integrated tools like group chats, wallets, ride requests, and a recommendation system, Tal3a makes it easy for Egyptians to stay active, meet new people, and build a healthier, more connected community.
 
-### 🌟 Why Tala3a?
+### 🌟 Why Tal3a?
 
 - **🏟️ Real Sports Events**: Connect with real athletes in your city
 - **🔐 Blockchain Security**: Built on Internet Computer for transparent and secure transactions
