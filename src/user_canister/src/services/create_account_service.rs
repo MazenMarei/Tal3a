@@ -3,12 +3,12 @@ use crate::types::User;
 use crate::types::PublicUser;
 use crate::types::RegisteringUser;
 use crate::types::{Sports, UserRole};
-use crate::utils::{get_city_name_by_id, get_governorate_name_by_id};
+use crate::utils::{get_city_by_id, get_governorate_by_id};
 use candid::Principal;
 
 
 // create user account
-pub  fn create_user_account(user: PublicUser) -> Result<PublicUser, String> {
+pub  fn create_user_account(user: RegisteringUser) -> Result<PublicUser, String> {
     // Get the caller's principal ID
     let caller: Principal = ic_cdk::caller();
 
@@ -32,13 +32,13 @@ pub  fn create_user_account(user: PublicUser) -> Result<PublicUser, String> {
     if user.city == 0 || user.government == 0 {
         return Err("Invalid city or government".to_string());
     } else {
-        let governorate_data = get_governorate_name_by_id(user.government);
+        let governorate_data = get_governorate_by_id(user.government);
         if governorate_data.is_none() {
             return Err("Invalid governorate ID".to_string());
         }
         
-        let governorate_name = governorate_data.unwrap().name;
-        if get_city_name_by_id(user.city, &governorate_name).is_none() {
+        let governorate_id = governorate_data.unwrap().id;
+        if get_city_by_id(user.city, governorate_id).is_none() {
             return Err("Invalid city ID".to_string());
         }
     }

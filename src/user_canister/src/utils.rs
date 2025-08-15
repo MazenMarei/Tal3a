@@ -6,11 +6,17 @@ const GOVERNORATES_JSON: &str = include_str!("egypt_governorates.json");
 
 
 
-pub fn get_city_name_by_id(city_id: u16, governorate_name: &str) -> Option<CityData> {
+pub fn get_city_by_id(city_id: u16, governorate_id: u8) -> Option<CityData> {
     let cities_data: Value = serde_json::from_str(CITIES_JSON).ok()?;
     
     // Navigate to the governorate
-    let governorate_cities = cities_data.get(governorate_name)?;
+    let governorate_name = get_governorate_by_id(governorate_id);
+    
+    if governorate_name.is_none() {
+        return None;
+    }
+
+    let governorate_cities = cities_data.get(&&governorate_name.unwrap().name.to_string())?;
 
     // Get the city by ID
     let city_value = governorate_cities.get(&city_id.to_string())?;
@@ -24,7 +30,7 @@ pub fn get_city_name_by_id(city_id: u16, governorate_name: &str) -> Option<CityD
     Some(city_data)
 }
 
-pub fn get_governorate_name_by_id(governorate_id: u8) -> Option<GovernorateData> {
+pub fn get_governorate_by_id(governorate_id: u8) -> Option<GovernorateData> {
     let governorates_data: Value = serde_json::from_str(GOVERNORATES_JSON).ok()?;
     
     // Search for the governorate ID
@@ -54,11 +60,16 @@ pub fn get_all_governorates() -> Vec<GovernorateData> {
     result
 }
 
-pub fn get_all_cities_in_governorate(governorate_name: &str) -> Vec<CityData> {
+pub fn get_all_cities_in_governorate(governorate_id: u8) -> Vec<CityData> {
+    let governorate_name = get_governorate_by_id(governorate_id);
+    if governorate_name.is_none() {
+        return Vec::new();
+    }
+
     let cities_data: Value = serde_json::from_str(CITIES_JSON).unwrap_or_default();
     let mut result = Vec::new();
-    
-    if let Some(governorate_cities) = cities_data.get(governorate_name) {
+
+    if let Some(governorate_cities) = cities_data.get(&&governorate_name.unwrap().name.to_string()) {
         if let Some(obj) = governorate_cities.as_object() {
             for (_, city_value) in obj {
                 if let Ok(city_data) = serde_json::from_value::<CityData>(city_value.clone()) {
@@ -67,6 +78,6 @@ pub fn get_all_cities_in_governorate(governorate_name: &str) -> Vec<CityData> {
             }
         }
     }
-    
+
     result
 }

@@ -1,7 +1,7 @@
 use candid::CandidType;
 use serde::{Deserialize, Serialize};
 use candid::Principal;
-use crate::utils::{get_city_name_by_id , get_governorate_name_by_id};
+use crate::utils::{get_city_by_id , get_governorate_by_id};
 
 
 #[derive(CandidType, Deserialize, Serialize, Clone)]
@@ -142,13 +142,13 @@ impl User {
     pub fn to_public(&self) -> PublicUser {
         PublicUser {
             username: self.username.clone(),
-            government: get_governorate_name_by_id(self.government).unwrap_or(GovernorateData {
+            government: get_governorate_by_id(self.government).unwrap_or(GovernorateData {
                 name: String::new(),
                 name_l1: String::new(),
                 slug: String::new(),
                 id: self.government,
             }),
-            city: get_city_name_by_id(self.city, &self.government.to_string()).unwrap_or(
+            city: get_city_by_id(self.city, self.government).unwrap_or(
                 CityData {
                     name: String::new(),
                     name_l1: String::new(),
