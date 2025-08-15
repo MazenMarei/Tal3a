@@ -40,7 +40,7 @@ pub enum Sports {
 
 impl Sports {
     // Validate if the sport is valid
-    pub fn is_valid(&self) -> bool {
+    pub fn _is_valid(&self) -> bool {
         // All predefined sports are valid
         match self {
             Sports::Football | 
@@ -78,7 +78,7 @@ impl Sports {
     }
 
     // Get all available sports
-    pub fn all_sports() -> Vec<Sports> {
+    pub fn _all_sports() -> Vec<Sports> {
         vec![
             Sports::Football,
             Sports::Basketball,
