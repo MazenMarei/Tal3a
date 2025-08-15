@@ -1,5 +1,5 @@
 use crate::storage::USERS;
-use crate::types::{User, PublicUser};
+use crate::types::{ PublicUser};
 
 use candid::Principal;
 
