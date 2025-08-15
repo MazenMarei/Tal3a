@@ -1,15 +1,15 @@
 {
   "canisters": {
-    "tal3a_backend": {
-      "candid": "src/tal3a_backend/tal3a_backend.did",
-      "package": "tal3a_backend",
-      "type": "rust"
-    },
-    "tal3a_frontend": {
-      "dependencies": ["tal3a_backend"],
-      "source": ["src/tal3a_frontend/dist"],
-      "type": "assets",
-      "workspace": "tal3a_frontend"
+    "user_canister": {
+      "candid": "src/user_canister/user_canister.did",
+      "package": "user_canister",
+      "id": "uxrrr-q7777-77774-qaaaq-cai",
+      "type": "rust",
+
+      "build": [
+        "cargo build --target wasm32-unknown-unknown --release -p user_canister",
+        "candid-extractor target/wasm32-unknown-unknown/release/user_canister.wasm > user_canister/user_canister.did"
+      ]
     },
     "internet_identity": {
       "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
@@ -19,11 +19,6 @@
         "id": {
           "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
         }
-      },
-      "user_canister": {
-        "candid": "src/user_canister/user_canister.did",
-        "package": "user_canister",
-        "type": "rust"
       },
       "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
     }

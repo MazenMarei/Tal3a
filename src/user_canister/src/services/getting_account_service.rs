@@ -8,7 +8,7 @@ use candid::Principal;
 // Get current user data
 pub fn get_current_user_data() -> Result<PublicUser, String> {  
     // Get the caller's principal ID
-    let caller: Principal = ic_cdk::caller();
+    let caller: Principal = ic_cdk::api::msg_caller();
     // Check if user is logged in
     if caller == Principal::anonymous() {
         return Err("Anonymous user cannot access user data".to_string());

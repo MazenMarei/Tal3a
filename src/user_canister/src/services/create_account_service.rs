@@ -10,7 +10,7 @@ use candid::Principal;
 // create user account
 pub  fn create_user_account(user: RegisteringUser) -> Result<PublicUser, String> {
     // Get the caller's principal ID
-    let caller: Principal = ic_cdk::caller();
+    let caller: Principal = ic_cdk::api::msg_caller();();
 
     // Check if user is logged in
     if caller == Principal::anonymous() {
