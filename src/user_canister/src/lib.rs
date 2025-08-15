@@ -11,8 +11,6 @@ mod services;
 use crate::services::create_account_service;
 use crate::services::getting_account_service;
 use crate::types::{PublicUser, RegisteringUser , CityData , GovernorateData};
-use crate::utils::*;
-
 
 #[query]
 fn get_current_user_data() -> Result<PublicUser, String> {
