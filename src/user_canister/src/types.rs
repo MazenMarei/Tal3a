@@ -3,7 +3,6 @@ use serde::{Deserialize, Serialize};
 use candid::Principal;
 
 
-
 // sports enum
 #[derive(CandidType, Deserialize, Serialize, Clone)]
 pub enum Sports {
@@ -28,8 +27,8 @@ pub struct User {
     pub principal_id: Principal,
     pub created_at: u64,
     pub username: String,
-    pub government: String,
-    pub city: String,
+    pub government: u8,
+    pub city: u8,
     pub points: u64,
     pub joined_groups: Vec<u64>,
     pub joined_tal3a: Vec<u64>,
@@ -66,3 +65,5 @@ impl User {
         }
     }
 }
+
+
