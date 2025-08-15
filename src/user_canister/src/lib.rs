@@ -34,19 +34,17 @@ fn create_user_account(user: RegisteringUser) -> Result<PublicUser, String> {
     create_account_service::create_user_account(user)
 }
 
-#[update]   
-// getting all governorates
+#[query]   
 fn get_all_governorates() -> Vec<GovernorateData> {
     utils::get_all_governorates()
 }
-#[update]   
-// getting all cities in a governorate
+#[query]   
 fn get_all_cities_in_governorate(governorate_id: u8) -> Vec<CityData> {
     let cities = utils::get_all_cities_in_governorate(governorate_id);
     cities
 }
 
-#[update]   
+#[query]   
 fn get_city_by_id(city_id: u16 , governorate_id: u8) -> Option<CityData> {
     utils::get_city_by_id(city_id, governorate_id)
 }
