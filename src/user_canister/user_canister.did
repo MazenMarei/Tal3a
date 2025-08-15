@@ -1,0 +1,43 @@
+type CityData = record { id : nat16; name : text; slug : text; name_l1 : text };
+type GovernorateData = record {
+  id : nat8;
+  name : text;
+  slug : text;
+  name_l1 : text;
+};
+type PublicUser = record {
+  bio : opt text;
+  username : text;
+  city : CityData;
+  avatar_url : opt blob;
+  sports : vec Sports;
+  government : GovernorateData;
+  points : nat64;
+};
+type RegisteringUser = record {
+  bio : opt text;
+  username : text;
+  city : nat16;
+  avatar_url : opt blob;
+  sports : vec Sports;
+  government : nat8;
+  points : nat64;
+};
+type Result = variant { Ok : PublicUser; Err : text };
+type Sports = variant {
+  Basketball;
+  Tennis;
+  Football;
+  Cycling;
+  Running;
+  Swimming;
+};
+service : {
+  create_user_account : (RegisteringUser) -> (Result);
+  get_all_cities_in_governorate : (nat8) -> (vec CityData) query;
+  get_all_governorates : () -> (vec GovernorateData) query;
+  get_city_by_id : (nat16, nat8) -> (opt CityData) query;
+  get_current_user_data : () -> (Result) query;
+  get_next_username_id : () -> (nat64) query;
+  get_public_user_data : (principal) -> (Result) query;
+}
