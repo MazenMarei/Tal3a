@@ -20,6 +20,11 @@
           "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
         }
       },
+      "user_canister": {
+        "candid": "src/user_canister/user_canister.did",
+        "package": "user_canister",
+        "type": "rust"
+      },
       "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
     }
   },
