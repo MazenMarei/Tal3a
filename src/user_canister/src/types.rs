@@ -2,6 +2,15 @@ use candid::CandidType;
 use serde::{Deserialize, Serialize};
 use candid::Principal;
 use crate::utils::{get_city_name_by_id , get_governorate_name_by_id};
+
+
+#[derive(CandidType, Deserialize, Serialize, Clone)]
+struct Image {
+    content_type: String, // image/png, image/jpeg, etc.
+    data: Vec<u8>,
+}
+
+
 #[derive(CandidType, Deserialize, Serialize, Debug, Clone)]
 pub struct GovernorateData {
     pub name: String,
@@ -27,7 +36,58 @@ pub enum Sports {
     Cycling,
     Running,
     Swimming,
-    Other(String),
+}
+
+impl Sports {
+    // Validate if the sport is valid
+    pub fn is_valid(&self) -> bool {
+        // All predefined sports are valid
+        match self {
+            Sports::Football | 
+            Sports::Basketball | 
+            Sports::Tennis | 
+            Sports::Cycling | 
+            Sports::Running | 
+            Sports::Swimming => true,
+        }
+    }
+
+    // Get sport name as string
+    pub fn to_string(&self) -> String {
+        match self {
+            Sports::Football => "Football".to_string(),
+            Sports::Basketball => "Basketball".to_string(),
+            Sports::Tennis => "Tennis".to_string(),
+            Sports::Cycling => "Cycling".to_string(),
+            Sports::Running => "Running".to_string(),
+            Sports::Swimming => "Swimming".to_string(),
+        }
+    }
+
+    // Create from string (useful for validation)
+    pub fn from_string(sport_name: &str) -> Option<Sports> {
+        match sport_name.to_lowercase().as_str() {
+            "football" => Some(Sports::Football),
+            "basketball" => Some(Sports::Basketball),
+            "tennis" => Some(Sports::Tennis),
+            "cycling" => Some(Sports::Cycling),
+            "running" => Some(Sports::Running),
+            "swimming" => Some(Sports::Swimming),
+            _ => None,
+        }
+    }
+
+    // Get all available sports
+    pub fn all_sports() -> Vec<Sports> {
+        vec![
+            Sports::Football,
+            Sports::Basketball,
+            Sports::Tennis,
+            Sports::Cycling,
+            Sports::Running,
+            Sports::Swimming,
+        ]
+    }
 }
 
 // Roles enum
@@ -48,7 +108,7 @@ pub struct User {
     pub joined_groups: Vec<u64>,
     pub joined_tal3a: Vec<u64>,
     pub bio: Option<String>,
-    pub avatar_url: Option<String>,
+    pub avatar_url: Option<Vec<u8>>,
     pub sports: Vec<Sports>,
     pub role: UserRole,
     pub is_online: bool,
@@ -62,10 +122,21 @@ pub struct PublicUser {
     pub city: CityData,
     pub points: u64,
     pub bio: Option<String>,
-    pub avatar_url: Option<String>,
+    pub avatar_url: Option<Vec<u8>>,
     pub sports: Vec<Sports>,
 }
 
+// RegisteringUser struct for user registration data
+#[derive(CandidType, Deserialize, Serialize, Clone)]
+pub struct RegisteringUser {
+    pub username: String,
+    pub government: u8,
+    pub city: u16,
+    pub points: u64,
+    pub bio: Option<String>,
+    pub avatar_url: Option<Vec<u8>>,
+    pub sports: Vec<Sports>,
+}
 impl User {
     // Convert User to PublicUser (excluding sensitive data)
     pub fn to_public(&self) -> PublicUser {
