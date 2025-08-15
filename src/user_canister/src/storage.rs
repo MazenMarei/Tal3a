@@ -11,7 +11,7 @@ use candid::Principal;
 use crate::types::User;
 use candid::{Encode, Decode};
 
-type Memory = VirtualMemory<DefaultMemoryImpl>;
+type _Memory = VirtualMemory<DefaultMemoryImpl>;
 
 
 // Implement the `Storable` trait for the `User` struct.
@@ -40,7 +40,7 @@ thread_local! {
         RefCell::new(MemoryManager::init(DefaultMemoryImpl::default()));
 
     // Initialize a `StableBTreeMap` with `MemoryId(0)`.
-    pub static USERS: RefCell<StableBTreeMap<Principal, User, Memory>> = RefCell::new(
+    pub static USERS: RefCell<StableBTreeMap<Principal, User, _Memory>> = RefCell::new(
         StableBTreeMap::init( 
             MEMORY_MANAGER.with(|m| m.borrow().get(MemoryId::new(0))),
         )
