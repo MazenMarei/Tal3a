@@ -1,0 +1,22 @@
+service: () -> {
+    createComment: (nat64, text, nat64) -> (text);
+    createPost: (text) -> (text);
+    deleteComment: (nat64) -> (text);
+    deletePost: (nat64) -> (text);
+    editComment: (nat64, text) -> (text);
+    editPost: (nat64, text) -> (text);
+    getCommentById: (nat64) -> (text) query;
+    getCommentReplies: (nat64) -> (text) query;
+    getCommentsByPost: (nat64) -> (text) query;
+    getFilteredPosts: (text) -> (text) query;
+    getPostById: (nat64) -> (text) query;
+    getPosts: (nat64) -> (text) query;
+    getTotalCommentsForPost: (nat64) -> (nat64) query;
+    getTotalPostsCount: () -> (nat64) query;
+    getUnseenPosts: (text) -> (text) query;
+    getUserCreatedPosts: (text) -> (text) query;
+    healthCheck: () -> (text) query;
+    likeComment: (nat64, text) -> (text);
+    likePost: (nat64, text) -> (text);
+    whoami: () -> (text) query;
+}

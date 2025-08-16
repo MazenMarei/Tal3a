@@ -1,0 +1,17 @@
+{
+  "name": "post_canister",
+  "version": "1.0.0",
+  "description": "Posts and comments management canister using Azle",
+  "main": "index.ts",
+  "scripts": {
+    "replica:start": "dfx start --clean",
+    "replica:stop": "dfx stop",
+    "deploy": "dfx deploy post_canister"
+  },
+  "dependencies": {
+    "azle": "^0.24.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

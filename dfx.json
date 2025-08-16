@@ -5,11 +5,24 @@
       "package": "user_canister",
       "id": "uxrrr-q7777-77774-qaaaq-cai",
       "type": "rust",
-
       "build": [
         "cargo build --target wasm32-unknown-unknown --release -p user_canister",
         "candid-extractor target/wasm32-unknown-unknown/release/user_canister.wasm > user_canister/user_canister.did"
       ]
+    },
+    "tal3a_canister": {
+      "type": "azle",
+      "main": "src/tal3a_canister/src/index.ts",
+      "custom": {
+        "experimental": true
+      }
+    },
+    "post_canister": {
+      "type": "azle",
+      "main": "src/post_canister/src/index.ts",
+      "custom": {
+        "experimental": true
+      }
     },
     "internet_identity": {
       "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",

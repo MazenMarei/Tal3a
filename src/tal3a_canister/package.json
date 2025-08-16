@@ -1,0 +1,26 @@
+{
+  "name": "tal3a_canister",
+  "version": "1.0.0",
+  "description": "Tal3a (Events) management canister using Azle - Sports events and activities management",
+  "main": "index.ts",
+  "scripts": {
+    "replica:start": "dfx start --clean",
+    "replica:stop": "dfx stop",
+    "deploy": "dfx deploy tal3a_canister"
+  },
+  "dependencies": {
+    "azle": "^0.24.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "tal3a",
+    "events",
+    "sports",
+    "azle",
+    "internet-computer"
+  ],
+  "author": "Tal3a Team",
+  "license": "MIT"
+}

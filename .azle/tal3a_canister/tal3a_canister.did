@@ -1,0 +1,24 @@
+service: () -> {
+    createReview: (nat64, nat64, text, nat64, nat64, nat64) -> (text);
+    createTal3a: (text) -> (text);
+    deleteReview: (nat64) -> (text);
+    deleteTal3a: (nat64) -> (text);
+    getAllTal3as: (text) -> (text) query;
+    getCurrentTime: () -> (nat64) query;
+    getReview: (nat64) -> (text) query;
+    getTal3a: (nat64) -> (text) query;
+    getTal3aParticipants: (nat64) -> (text) query;
+    getTal3aReviews: (nat64) -> (text) query;
+    getUserOrganizedTal3as: (text) -> (text) query;
+    getUserParticipationHistory: (text) -> (text) query;
+    healthCheck: () -> (text) query;
+    joinTal3a: (nat64, text) -> (text);
+    leaveTal3a: (nat64) -> (text);
+    markReviewHelpful: (nat64) -> (text);
+    reportReview: (nat64) -> (text);
+    updateParticipantStatus: (nat64, text, text) -> (text);
+    updateReview: (nat64, nat64, text, nat64, nat64, nat64) -> (text);
+    updateTal3a: (nat64, text) -> (text);
+    updateTal3aStatus: (nat64, text) -> (text);
+    whoami: () -> (text) query;
+}
