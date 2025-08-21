@@ -85,7 +85,7 @@ impl Tal3a {
                     tal3a.title = title;
                 }
                 if let Some(description) = updated_data.description {
-                    tal3a.description = description;
+                    tal3a.description = Some(description);
                 }
                 if let Some(location) = updated_data.location {
                     if location.trim().is_empty() {
@@ -103,7 +103,7 @@ impl Tal3a {
                     tal3a.duration_hours = duration_hours;
                 }
                 if let Some(max_participants) = updated_data.max_participants {
-                    tal3a.max_participants = max_participants;
+                    tal3a.max_participants = Some(max_participants);
                 }
                 if let Some(sport) = updated_data.sport {
                     tal3a.sport = sport;
@@ -115,7 +115,7 @@ impl Tal3a {
                     tal3a.images = images;
                 }
                 if let Some(cost_per_person) = updated_data.cost_per_person {
-                    tal3a.cost_per_person = cost_per_person;
+                    tal3a.cost_per_person = Some(cost_per_person);
                 }
                 if let Some(requirements) = updated_data.requirements {
                     tal3a.requirements = requirements;

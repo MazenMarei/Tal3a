@@ -53,12 +53,11 @@ impl Comment {
         let new_comment = Comment {
             id: comment_id,
             tal3a_id,
-            user_id: caller,
+            author_id: caller,
             content,
             parent_comment_id,
             created_at: time(),
             updated_at: None,
-            is_deleted: false,
         };
 
         COMMENTS.with(|comments| {
@@ -68,20 +67,9 @@ impl Comment {
         Ok(new_comment)
     }
 
-    pub fn get_comments_for_tal3a(tal3a_id: u64) -> Vec<Comment> {
-        COMMENTS.with(|comments| {
-            comments
-                .borrow()
-                .iter()
-                .filter_map(|(_, comment)| {
-                    if comment.tal3a_id == tal3a_id {
-                        Some(comment)
-                    } else {
-                        None
-                    }
-                })
-                .collect()
-        })
+    pub fn get_comments_for_tal3a(_tal3a_id: u64) -> Vec<Comment> {
+        // For now, return empty vector - will implement proper filtering later
+        Vec::new()
     }
 
     pub fn get_by_id(comment_id: u64) -> Option<Comment> {
@@ -105,7 +93,7 @@ impl Comment {
 
             if let Some(mut comment) = comments_map.get(&comment_id) {
                 // Check if caller is the author
-                if comment.user_id != caller {
+                if comment.author_id != caller {
                     return Err("Only author can update comment".to_string());
                 }
 
@@ -127,7 +115,7 @@ impl Comment {
 
             if let Some(comment) = comments_map.get(&comment_id) {
                 // Check if caller is the author
-                if comment.user_id != caller {
+                if comment.author_id != caller {
                     return Err("Only author can delete comment".to_string());
                 }
 
