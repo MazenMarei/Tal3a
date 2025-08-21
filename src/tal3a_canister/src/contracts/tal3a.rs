@@ -1,9 +1,9 @@
-use crate::types::tal3a::{Tal3a, Tal3aUpdate};
+use crate::types::tal3a::{Tal3a, Tal3aUpdate, CreateTal3aInput};
 use candid::Principal;
 use ic_cdk::{query, update};
 
 #[update]
-fn create_tal3a(group_id: u64, tal3a_data: Tal3a) -> Result<u64, String> {
+fn create_tal3a(group_id: u64, tal3a_data: CreateTal3aInput) -> Result<u64, String> {
     Tal3a::new(group_id, tal3a_data)
 }
 

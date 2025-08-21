@@ -750,6 +750,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "tal3a_canister"
+version = "0.1.0"
+dependencies = [
+ "candid",
+ "ic-cdk",
+ "ic-cdk-timers",
+ "ic-stable-structures",
+ "serde",
+ "serde_json",
+ "uuid",
+]
+
+[[package]]
 name = "thiserror"
 version = "1.0.69"
 source = "registry+https://github.com/rust-lang/crates.io-index"
