@@ -1,4 +1,5 @@
 use crate::storage::USERS;
+use crate::types::notification::Notification;
 use crate::types::{
     city::CityData,
     governorate::GovernorateData,
@@ -47,6 +48,7 @@ impl User {
             role: UserRole::User,
             free_days: registering_user.free_days,
             is_online: true, // default value
+            notifications: Vec::new(), // Initialize with an empty vector
         };
 
         USERS.with(|users| {
@@ -162,6 +164,29 @@ impl User {
             Ok(())
         } else {
             Err("Not a member of the Tal3a".to_string())
+        }
+    }
+
+    pub fn add_notification(&mut self, notification: Notification) {
+        self.notifications.push(notification);
+        USERS.with(|users| {
+            users.borrow_mut().insert(self.principal_id, self.clone());
+        });
+    }
+
+    pub fn mark_notification_as_read(&mut self, notification_id: String) -> Result<(), String> {
+        if let Some(notification) = self
+            .notifications
+            .iter_mut()
+            .find(|n| n.id == notification_id)
+        {
+            notification.is_read = true;
+            USERS.with(|users| {
+                users.borrow_mut().insert(self.principal_id, self.clone());
+            });
+            Ok(())
+        } else {
+            Err("Notification not found".to_string())
         }
     }
 }
