@@ -24,7 +24,7 @@ impl Review {
         // Check if user already reviewed this tal3a
         let already_reviewed = REVIEWS.with(|reviews| {
             for (_, review) in reviews.borrow().iter() {
-                if review.tal3a_id == tal3a_id && review.reviewer_id == caller {
+                if review.tal3a_id == tal3a_id && review.user_id == caller {
                     return true;
                 }
             }
@@ -44,7 +44,7 @@ impl Review {
         let new_review = Review {
             id: review_id,
             tal3a_id,
-            reviewer_id: caller,
+            user_id: caller,
             rating,
             comment,
             created_at: time(),

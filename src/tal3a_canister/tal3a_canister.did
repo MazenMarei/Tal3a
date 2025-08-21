@@ -1,0 +1,98 @@
+type Comment = record {
+  id : nat64;
+  tal3a_id : nat64;
+  user_id : principal;
+  content : text;
+  parent_comment_id : opt nat64;
+  created_at : nat64;
+  updated_at : opt nat64;
+  is_deleted : bool;
+};
+type CreateTal3aInput = record {
+  title : text;
+  description : opt text;
+  tal3a_date : nat64;
+  duration_hours : nat8;
+  location : text;
+  sport : Sports;
+  max_participants : opt nat16;
+  images : vec blob;
+  cost_per_person : opt nat64;
+  requirements : vec text;
+};
+type Result = variant { Ok : nat64; Err : text };
+type Result_1 = variant { Ok; Err : text };
+type Result_2 = variant { Ok : Comment; Err : text };
+type Result_3 = variant { Ok : vec principal; Err : text };
+type Review = record {
+  id : nat64;
+  tal3a_id : nat64;
+  user_id : principal;
+  rating : nat8;
+  comment : opt text;
+  created_at : nat64;
+};
+type Sports = variant {
+  Basketball;
+  Tennis;
+  Volleyball;
+  Football;
+  Padel;
+  Fitness;
+  Cycling;
+  Handball;
+  Camping;
+  Running;
+  Skateboarding;
+  Swimming;
+};
+type Tal3a = record {
+  id : nat64;
+  group_id : nat64;
+  creator_id : principal;
+  title : text;
+  description : opt text;
+  tal3a_date : nat64;
+  duration_hours : nat8;
+  location : text;
+  sport : Sports;
+  max_participants : opt nat16;
+  participants : vec principal;
+  status : Tal3aStatus;
+  images : vec blob;
+  cost_per_person : opt nat64;
+  requirements : vec text;
+  created_at : nat64;
+  updated_at : nat64;
+};
+type Tal3aStatus = variant { Upcoming; InProgress; Completed; Cancelled };
+type Tal3aUpdate = record {
+  title : opt text;
+  description : opt text;
+  tal3a_date : opt nat64;
+  duration_hours : opt nat8;
+  location : opt text;
+  sport : opt Sports;
+  max_participants : opt nat16;
+  status : opt Tal3aStatus;
+  images : opt vec blob;
+  cost_per_person : opt nat64;
+  requirements : opt vec text;
+};
+service : {
+  comment_on_tal3a : (nat64, text, opt nat64) -> (Result_2);
+  create_tal3a : (nat64, CreateTal3aInput) -> (Result);
+  delete_comment : (nat64) -> (Result_1);
+  delete_tal3a : (nat64) -> (Result_1);
+  get_comment : (nat64) -> (opt Comment) query;
+  get_review : (nat64) -> (opt Review) query;
+  get_tal3a : (nat64) -> (opt Tal3a) query;
+  get_tal3a_comments : (nat64) -> (vec Comment) query;
+  get_tal3a_participants : (nat64) -> (Result_3) query;
+  get_tal3a_reviews : (nat64) -> (vec Review) query;
+  join_tal3a : (nat64, principal) -> (Result_1);
+  leave_tal3a : (nat64, principal) -> (Result_1);
+  review_tal3a : (nat64, nat8, opt text) -> (Result);
+  update_comment : (nat64, text) -> (Result_1);
+  update_tal3a : (nat64, Tal3aUpdate) -> (Result_1);
+}

@@ -53,11 +53,12 @@ impl Comment {
         let new_comment = Comment {
             id: comment_id,
             tal3a_id,
-            author_id: caller,
+            user_id: caller,
             content,
             parent_comment_id,
             created_at: time(),
             updated_at: None,
+            is_deleted: false,
         };
 
         COMMENTS.with(|comments| {
@@ -104,7 +105,7 @@ impl Comment {
 
             if let Some(mut comment) = comments_map.get(&comment_id) {
                 // Check if caller is the author
-                if comment.author_id != caller {
+                if comment.user_id != caller {
                     return Err("Only author can update comment".to_string());
                 }
 
@@ -126,7 +127,7 @@ impl Comment {
 
             if let Some(comment) = comments_map.get(&comment_id) {
                 // Check if caller is the author
-                if comment.author_id != caller {
+                if comment.user_id != caller {
                     return Err("Only author can delete comment".to_string());
                 }
 
