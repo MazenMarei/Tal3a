@@ -1,5 +1,11 @@
 {
-  "canisters": {    "social_canister": {
+  "canisters": {
+    "tal3a_canister": {
+      "candid": "src/tal3a_canister/tal3a_canister.did",
+      "package": "tal3a_canister",
+      "type": "rust"
+    },
+    "social_canister": {
       "candid": "src/social_canister/social_canister.did",
       "package": "social_canister",
       "type": "rust"
