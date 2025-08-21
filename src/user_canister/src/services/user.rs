@@ -1,10 +1,14 @@
 use crate::storage::USERS;
+use crate::types::notification::{NewNotification, Notification};
 use crate::types::{
     city::CityData,
     governorate::GovernorateData,
     user::{RegisteringUser, UpdatingUser, User, UserRole},
 };
+use base64::Engine;
 use candid::Principal;
+use ic_cdk::api::time;
+use ic_cdk::management_canister::raw_rand;
 
 impl User {
     pub fn new(registering_user: RegisteringUser) -> Result<Self, String> {
@@ -46,9 +50,9 @@ impl User {
             sports: registering_user.sports,
             role: UserRole::User,
             free_days: registering_user.free_days,
-            is_online: true, // default value
+            is_online: true,           // default value
+            notifications: Vec::new(), // Initialize with an empty vector
         };
-
         USERS.with(|users| {
             users.borrow_mut().insert(principal_id, new_user.clone());
             Ok(new_user)
@@ -162,6 +166,42 @@ impl User {
             Ok(())
         } else {
             Err("Not a member of the Tal3a".to_string())
+        }
+    }
+
+    pub async fn add_notification(&mut self, notification: NewNotification) -> Result<(), String> {
+        self.notifications.push(Notification {
+            content: notification.content,
+            created_at: time(),
+            is_read: false,
+            notification_type: notification.notification_type,
+            id: raw_rand()
+                .await
+                .map_err(|e| format!("Random error: {:?}", e))
+                .map(|bytes| {
+                    // Use base64 encoding for shorter, URL-safe IDs
+                    base64::engine::general_purpose::URL_SAFE_NO_PAD.encode(&bytes)
+                })?,
+        });
+        USERS.with(|users| {
+            users.borrow_mut().insert(self.principal_id, self.clone());
+        });
+        Ok(())
+    }
+
+    pub fn mark_notification_as_read(&mut self, notification_id: String) -> Result<(), String> {
+        if let Some(notification) = self
+            .notifications
+            .iter_mut()
+            .find(|n| n.id == notification_id)
+        {
+            notification.is_read = true;
+            USERS.with(|users| {
+                users.borrow_mut().insert(self.principal_id, self.clone());
+            });
+            Ok(())
+        } else {
+            Err("Notification not found".to_string())
         }
     }
 }

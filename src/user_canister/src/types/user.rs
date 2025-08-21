@@ -1,3 +1,4 @@
+use crate::types::notification::Notification;
 use crate::types::{city::CityData, governorate::GovernorateData, sport::Sports};
 use candid::CandidType;
 use candid::Principal;
@@ -25,6 +26,7 @@ pub struct User {
     pub role: UserRole,
     pub free_days: Option<Vec<u8>>,
     pub is_online: bool,
+    pub notifications: Vec<Notification>,
 }
 
 //  * RegisteringUser struct for user registration data
