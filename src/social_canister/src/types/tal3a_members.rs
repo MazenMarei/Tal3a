@@ -3,14 +3,12 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Deserialize, Serialize, CandidType)]
 
-pub struct Comments {
+pub struct GroupMembers {
     pub group_id: String,
+    pub user_id: Principal,
     pub tal3a_id: String, // should be a UUID
 
-    pub tal3a_date: u64,
-    pub place: String,
+    pub status: String, // e.g., "going" , "can't go" , "Maybe"
 
-    pub title: String,
-    pub image: Vec<u8>,
-    pub created_at: u64,
+    pub joined_at: u64,
 }

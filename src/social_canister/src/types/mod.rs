@@ -5,3 +5,4 @@ pub mod group;
 pub mod group_members;
 pub mod tal3a;
 pub mod sport;
+pub mod tal3a_members;
