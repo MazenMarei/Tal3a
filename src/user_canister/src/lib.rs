@@ -6,6 +6,7 @@ mod types;
 use crate::types::{
     city::CityData,
     governorate::GovernorateData,
+    notification::Notification,
     user::{RegisteringUser, UpdatingUser, User},
 };
 

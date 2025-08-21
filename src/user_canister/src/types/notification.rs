@@ -16,3 +16,8 @@ pub struct Notification {
     pub notification_type: NotificationType,
     pub id: String, // should be a UUID
 }
+
+pub struct NewNotification {
+    pub content: String,
+    pub notification_type: NotificationType,
+}

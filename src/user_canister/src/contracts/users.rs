@@ -1,3 +1,4 @@
+use crate::types::notification::{NewNotification, Notification};
 use crate::types::user::{RegisteringUser, UpdatingUser, User};
 use candid::Principal;
 use ic_cdk;
@@ -16,6 +17,36 @@ fn get_current_user() -> Result<User, String> {
 #[update]
 fn create_user(new_user: RegisteringUser) -> Result<User, String> {
     User::new(new_user).map_err(|e| e.to_string())
+}
+
+#[update]
+fn add_notification(notification: NewNotification) -> Result<(), String> {
+    let caller = ic_cdk::api::msg_caller();
+    let user = User::get_user(caller).ok();
+    if let Some(mut user) = user {
+        user.add_notification(Notification {
+            content: notification.content,
+            created_at: ic_cdk::api::time(),
+            is_read: false,
+            notification_type: notification.notification_type,
+            id: notification.id,
+        });
+        Ok(())
+    } else {
+        Err("User not found".into())
+    }
+}
+
+#[update]
+fn mark_notification_as_read(notification_id: String) -> Result<(), String> {
+    let caller = ic_cdk::api::msg_caller();
+    let user = User::get_user(caller).ok();
+    if let Some(mut user) = user {
+        user.mark_notification_as_read(notification_id)
+            .map_err(|e| e.to_string())
+    } else {
+        Err("User not found".into())
+    }
 }
 
 #[update]
