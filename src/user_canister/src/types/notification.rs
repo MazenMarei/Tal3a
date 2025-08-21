@@ -14,8 +14,10 @@ pub struct Notification {
     pub created_at: u64,
     pub is_read: bool,
     pub notification_type: NotificationType,
-    pub id: String, // should be a UUID
+    pub id: String, // should be a string from UUID
 }
+
+#[derive(Debug, Clone, Deserialize, Serialize, CandidType)]
 
 pub struct NewNotification {
     pub content: String,

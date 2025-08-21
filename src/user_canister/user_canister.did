@@ -5,6 +5,18 @@ type GovernorateData = record {
   slug : text;
   name_l1 : text;
 };
+type NewNotification = record {
+  content : text;
+  notification_type : NotificationType;
+};
+type Notification = record {
+  id : text;
+  is_read : bool;
+  content : text;
+  created_at : nat64;
+  notification_type : NotificationType;
+};
+type NotificationType = variant { Reminder; Message; Alert };
 type RegisteringUser = record {
   bio : opt text;
   username : text;
@@ -14,8 +26,8 @@ type RegisteringUser = record {
   governorate : nat8;
   sports : vec Sports;
 };
-type Result = variant { Ok : User; Err : text };
-type Result_1 = variant { Ok; Err : text };
+type Result = variant { Ok; Err : text };
+type Result_1 = variant { Ok : User; Err : text };
 type Result_2 = variant { Ok : CityData; Err : text };
 type Result_3 = variant { Ok : GovernorateData; Err : text };
 type Sports = variant {
@@ -45,6 +57,7 @@ type UpdatingUser = record {
 type User = record {
   bio : opt text;
   username : text;
+  notifications : vec Notification;
   city : CityData;
   free_days : opt blob;
   avatar_url : opt blob;
@@ -59,18 +72,20 @@ type User = record {
 };
 type UserRole = variant { User };
 service : {
-  create_user : (RegisteringUser) -> (Result);
-  delete_account : () -> (Result_1);
+  add_notification : (NewNotification) -> (Result);
+  create_user : (RegisteringUser) -> (Result_1);
+  delete_account : () -> (Result);
   get_all_cities_in_governorate : (nat8) -> (vec CityData) query;
   get_all_governorates : () -> (vec GovernorateData) query;
   get_city : (nat16, nat8) -> (Result_2) query;
-  get_current_user : () -> (Result) query;
+  get_current_user : () -> (Result_1) query;
   get_governorate : (nat8) -> (Result_3) query;
-  get_user : (principal) -> (Result) query;
-  join_group : (nat64) -> (Result_1);
-  join_tal3a : (nat64) -> (Result_1);
-  leave_group : (nat64) -> (Result_1);
-  leave_tal3a : (nat64) -> (Result_1);
-  set_account_status : (bool) -> (Result_1);
-  update_profile : (UpdatingUser) -> (Result_1);
+  get_user : (principal) -> (Result_1) query;
+  join_group : (nat64) -> (Result);
+  join_tal3a : (nat64) -> (Result);
+  leave_group : (nat64) -> (Result);
+  leave_tal3a : (nat64) -> (Result);
+  mark_notification_as_read : (text) -> (Result);
+  set_account_status : (bool) -> (Result);
+  update_profile : (UpdatingUser) -> (Result);
 }
