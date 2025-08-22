@@ -4,7 +4,6 @@ mod storage;
 mod types;
 
 use crate::types::{
-    comment::Comment,
     review::Review,
     event::{Event, EventUpdate, CreateEventInput},
 };

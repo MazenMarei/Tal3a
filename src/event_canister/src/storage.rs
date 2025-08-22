@@ -7,29 +7,12 @@ use std::cell::RefCell;
 
 use candid::{Decode, Encode, Principal};
 
-use crate::types::{comment::Comment, review::Review, event::Event};
+use crate::types::{review::Review, event::Event};
 
 type _Memory = VirtualMemory<DefaultMemoryImpl>;
 
 // Implement Storable for Event
 impl Storable for Event {
-    fn to_bytes(&self) -> Cow<'_, [u8]> {
-        Cow::Owned(Encode!(self).unwrap())
-    }
-
-    fn from_bytes(bytes: Cow<[u8]>) -> Self {
-        Decode!(bytes.as_ref(), Self).unwrap()
-    }
-
-    const BOUND: Bound = Bound::Unbounded;
-
-    fn into_bytes(self) -> Vec<u8> {
-        Encode!(&self).unwrap()
-    }
-}
-
-// Implement Storable for Comment
-impl Storable for Comment {
     fn to_bytes(&self) -> Cow<'_, [u8]> {
         Cow::Owned(Encode!(self).unwrap())
     }
@@ -74,20 +57,13 @@ thread_local! {
         )
     );
 
-    pub static COMMENTS: RefCell<StableBTreeMap<u64, Comment, _Memory>> = RefCell::new(
+    pub static REVIEWS: RefCell<StableBTreeMap<u64, Review, _Memory>> = RefCell::new(
         StableBTreeMap::init(
             MEMORY_MANAGER.with(|m| m.borrow().get(MemoryId::new(1))),
         )
     );
 
-    pub static REVIEWS: RefCell<StableBTreeMap<u64, Review, _Memory>> = RefCell::new(
-        StableBTreeMap::init(
-            MEMORY_MANAGER.with(|m| m.borrow().get(MemoryId::new(2))),
-        )
-    );
-
     // ID counters
     pub static NEXT_EVENT_ID: RefCell<u64> = RefCell::new(1);
-    pub static NEXT_COMMENT_ID: RefCell<u64> = RefCell::new(1);
     pub static NEXT_REVIEW_ID: RefCell<u64> = RefCell::new(1);
 }
