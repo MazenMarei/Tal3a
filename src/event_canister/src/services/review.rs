@@ -1,6 +1,5 @@
 use crate::storage::{REVIEWS, NEXT_REVIEW_ID, EVENTS};
 use crate::types::review::Review;
-use candid::Principal;
 use ic_cdk::api::time;
 
 impl Review {

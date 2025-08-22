@@ -5,7 +5,7 @@ use ic_stable_structures::{DefaultMemoryImpl, StableBTreeMap};
 use std::borrow::Cow;
 use std::cell::RefCell;
 
-use candid::{Decode, Encode, Principal};
+use candid::{Decode, Encode};
 
 use crate::types::{review::Review, event::Event};
 
