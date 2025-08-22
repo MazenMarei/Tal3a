@@ -265,4 +265,11 @@ thread_local! {
             )
         );
 
+    pub static UNSEEN_POSTS: RefCell<StableBTreeMap<Principal, StringVec, _Memory>> =
+        RefCell::new(
+            StableBTreeMap::init(
+                MEMORY_MANAGER.with(|m| m.borrow().get( MemoryId::new(16))),
+            )
+        );
+
 }

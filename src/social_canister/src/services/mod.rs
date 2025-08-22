@@ -1,5 +1,5 @@
 pub mod group;
-// pub mod post;
+pub mod post;
 // pub mod comment;
 // pub mod like;
 // pub mod tal3a;

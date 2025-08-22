@@ -1,7 +1,8 @@
-use crate::storage::{StringVec, GROUPS, GROUPS_BY_USER, GROUP_MEMBERS};
+use crate::storage::{StringVec, GROUPS, GROUPS_BY_USER, GROUP_MEMBERS, POSTS};
 use crate::types::group::{CreatingGroup, Group, GroupFilter};
 use crate::types::group_members::{GroupMember, GroupMembers};
 use crate::types::notification::{NewNotification, NotificationType};
+use crate::types::posts::Post;
 use crate::utils::{add_notification, get_city};
 use candid::Principal;
 use ic_cdk::api::{msg_caller, time};
@@ -313,6 +314,29 @@ impl Group {
             } else {
                 Err(format!("Group with ID {} not found", group_id))
             }
+        })
+    }
+
+    pub fn get_posts(&self) -> Vec<Post> {
+        // * check user is in group
+        let is_member = GROUPS_BY_USER.with(|user_groups| {
+            if let Some(groups) = user_groups.borrow().get(&msg_caller()) {
+                groups.0.contains(&self.id)
+            } else {
+                false
+            }
+        });
+
+        if !is_member {
+            return Vec::new();
+        }
+
+        POSTS.with(|posts| {
+            posts
+                .borrow()
+                .values()
+                .filter(|post| post.group_id == self.id)
+                .collect()
         })
     }
 }

@@ -1,7 +1,9 @@
 use crate::types::city::CityData;
 use crate::types::notification::NewNotification;
+use base64::Engine;
 use candid::Principal;
 use ic_cdk::api::msg_caller;
+use ic_cdk::management_canister::raw_rand;
 
 pub fn get_user_canister_id() -> Result<Principal, String> {
     match option_env!("CANISTER_ID_USER_CANISTER") {
@@ -48,4 +50,14 @@ pub async fn get_current_user() -> Result<(), String> {
         Ok(_user_data) => Ok(()),
         Err(e) => Err(format!("User canister call error: {:?}", e)),
     }
+}
+
+pub async fn generate_unique_id() -> Result<String, String> {
+    raw_rand()
+        .await
+        .map_err(|e| format!("Random error: {:?}", e))
+        .map(|bytes| {
+            // Use base64 encoding for shorter, URL-safe IDs
+            base64::engine::general_purpose::URL_SAFE_NO_PAD.encode(&bytes)
+        })
 }

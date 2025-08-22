@@ -1,5 +1,6 @@
 use crate::types::group::{CreatingGroup, Group, GroupFilter};
 use crate::types::group_members::GroupMember;
+use crate::types::posts::Post;
 use candid::Principal;
 use ic_cdk;
 use ic_cdk::api::msg_caller;
@@ -58,6 +59,14 @@ pub fn leave_group(group_id: &str) -> Result<(), String> {
 #[query]
 pub fn get_member_groups(user: Principal) -> Vec<Group> {
     Group::get_member_groups(user)
+}
+
+#[query]
+pub fn get_group_posts(group_id: &str) -> Vec<Post> {
+    match Group::get_by_id(group_id) {
+        Ok(group) => group.get_posts(),
+        Err(_) => Vec::new(),
+    }
 }
 
 #[update]

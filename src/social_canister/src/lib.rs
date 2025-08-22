@@ -7,11 +7,10 @@ pub mod utils;
 use candid::Principal;
 use ic_cdk;
 
-
-
 use crate::types::{
-    group::{CreatingGroup, Group , GroupFilter},
-    group_members::{GroupMember },
+    group::{CreatingGroup, Group, GroupFilter},
+    group_members::GroupMember,
+    posts::{NewPost, Post, UpdatePost},
 };
 
 // * export contracts

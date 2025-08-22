@@ -31,8 +31,23 @@ type GroupMember = record {
   group_id : text;
   joined_at : nat64;
 };
+type NewPost = record {
+  content : text;
+  group_id : text;
+  images : opt vec blob;
+};
+type Post = record {
+  updated_at : nat64;
+  post_id : text;
+  content : text;
+  created_at : nat64;
+  author : principal;
+  group_id : text;
+  images : opt vec blob;
+};
 type Result = variant { Ok : Group; Err : text };
-type Result_1 = variant { Ok; Err : text };
+type Result_1 = variant { Ok : Post; Err : text };
+type Result_2 = variant { Ok; Err : text };
 type Sports = variant {
   Basketball;
   Tennis;
@@ -47,15 +62,29 @@ type Sports = variant {
   Skateboarding;
   Swimming;
 };
+type UpdatePost = record {
+  post_id : text;
+  content : opt text;
+  images : opt vec blob;
+};
 service : {
   create_group : (CreatingGroup) -> (Result);
-  delete_group : (text) -> (Result_1);
+  create_post : (NewPost) -> (Result_1);
+  delete_group : (text) -> (Result_2);
+  delete_post : (text) -> (Result_2);
   filter_groups : (GroupFilter) -> (vec Group) query;
+  get_current_user_posts : () -> (vec Post) query;
   get_group : (text) -> (Result) query;
   get_group_members : (text) -> (vec GroupMember) query;
+  get_group_posts : (text) -> (vec Post) query;
   get_member_groups : (principal) -> (vec Group) query;
+  get_post : (text) -> (Result_1) query;
+  get_posts_by_user : (principal) -> (vec Post) query;
   get_sub_club : (text, text) -> (vec Group) query;
   get_sub_clubs : (text) -> (vec Group) query;
-  join_group : (text) -> (Result_1);
-  leave_group : (text) -> (Result_1);
+  get_unseen_posts : () -> (vec Post) query;
+  join_group : (text) -> (Result_2);
+  leave_group : (text) -> (Result_2);
+  mark_post_as_read : (text) -> (Result_2);
+  update_post : (text, UpdatePost) -> (Result_1);
 }
