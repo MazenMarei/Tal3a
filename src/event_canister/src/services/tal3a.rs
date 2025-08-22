@@ -1,10 +1,11 @@
 use crate::storage::{EVENTS, NEXT_EVENT_ID};
-use crate::types::tal3a::{Tal3a, Tal3aUpdate, CreateTal3aInput, Tal3aStatus};
+use crate::types::event::{Event, EventUpdate, CreateEventInput, EventStatus};
 use candid::Principal;
 use ic_cdk::api::time;
 
-impl Tal3a {
-    pub fn new(group_id: u64, input: CreateTal3aInput) -> Result<u64, String> {
+// Main Event implementation
+impl Event {
+    pub fn new(group_id: u64, input: CreateEventInput) -> Result<u64, String> {
         let caller = ic_cdk::api::msg_caller();
         
         // Validate group_id exists (TODO: implement group validation)
@@ -21,30 +22,30 @@ impl Tal3a {
             return Err("Location cannot be empty".to_string());
         }
 
-        if input.tal3a_date <= time() {
+        if input.event_date <= time() {
             return Err("Event date must be in the future".to_string());
         }
 
-        let tal3a_id = NEXT_TAL3A_ID.with(|id| {
+        let event_id = NEXT_EVENT_ID.with(|id| {
             let current_id = *id.borrow();
             *id.borrow_mut() = current_id + 1;
             current_id
         });
 
         let now = time();
-        let new_tal3a = Tal3a {
-            id: tal3a_id,
+        let new_event = Event {
+            id: event_id,
             group_id,
             creator_id: caller,
             title: input.title,
             description: input.description,
-            tal3a_date: input.tal3a_date,
+            event_date: input.event_date,
             duration_hours: input.duration_hours,
             location: input.location,
             sport: input.sport,
             max_participants: input.max_participants,
             participants: vec![caller], // Creator is first participant
-            status: Tal3aStatus::Upcoming,
+            status: EventStatus::Upcoming,
             images: input.images,
             cost_per_person: input.cost_per_person,
             requirements: input.requirements,
@@ -52,29 +53,29 @@ impl Tal3a {
             updated_at: now,
         };
 
-        TAL3AS.with(|tal3as| {
-            tal3as.borrow_mut().insert(tal3a_id, new_tal3a);
+        EVENTS.with(|events| {
+            events.borrow_mut().insert(event_id, new_event);
         });
 
-        Ok(tal3a_id)
+        Ok(event_id)
     }
 
-    pub fn get_by_id(tal3a_id: u64) -> Option<Tal3a> {
-        TAL3AS.with(|tal3as| {
-            tal3as.borrow().get(&tal3a_id)
+    pub fn get_by_id(event_id: u64) -> Option<Event> {
+        EVENTS.with(|events| {
+            events.borrow().get(&event_id)
         })
     }
 
-    pub fn update(tal3a_id: u64, updated_data: Tal3aUpdate) -> Result<(), String> {
+    pub fn update(event_id: u64, updated_data: EventUpdate) -> Result<(), String> {
         let caller = ic_cdk::api::msg_caller();
 
-        TAL3AS.with(|tal3as| {
-            let mut tal3as_map = tal3as.borrow_mut();
+        EVENTS.with(|events| {
+            let mut events_map = events.borrow_mut();
             
-            if let Some(mut tal3a) = tal3as_map.get(&tal3a_id) {
+            if let Some(mut event) = events_map.get(&event_id) {
                 // Check if caller is the creator
-                if tal3a.creator_id != caller {
-                    return Err("Only creator can update tal3a".to_string());
+                if event.creator_id != caller {
+                    return Err("Only creator can update event".to_string());
                 }
 
                 // Update fields if provided
@@ -82,139 +83,139 @@ impl Tal3a {
                     if title.trim().is_empty() {
                         return Err("Title cannot be empty".to_string());
                     }
-                    tal3a.title = title;
+                    event.title = title;
                 }
                 if let Some(description) = updated_data.description {
-                    tal3a.description = Some(description);
+                    event.description = Some(description);
                 }
                 if let Some(location) = updated_data.location {
                     if location.trim().is_empty() {
                         return Err("Location cannot be empty".to_string());
                     }
-                    tal3a.location = location;
+                    event.location = location;
                 }
-                if let Some(tal3a_date) = updated_data.tal3a_date {
-                    if tal3a_date <= time() {
+                if let Some(event_date) = updated_data.event_date {
+                    if event_date <= time() {
                         return Err("Event date must be in the future".to_string());
                     }
-                    tal3a.tal3a_date = tal3a_date;
+                    event.event_date = event_date;
                 }
                 if let Some(duration_hours) = updated_data.duration_hours {
-                    tal3a.duration_hours = duration_hours;
+                    event.duration_hours = duration_hours;
                 }
                 if let Some(max_participants) = updated_data.max_participants {
-                    tal3a.max_participants = Some(max_participants);
+                    event.max_participants = Some(max_participants);
                 }
                 if let Some(sport) = updated_data.sport {
-                    tal3a.sport = sport;
+                    event.sport = sport;
                 }
                 if let Some(status) = updated_data.status {
-                    tal3a.status = status;
+                    event.status = status;
                 }
                 if let Some(images) = updated_data.images {
-                    tal3a.images = images;
+                    event.images = images;
                 }
                 if let Some(cost_per_person) = updated_data.cost_per_person {
-                    tal3a.cost_per_person = Some(cost_per_person);
+                    event.cost_per_person = Some(cost_per_person);
                 }
                 if let Some(requirements) = updated_data.requirements {
-                    tal3a.requirements = requirements;
+                    event.requirements = requirements;
                 }
 
-                tal3a.updated_at = time();
-                tal3as_map.insert(tal3a_id, tal3a);
+                event.updated_at = time();
+                events_map.insert(event_id, event);
                 Ok(())
             } else {
-                Err("Tal3a not found".to_string())
+                Err("Event not found".to_string())
             }
         })
     }
 
-    pub fn delete(tal3a_id: u64) -> Result<(), String> {
+    pub fn delete(event_id: u64) -> Result<(), String> {
         let caller = ic_cdk::api::msg_caller();
 
-        TAL3AS.with(|tal3as| {
-            let mut tal3as_map = tal3as.borrow_mut();
+        EVENTS.with(|events| {
+            let mut events_map = events.borrow_mut();
             
-            if let Some(tal3a) = tal3as_map.get(&tal3a_id) {
+            if let Some(event) = events_map.get(&event_id) {
                 // Check if caller is the creator
-                if tal3a.creator_id != caller {
-                    return Err("Only creator can delete tal3a".to_string());
+                if event.creator_id != caller {
+                    return Err("Only creator can delete event".to_string());
                 }
 
-                tal3as_map.remove(&tal3a_id);
+                events_map.remove(&event_id);
                 Ok(())
             } else {
-                Err("Tal3a not found".to_string())
+                Err("Event not found".to_string())
             }
         })
     }
 
-    pub fn join(tal3a_id: u64, user_id: Principal) -> Result<(), String> {
-        TAL3AS.with(|tal3as| {
-            let mut tal3as_map = tal3as.borrow_mut();
+    pub fn join(event_id: u64, user_id: Principal) -> Result<(), String> {
+        EVENTS.with(|events| {
+            let mut events_map = events.borrow_mut();
             
-            if let Some(mut tal3a) = tal3as_map.get(&tal3a_id) {
+            if let Some(mut event) = events_map.get(&event_id) {
                 // Check if already joined
-                if tal3a.participants.contains(&user_id) {
+                if event.participants.contains(&user_id) {
                     return Err("User already joined".to_string());
                 }
 
                 // Check if max participants reached (if set)
-                if let Some(max_participants) = tal3a.max_participants {
-                    if tal3a.participants.len() >= max_participants as usize {
+                if let Some(max_participants) = event.max_participants {
+                    if event.participants.len() >= max_participants as usize {
                         return Err("Maximum participants reached".to_string());
                     }
                 }
 
                 // Check if event is still upcoming
-                if tal3a.status != Tal3aStatus::Upcoming {
+                if event.status != EventStatus::Upcoming {
                     return Err("Cannot join event that is not upcoming".to_string());
                 }
 
-                tal3a.participants.push(user_id);
-                tal3a.updated_at = time();
-                tal3as_map.insert(tal3a_id, tal3a);
+                event.participants.push(user_id);
+                event.updated_at = time();
+                events_map.insert(event_id, event);
                 Ok(())
             } else {
-                Err("Tal3a not found".to_string())
+                Err("Event not found".to_string())
             }
         })
     }
 
-    pub fn leave(tal3a_id: u64, user_id: Principal) -> Result<(), String> {
-        TAL3AS.with(|tal3as| {
-            let mut tal3as_map = tal3as.borrow_mut();
+    pub fn leave(event_id: u64, user_id: Principal) -> Result<(), String> {
+        EVENTS.with(|events| {
+            let mut events_map = events.borrow_mut();
             
-            if let Some(mut tal3a) = tal3as_map.get(&tal3a_id) {
+            if let Some(mut event) = events_map.get(&event_id) {
                 // Check if user is creator (creator cannot leave)
-                if tal3a.creator_id == user_id {
-                    return Err("Creator cannot leave tal3a".to_string());
+                if event.creator_id == user_id {
+                    return Err("Creator cannot leave event".to_string());
                 }
 
                 // Remove user from participants
-                let initial_len = tal3a.participants.len();
-                tal3a.participants.retain(|&participant| participant != user_id);
+                let initial_len = event.participants.len();
+                event.participants.retain(|&participant| participant != user_id);
                 
-                if tal3a.participants.len() == initial_len {
+                if event.participants.len() == initial_len {
                     return Err("User is not a participant".to_string());
                 }
 
-                tal3a.updated_at = time();
-                tal3as_map.insert(tal3a_id, tal3a);
+                event.updated_at = time();
+                events_map.insert(event_id, event);
                 Ok(())
             } else {
-                Err("Tal3a not found".to_string())
+                Err("Event not found".to_string())
             }
         })
     }
 
-    pub fn get_participants(tal3a_id: u64) -> Result<Vec<Principal>, String> {
-        TAL3AS.with(|tal3as| {
-            if let Some(tal3a) = tal3as.borrow().get(&tal3a_id) {
-                Ok(tal3a.participants)
+    pub fn get_participants(event_id: u64) -> Result<Vec<Principal>, String> {
+        EVENTS.with(|events| {
+            if let Some(event) = events.borrow().get(&event_id) {
+                Ok(event.participants)
             } else {
-                Err("Tal3a not found".to_string())
+                Err("Event not found".to_string())
             }
         })
     }

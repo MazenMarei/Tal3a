@@ -1,8 +1,8 @@
 {
   "canisters": {
-    "tal3a_canister": {
-      "candid": "src/tal3a_canister/tal3a_canister.did",
-      "package": "tal3a_canister",
+    "event_canister": {
+      "candid": "src/event_canister/event_canister.did",
+      "package": "event_canister",
       "type": "rust"
     },
     "social_canister": {
