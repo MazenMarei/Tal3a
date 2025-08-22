@@ -7,12 +7,12 @@ use std::cell::RefCell;
 
 use candid::{Decode, Encode, Principal};
 
-use crate::types::{comment::Comment, review::Review, tal3a::Tal3a};
+use crate::types::{comment::Comment, review::Review, event::Event};
 
 type _Memory = VirtualMemory<DefaultMemoryImpl>;
 
-// Implement Storable for Tal3a
-impl Storable for Tal3a {
+// Implement Storable for Event
+impl Storable for Event {
     fn to_bytes(&self) -> Cow<'_, [u8]> {
         Cow::Owned(Encode!(self).unwrap())
     }
@@ -68,7 +68,7 @@ thread_local! {
         RefCell::new(MemoryManager::init(DefaultMemoryImpl::default()));
 
     // Initialize StableBTreeMaps
-    pub static TAL3AS: RefCell<StableBTreeMap<u64, Tal3a, _Memory>> = RefCell::new(
+    pub static EVENTS: RefCell<StableBTreeMap<u64, Event, _Memory>> = RefCell::new(
         StableBTreeMap::init(
             MEMORY_MANAGER.with(|m| m.borrow().get(MemoryId::new(0))),
         )
@@ -87,7 +87,7 @@ thread_local! {
     );
 
     // ID counters
-    pub static NEXT_TAL3A_ID: RefCell<u64> = RefCell::new(1);
+    pub static NEXT_EVENT_ID: RefCell<u64> = RefCell::new(1);
     pub static NEXT_COMMENT_ID: RefCell<u64> = RefCell::new(1);
     pub static NEXT_REVIEW_ID: RefCell<u64> = RefCell::new(1);
 }
