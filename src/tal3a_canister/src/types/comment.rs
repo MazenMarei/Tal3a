@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Deserialize, Serialize, CandidType)]
 pub struct Comment {
     pub id: u64,
-    pub tal3a_id: u64,
+    pub event_id: u64,
     pub author_id: Principal,
     pub content: String,
     pub parent_comment_id: Option<u64>, // for nested comments

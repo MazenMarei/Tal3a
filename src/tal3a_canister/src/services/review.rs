@@ -1,19 +1,19 @@
-use crate::storage::{REVIEWS, NEXT_REVIEW_ID, TAL3AS};
+use crate::storage::{REVIEWS, NEXT_REVIEW_ID, EVENTS};
 use crate::types::review::Review;
 use candid::Principal;
 use ic_cdk::api::time;
 
 impl Review {
-    pub fn new(tal3a_id: u64, rating: u8, comment: Option<String>) -> Result<u64, String> {
+    pub fn new(event_id: u64, rating: u8, comment: Option<String>) -> Result<u64, String> {
         let caller = ic_cdk::api::msg_caller();
 
-        // Validate tal3a exists
-        let tal3a_exists = TAL3AS.with(|tal3as| {
-            tal3as.borrow().contains_key(&tal3a_id)
+        // Validate event exists
+        let event_exists = EVENTS.with(|events| {
+            events.borrow().contains_key(&event_id)
         });
 
-        if !tal3a_exists {
-            return Err("Tal3a not found".to_string());
+        if !event_exists {
+            return Err("Event not found".to_string());
         }
 
         // Validate rating
@@ -21,11 +21,11 @@ impl Review {
             return Err("Rating must be between 1 and 5".to_string());
         }
 
-        // Check if user already reviewed this tal3a - simplified for now
+        // Check if user already reviewed this event - simplified for now
         let already_reviewed = false;
 
         if already_reviewed {
-            return Err("User already reviewed this tal3a".to_string());
+            return Err("User already reviewed this event".to_string());
         }
 
         let review_id = NEXT_REVIEW_ID.with(|id| {
@@ -36,7 +36,7 @@ impl Review {
 
         let new_review = Review {
             id: review_id,
-            tal3a_id,
+            event_id,
             user_id: caller,
             rating,
             comment,
@@ -50,7 +50,7 @@ impl Review {
         Ok(review_id)
     }
 
-    pub fn get_reviews_for_tal3a(_tal3a_id: u64) -> Vec<Review> {
+    pub fn get_reviews_for_event(_event_id: u64) -> Vec<Review> {
         // For now, return empty vector - will implement proper filtering later
         Vec::new()
     }

@@ -2,17 +2,17 @@ use crate::types::comment::Comment;
 use ic_cdk::{query, update};
 
 #[update]
-fn comment_on_tal3a(
-    tal3a_id: u64,
+fn comment_on_event(
+    event_id: u64,
     content: String,
     parent_comment_id: Option<u64>,
 ) -> Result<Comment, String> {
-    Comment::new(tal3a_id, content, parent_comment_id)
+    Comment::new(event_id, content, parent_comment_id)
 }
 
 #[query]
-fn get_tal3a_comments(tal3a_id: u64) -> Vec<Comment> {
-    Comment::get_comments_for_tal3a(tal3a_id)
+fn get_event_comments(event_id: u64) -> Vec<Comment> {
+    Comment::get_comments_for_event(event_id)
 }
 
 #[query]

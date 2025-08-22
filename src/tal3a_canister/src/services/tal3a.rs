@@ -1,4 +1,4 @@
-use crate::storage::{TAL3AS, NEXT_TAL3A_ID};
+use crate::storage::{EVENTS, NEXT_EVENT_ID};
 use crate::types::tal3a::{Tal3a, Tal3aUpdate, CreateTal3aInput, Tal3aStatus};
 use candid::Principal;
 use ic_cdk::api::time;

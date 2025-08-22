@@ -1,23 +1,23 @@
-use crate::storage::{COMMENTS, NEXT_COMMENT_ID, TAL3AS};
+use crate::storage::{COMMENTS, NEXT_COMMENT_ID, EVENTS};
 use crate::types::comment::Comment;
 use candid::Principal;
 use ic_cdk::api::time;
 
 impl Comment {
     pub fn new(
-        tal3a_id: u64,
+        event_id: u64,
         content: String,
         parent_comment_id: Option<u64>,
     ) -> Result<Comment, String> {
         let caller = ic_cdk::api::msg_caller();
 
-        // Validate tal3a exists
-        let tal3a_exists = TAL3AS.with(|tal3as| {
-            tal3as.borrow().contains_key(&tal3a_id)
+        // Validate event exists
+        let event_exists = EVENTS.with(|events| {
+            events.borrow().contains_key(&event_id)
         });
 
-        if !tal3a_exists {
-            return Err("Tal3a not found".to_string());
+        if !event_exists {
+            return Err("Event not found".to_string());
         }
 
         // Validate content
@@ -33,14 +33,14 @@ impl Comment {
         if let Some(parent_id) = parent_comment_id {
             let parent_exists = COMMENTS.with(|comments| {
                 if let Some(parent_comment) = comments.borrow().get(&parent_id) {
-                    parent_comment.tal3a_id == tal3a_id
+                    parent_comment.event_id == event_id
                 } else {
                     false
                 }
             });
 
             if !parent_exists {
-                return Err("Parent comment not found or not in same tal3a".to_string());
+                return Err("Parent comment not found or not in same event".to_string());
             }
         }
 
@@ -52,7 +52,7 @@ impl Comment {
 
         let new_comment = Comment {
             id: comment_id,
-            tal3a_id,
+            event_id,
             author_id: caller,
             content,
             parent_comment_id,
@@ -67,7 +67,7 @@ impl Comment {
         Ok(new_comment)
     }
 
-    pub fn get_comments_for_tal3a(_tal3a_id: u64) -> Vec<Comment> {
+    pub fn get_comments_for_event(_event_id: u64) -> Vec<Comment> {
         // For now, return empty vector - will implement proper filtering later
         Vec::new()
     }
