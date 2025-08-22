@@ -6,7 +6,7 @@ mod types;
 use crate::types::{
     comment::Comment,
     review::Review,
-    tal3a::{Tal3a, Tal3aUpdate, CreateTal3aInput},
+    event::{Event, EventUpdate, CreateEventInput},
 };
 
 use candid::Principal;
