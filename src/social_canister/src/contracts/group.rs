@@ -21,6 +21,22 @@ pub fn filter_groups(filter: GroupFilter) -> Vec<Group> {
 }
 
 #[query]
+pub fn get_sub_clubs(group_id: &str) -> Vec<Group> {
+    match Group::get_by_id(group_id) {
+        Ok(group) => group.get_sub_clubs(),
+        Err(_) => Vec::new(),
+    }
+}
+
+#[query]
+pub fn get_sub_club(group_id: &str, club_id: &str) -> Vec<Group> {
+    match Group::get_by_id(group_id) {
+        Ok(group) => group.get_sub_club(club_id),
+        Err(_) => Vec::new(),
+    }
+}
+
+#[query]
 pub fn get_group_members(group_id: &str) -> Vec<GroupMember> {
     Group::get_members(group_id)
 }
@@ -42,4 +58,10 @@ pub fn leave_group(group_id: &str) -> Result<(), String> {
 #[query]
 pub fn get_member_groups(user: Principal) -> Vec<Group> {
     Group::get_member_groups(user)
+}
+
+#[update]
+pub fn delete_group(group_id: &str) -> Result<(), String> {
+    let group = Group::get_by_id(group_id)?;
+    group.delete()
 }

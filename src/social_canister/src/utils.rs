@@ -1,6 +1,7 @@
 use crate::types::city::CityData;
 use crate::types::notification::NewNotification;
 use candid::Principal;
+use ic_cdk::api::msg_caller;
 
 pub fn get_user_canister_id() -> Result<Principal, String> {
     match option_env!("CANISTER_ID_USER_CANISTER") {
@@ -36,24 +37,15 @@ pub async fn add_notification(
         .expect("Candid decoding failed")
 }
 
-// making inter canisters calles
-// let canister_id_str = utils::get_user_canister_id();
+pub async fn get_current_user() -> Result<(), String> {
+    let canister_id = get_user_canister_id()?;
+    let user = msg_caller();
 
-// if canister_id_str.is_empty() {
-//     return Err("User canister ID not found".to_string());
-// }
-
-// let canister_id =
-//     Principal::from_text(canister_id_str).map_err(|e| format!("Invalid canister ID: {}", e))?;
-
-// // Make the inter-canister call
-// let call_results = ic_cdk::call::Call::unbounded_wait(canister_id, "get_city")
-//     .with_args(&(city_id, governorate_id))
-//     .await
-//     .expect("User canister call error")
-//     .candid::<Result<CityData, String>>()
-//     .expect("Candid decoding failed");
-// match call_results {
-//     Ok(city_data) => Ok(city_data.name),
-//     Err(e) => Err(format!("Inter-canister call failed: {}", e)),
-// }
+    match ic_cdk::call::Call::unbounded_wait(canister_id, "get_user")
+        .with_arg(&user)
+        .await
+    {
+        Ok(_user_data) => Ok(()),
+        Err(e) => Err(format!("User canister call error: {:?}", e)),
+    }
+}

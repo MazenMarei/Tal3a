@@ -62,19 +62,10 @@ impl Group {
         GROUPS.with(|groups| {
             groups
                 .borrow_mut()
-                .insert(new_group.id.clone(), new_group.clone())
-                .and_then(|group| {
-                    // * create an empty members list for the new group for fast indexing
-                    Some(GROUP_MEMBERS.with(|members| {
-                        members.borrow_mut().insert(
-                            group.id.clone(),
-                            GroupMembers {
-                                members: Vec::new(),
-                            },
-                        );
-                    }))
-                })
+                .insert(new_group.id.clone(), new_group.clone());
         });
+        // * make user join group
+        let _ = new_group.join(msg_caller()).await;
         Ok(new_group)
     }
 
@@ -107,6 +98,28 @@ impl Group {
         })
     }
 
+    pub fn get_sub_clubs(&self) -> Vec<Self> {
+        GROUPS.with(|groups| {
+            groups
+                .borrow()
+                .values()
+                .filter(|group| group.parent_group_id == Some(self.id.clone()) && group.public)
+                .collect()
+        })
+    }
+
+    pub fn get_sub_club(&self, club_id: &str) -> Vec<Self> {
+        GROUPS.with(|groups| {
+            groups
+                .borrow()
+                .values()
+                .filter(|group| {
+                    group.parent_group_id == Some(self.id.clone()) && group.id == club_id
+                })
+                .collect()
+        })
+    }
+
     pub fn get_members(group_id: &str) -> Vec<GroupMember> {
         GROUP_MEMBERS.with(|groups| {
             let group = groups.borrow().get(&group_id.to_string());
@@ -120,6 +133,18 @@ impl Group {
 
     pub async fn join(&self, user: Principal) -> Result<(), String> {
         let group_id = self.id.clone();
+
+        // check if parent group exists and user in it
+        if self.parent_group_id.is_some() {
+            let parent_group = Group::get_by_id(self.parent_group_id.as_ref().unwrap())?;
+            let parent_group_members = Group::get_members(&parent_group.id);
+            if !parent_group_members.iter().any(|m| m.user_id == user) {
+                return Err(format!(
+                    "User {} is not a member of parent group {}",
+                    user, parent_group.id
+                ));
+            }
+        }
 
         // Ensure group members list exists
         let group_members_exists =
@@ -247,6 +272,47 @@ impl Group {
                         .collect()
                 })
                 .unwrap_or_default()
+        })
+    }
+
+    pub fn delete(&self) -> Result<(), String> {
+        GROUPS.with(|groups| {
+            let group_id = self.id.clone();
+            let user = ic_cdk::api::msg_caller();
+            if user != self.created_by {
+                return Err("Only the group creator can delete the group".to_string());
+            }
+            let group = Group::get_by_id(&group_id).unwrap();
+            // * delete sub clubs
+            for sub_club in group.get_sub_clubs() {
+                sub_club.delete().unwrap();
+            }
+            drop(group);
+            if groups.borrow_mut().remove(&group_id).is_some() {
+                GROUP_MEMBERS.with(|members| {
+                    let group_id = self.id.clone();
+                    let group_members_list = members.borrow_mut().get(&group_id);
+                    if let Some(group_members) = &group_members_list {
+                        for member in &group_members.members {
+                            // * Remove group ID from each user's group list
+                            GROUPS_BY_USER.with(|user_groups| {
+                                let mut user_groups_borrow = user_groups.borrow_mut();
+                                if let Some(mut joined_groups) =
+                                    user_groups_borrow.get(&member.user_id)
+                                {
+                                    joined_groups.0.retain(|id| id != &self.id);
+                                    user_groups_borrow.insert(member.user_id, joined_groups);
+                                }
+                            });
+                        }
+
+                        members.borrow_mut().remove(&group_id);
+                    }
+                });
+                Ok(())
+            } else {
+                Err(format!("Group with ID {} not found", group_id))
+            }
         })
     }
 }

@@ -49,10 +49,13 @@ type Sports = variant {
 };
 service : {
   create_group : (CreatingGroup) -> (Result);
+  delete_group : (text) -> (Result_1);
   filter_groups : (GroupFilter) -> (vec Group) query;
   get_group : (text) -> (Result) query;
   get_group_members : (text) -> (vec GroupMember) query;
   get_member_groups : (principal) -> (vec Group) query;
+  get_sub_club : (text, text) -> (vec Group) query;
+  get_sub_clubs : (text) -> (vec Group) query;
   join_group : (text) -> (Result_1);
   leave_group : (text) -> (Result_1);
 }
