@@ -38,8 +38,12 @@ async fn create_user(new_user: RegisteringUser) -> Result<User, String> {
 }
 
 #[update]
-async fn add_notification(notification: NewNotification) -> Result<(), String> {
-    let caller = ic_cdk::api::msg_caller();
+async fn add_notification(caller: Principal, notification: NewNotification) -> Result<(), String> {
+    
+    if caller == Principal::anonymous() {
+        return Err("Anonymous users cannot receive notifications".into());
+    }
+
     let user = User::get_user(caller).ok();
     if let Some(mut user) = user {
         user.add_notification(notification)

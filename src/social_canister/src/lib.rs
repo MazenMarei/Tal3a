@@ -1,18 +1,18 @@
-mod contracts;
-mod services;
-mod storage;
-mod types;
+pub mod contracts;
+pub mod services;
+pub mod storage;
+pub mod types;
+pub mod utils;
 
-
+use candid::Principal;
 use ic_cdk;
-use ic_cdk::query;
-
-#[query]
-fn whoami() -> String {
-    ic_cdk::api::msg_caller().to_string()
-}
 
 
+
+use crate::types::{
+    group::{CreatingGroup, Group , GroupFilter},
+    group_members::{GroupMember },
+};
 
 // * export contracts
 ic_cdk::export_candid!();

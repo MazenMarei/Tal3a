@@ -8,7 +8,6 @@
     "user_canister": {
       "candid": "src/user_canister/user_canister.did",
       "package": "user_canister",
-      "id": "uxrrr-q7777-77774-qaaaq-cai",
       "type": "rust",
 
       "build": [

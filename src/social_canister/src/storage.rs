@@ -243,6 +243,7 @@ thread_local! {
             )
         );
 
+        
     pub static GROUPS_BY_USER: RefCell<StableBTreeMap<Principal, StringVec, _Memory>> =
         RefCell::new(
             StableBTreeMap::init(

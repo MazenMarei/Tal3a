@@ -72,7 +72,7 @@ type User = record {
 };
 type UserRole = variant { User };
 service : {
-  add_notification : (NewNotification) -> (Result);
+  add_notification : (principal, NewNotification) -> (Result);
   create_user : (RegisteringUser) -> (Result_1);
   delete_account : () -> (Result);
   get_all_cities_in_governorate : (nat8) -> (vec CityData) query;
