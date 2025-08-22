@@ -1,5 +1,6 @@
 {
-  "canisters": {    "social_canister": {
+  "canisters": {
+    "social_canister": {
       "candid": "src/social_canister/social_canister.did",
       "package": "social_canister",
       "type": "rust"

@@ -7,5 +7,5 @@ pub struct Likes {
     pub group_id: String,
     pub user_id: Principal,
     pub liked_at: u64,
-    pub post_id: String, // should be a UUID
+    pub post_id: String, // should be a unique identifier randomly generated
 }
