@@ -1,8 +1,7 @@
-use crate::storage::EVENTS;
+use crate::storage::{EVENTS, NEXT_EVENT_ID};
 use crate::types::event::{Event, EventUpdate, CreateEventInput, EventStatus};
 use crate::types::filter::EventFilter;
 use crate::types::response::seconds_to_nanoseconds;
-use crate::utils::generate_unique_id;
 use candid::Principal;
 use ic_cdk::api::time;
 
@@ -30,7 +29,12 @@ impl Event {
             return Err("Event date must be in the future".to_string());
         }
 
-        let event_id = generate_unique_id().await?;
+        // Use counter ID instead of random ID for easier iteration
+        let event_id = NEXT_EVENT_ID.with(|id| {
+            let current_id = *id.borrow();
+            *id.borrow_mut() = current_id + 1;
+            current_id
+        });
 
         let now = time();
         let new_event = Event {
@@ -226,27 +230,11 @@ impl Event {
             let events_map = events.borrow();
             let mut all_events = Vec::new();
             
-            // Use a simple range to get all events
+            // Since we're using counter IDs starting from 1, we can iterate efficiently
             let mut id = 1u64;
-            loop {
-                if let Some(event) = events_map.get(&id) {
-                    all_events.push(event);
-                    id += 1;
-                } else {
-                    // Try next few IDs in case there are gaps
-                    let mut found_any = false;
-                    for check_id in (id + 1)..(id + 100) {
-                        if events_map.get(&check_id).is_some() {
-                            found_any = true;
-                            break;
-                        }
-                    }
-                    if found_any {
-                        id += 1;
-                    } else {
-                        break;
-                    }
-                }
+            while let Some(event) = events_map.get(&id) {
+                all_events.push(event.clone());
+                id += 1;
             }
             
             all_events

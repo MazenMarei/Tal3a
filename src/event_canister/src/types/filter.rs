@@ -5,8 +5,8 @@ use crate::types::event::EventStatus;
 
 #[derive(Debug, Clone, Deserialize, Serialize, CandidType)]
 pub struct EventFilter {
-    pub governorate: Option<String>,
-    pub city: Option<String>,
+    pub governorate: Option<u8>,
+    pub city: Option<u16>,
     pub sport: Option<Sports>,
     pub status: Option<EventStatus>,
     pub cost_filter: Option<CostFilter>,

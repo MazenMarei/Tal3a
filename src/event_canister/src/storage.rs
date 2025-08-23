@@ -9,6 +9,26 @@ use candid::{Decode, Encode};
 
 use crate::types::{review::Review, event::Event};
 
+// Wrapper for Vec<u64> to make it Storable
+#[derive(Clone, Debug)]
+pub struct ReviewIds(pub Vec<u64>);
+
+impl Storable for ReviewIds {
+    fn to_bytes(&self) -> Cow<'_, [u8]> {
+        Cow::Owned(Encode!(&self.0).unwrap())
+    }
+
+    fn from_bytes(bytes: Cow<[u8]>) -> Self {
+        ReviewIds(Decode!(bytes.as_ref(), Vec<u64>).unwrap_or_default())
+    }
+
+    const BOUND: Bound = Bound::Unbounded;
+
+    fn into_bytes(self) -> Vec<u8> {
+        Encode!(&self.0).unwrap()
+    }
+}
+
 type _Memory = VirtualMemory<DefaultMemoryImpl>;
 
 // Implement Storable for Event
@@ -63,7 +83,20 @@ thread_local! {
         )
     );
 
-    // ID counters
+    // Map event_id -> list of review_ids for efficient lookups
+    pub static EVENT_REVIEWS: RefCell<StableBTreeMap<u64, ReviewIds, _Memory>> = RefCell::new(
+        StableBTreeMap::init(
+            MEMORY_MANAGER.with(|m| m.borrow().get(MemoryId::new(2))),
+        )
+    );
+
+    // Store all event IDs for efficient iteration
+    pub static ALL_EVENT_IDS: RefCell<StableBTreeMap<u64, ReviewIds, _Memory>> = RefCell::new(
+        StableBTreeMap::init(
+            MEMORY_MANAGER.with(|m| m.borrow().get(MemoryId::new(3))),
+        )
+    );
+
+    // ID counters - only for events now (reviews use unique IDs)
     pub static NEXT_EVENT_ID: RefCell<u64> = RefCell::new(1);
-    pub static NEXT_REVIEW_ID: RefCell<u64> = RefCell::new(1);
 }

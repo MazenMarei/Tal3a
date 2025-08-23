@@ -1,9 +1,10 @@
-use crate::storage::{REVIEWS, NEXT_REVIEW_ID, EVENTS};
+use crate::storage::{REVIEWS, EVENTS, EVENT_REVIEWS, ReviewIds};
 use crate::types::review::Review;
+use crate::utils::generate_unique_id;
 use ic_cdk::api::time;
 
 impl Review {
-    pub fn new(event_id: u64, rating: u8, comment: Option<String>) -> Result<u64, String> {
+    pub async fn new(event_id: u64, rating: u8, comment: Option<String>) -> Result<u64, String> {
         let caller = ic_cdk::api::msg_caller();
 
         // Validate event exists
@@ -27,11 +28,7 @@ impl Review {
             return Err("User already reviewed this event".to_string());
         }
 
-        let review_id = NEXT_REVIEW_ID.with(|id| {
-            let current_id = *id.borrow();
-            *id.borrow_mut() = current_id + 1;
-            current_id
-        });
+        let review_id = generate_unique_id().await;
 
         let new_review = Review {
             id: review_id,
@@ -42,16 +39,42 @@ impl Review {
             created_at: time(),
         };
 
+        // Store the review
         REVIEWS.with(|reviews| {
             reviews.borrow_mut().insert(review_id, new_review);
+        });
+
+        // Update the event -> reviews index
+        EVENT_REVIEWS.with(|event_reviews| {
+            let mut borrowed = event_reviews.borrow_mut();
+            match borrowed.get(&event_id) {
+                Some(mut review_ids) => {
+                    review_ids.0.push(review_id);
+                    borrowed.insert(event_id, review_ids);
+                },
+                None => {
+                    borrowed.insert(event_id, ReviewIds(vec![review_id]));
+                }
+            }
         });
 
         Ok(review_id)
     }
 
-    pub fn get_reviews_for_event(_event_id: u64) -> Vec<Review> {
-        // For now, return empty vector - will implement proper filtering later
-        Vec::new()
+    pub fn get_reviews_for_event(event_id: u64) -> Vec<Review> {
+        EVENT_REVIEWS.with(|event_reviews| {
+            match event_reviews.borrow().get(&event_id) {
+                Some(review_ids) => {
+                    REVIEWS.with(|reviews| {
+                        let borrowed_reviews = reviews.borrow();
+                        review_ids.0.iter()
+                            .filter_map(|&id| borrowed_reviews.get(&id))
+                            .collect()
+                    })
+                },
+                None => Vec::new()
+            }
+        })
     }
 
     pub fn get_by_id(review_id: u64) -> Option<Review> {

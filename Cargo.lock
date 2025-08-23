@@ -215,7 +215,6 @@ dependencies = [
  "ic-stable-structures",
  "serde",
  "serde_json",
- "uuid",
 ]
 
 [[package]]

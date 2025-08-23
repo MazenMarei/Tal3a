@@ -2,8 +2,8 @@ use crate::types::review::Review;
 use ic_cdk::{query, update};
 
 #[update]
-fn review_event(event_id: u64, rating: u8, comment: Option<String>) -> Result<u64, String> {
-    Review::new(event_id, rating, comment)
+async fn review_event(event_id: u64, rating: u8, comment: Option<String>) -> Result<u64, String> {
+    Review::new(event_id, rating, comment).await
 }
 
 #[query]

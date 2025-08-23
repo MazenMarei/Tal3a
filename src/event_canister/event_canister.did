@@ -1,16 +1,58 @@
+type Location = record {
+  governorate : nat8;
+  city : nat16;
+  description : text;
+};
+
+type EventFilter = record {
+  governorate : opt nat8;
+  city : opt nat16;
+  sport : opt Sports;
+  status : opt EventStatus;
+  cost_filter : opt CostFilter;
+};
+
+type CostFilter = variant {
+  Free;
+  Paid;
+  Range : record { min : nat64; max : nat64 };
+};
+
+type EventResponse = record {
+  id : nat64;
+  group_id : nat64;
+  creator_id : principal;
+  title : text;
+  description : opt text;
+  event_date : nat64;
+  event_date_formatted : text;
+  duration_hours : nat8;
+  location : Location;
+  sport : Sports;
+  max_participants : opt nat16;
+  participants : vec principal;
+  status : EventStatus;
+  images : vec blob;
+  cost_per_person : opt nat64;
+  requirements : vec text;
+  created_at : nat64;
+  updated_at : nat64;
+};
+
 type CreateEventInput = record {
   title : text;
   description : opt text;
   event_date : nat64;
   duration_hours : nat8;
-  location : text;
+  location : Location;
   sport : Sports;
   max_participants : opt nat16;
   images : vec blob;
   cost_per_person : opt nat64;
   requirements : vec text;
 };
-type Result = variant { Ok : nat64; Err : text };
+type Result = variant { Ok : EventResponse; Err : text };
+type ReviewResult = variant { Ok : nat64; Err : text };
 type Result_1 = variant { Ok; Err : text };
 type Result_2 = variant { Ok : vec principal; Err : text };
 type Review = record {
@@ -43,7 +85,7 @@ type Event = record {
   description : opt text;
   event_date : nat64;
   duration_hours : nat8;
-  location : text;
+  location : Location;
   sport : Sports;
   max_participants : opt nat16;
   participants : vec principal;
@@ -60,7 +102,7 @@ type EventUpdate = record {
   description : opt text;
   event_date : opt nat64;
   duration_hours : opt nat8;
-  location : opt text;
+  location : opt Location;
   sport : opt Sports;
   max_participants : opt nat16;
   status : opt EventStatus;
@@ -71,12 +113,14 @@ type EventUpdate = record {
 service : {
   create_event : (nat64, CreateEventInput) -> (Result);
   delete_event : (nat64) -> (Result_1);
-  get_event : (nat64) -> (opt Event) query;
+  filter_events : (EventFilter) -> (vec EventResponse) query;
+  get_all_events : () -> (vec EventResponse) query;
+  get_event : (nat64) -> (opt EventResponse) query;
   get_event_participants : (nat64) -> (Result_2) query;
   get_event_reviews : (nat64) -> (vec Review) query;
   get_review : (nat64) -> (opt Review) query;
   join_event : (nat64, principal) -> (Result_1);
   leave_event : (nat64, principal) -> (Result_1);
-  review_event : (nat64, nat8, opt text) -> (Result);
+  review_event : (nat64, nat8, opt text) -> (ReviewResult);
   update_event : (nat64, EventUpdate) -> (Result_1);
 }

@@ -5,8 +5,8 @@ use std::borrow::Cow;
 
 #[derive(CandidType, Deserialize, Serialize, Clone, Debug)]
 pub struct Location {
-    pub governorate: String,
-    pub city: String,
+    pub governorate: u8,
+    pub city: u16,
     pub description: String,
 }
 
