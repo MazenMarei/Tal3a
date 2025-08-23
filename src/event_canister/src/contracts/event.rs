@@ -1,4 +1,5 @@
 use crate::types::event::{Event, EventUpdate, CreateEventInput};
+use crate::types::filter::EventFilter;
 use candid::Principal;
 use ic_cdk::{query, update};
 
@@ -35,4 +36,14 @@ fn get_event(event_id: u64) -> Option<Event> {
 #[query]
 fn get_event_participants(event_id: u64) -> Result<Vec<Principal>, String> {
     Event::get_participants(event_id)
+}
+
+#[query]
+fn get_all_events() -> Vec<Event> {
+    Event::get_all()
+}
+
+#[query]
+fn filter_events(filter: EventFilter) -> Vec<Event> {
+    Event::filter_events(filter)
 }

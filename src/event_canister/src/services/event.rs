@@ -1,5 +1,6 @@
 use crate::storage::{EVENTS, NEXT_EVENT_ID};
 use crate::types::event::{Event, EventUpdate, CreateEventInput, EventStatus};
+use crate::types::filter::EventFilter;
 use candid::Principal;
 use ic_cdk::api::time;
 
@@ -17,8 +18,8 @@ impl Event {
             return Err("Title cannot be empty".to_string());
         }
 
-        if input.location.trim().is_empty() {
-            return Err("Location cannot be empty".to_string());
+        if input.location.description.trim().is_empty() {
+            return Err("Location description cannot be empty".to_string());
         }
 
         if input.event_date <= time() {
@@ -88,8 +89,8 @@ impl Event {
                     event.description = Some(description);
                 }
                 if let Some(location) = updated_data.location {
-                    if location.trim().is_empty() {
-                        return Err("Location cannot be empty".to_string());
+                    if location.description.trim().is_empty() {
+                        return Err("Location description cannot be empty".to_string());
                     }
                     event.location = location;
                 }
@@ -217,5 +218,100 @@ impl Event {
                 Err("Event not found".to_string())
             }
         })
+    }
+
+    pub fn get_all() -> Vec<Event> {
+        EVENTS.with(|events| {
+            let events_map = events.borrow();
+            let mut all_events = Vec::new();
+            
+            // Use a simple range to get all events
+            let mut id = 1u64;
+            loop {
+                if let Some(event) = events_map.get(&id) {
+                    all_events.push(event);
+                    id += 1;
+                } else {
+                    // Try next few IDs in case there are gaps
+                    let mut found_any = false;
+                    for check_id in (id + 1)..(id + 100) {
+                        if events_map.get(&check_id).is_some() {
+                            found_any = true;
+                            break;
+                        }
+                    }
+                    if found_any {
+                        id += 1;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            
+            all_events
+        })
+    }
+
+    pub fn filter_events(filter: EventFilter) -> Vec<Event> {
+        // Get all events first, then filter them
+        let all_events = Self::get_all();
+        
+        all_events.into_iter().filter(|event| {
+            // Filter by governorate
+            if let Some(ref governorate) = filter.governorate {
+                if &event.location.governorate != governorate {
+                    return false;
+                }
+            }
+
+            // Filter by city
+            if let Some(ref city) = filter.city {
+                if &event.location.city != city {
+                    return false;
+                }
+            }
+
+            // Filter by sport
+            if let Some(ref sport) = filter.sport {
+                if &event.sport != sport {
+                    return false;
+                }
+            }
+
+            // Filter by status
+            if let Some(ref status) = filter.status {
+                if &event.status != status {
+                    return false;
+                }
+            }
+
+            // Filter by cost
+            if let Some(ref cost_filter) = filter.cost_filter {
+                use crate::types::filter::CostFilter;
+                match cost_filter {
+                    CostFilter::Free => {
+                        if event.cost_per_person.is_some() {
+                            return false;
+                        }
+                    }
+                    CostFilter::Paid => {
+                        if event.cost_per_person.is_none() {
+                            return false;
+                        }
+                    }
+                    CostFilter::Range { min, max } => {
+                        if let Some(cost) = event.cost_per_person {
+                            if cost < *min || cost > *max {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            true
+        }).collect()
     }
 }

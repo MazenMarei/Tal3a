@@ -8,6 +8,7 @@ mod utils;
 use crate::types::{
     review::Review,
     event::{Event, EventUpdate, CreateEventInput},
+    filter::EventFilter,
 };
 
 use candid::Principal;

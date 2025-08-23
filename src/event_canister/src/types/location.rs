@@ -21,5 +21,9 @@ impl Storable for Location {
         serde_json::from_slice(&bytes).expect("Failed to deserialize Location")
     }
 
+    fn into_bytes(self) -> Vec<u8> {
+        serde_json::to_vec(&self).expect("Failed to serialize Location")
+    }
+
     const BOUND: Bound = Bound::Unbounded;
 }
