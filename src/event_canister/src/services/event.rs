@@ -1,11 +1,12 @@
-use crate::storage::{EVENTS, NEXT_EVENT_ID};
+use crate::storage::EVENTS;
 use crate::types::event::{Event, EventUpdate, CreateEventInput, EventStatus};
 use crate::types::filter::EventFilter;
+use crate::utils::generate_unique_id;
 use candid::Principal;
 use ic_cdk::api::time;
 
 impl Event {
-    pub fn new(group_id: u64, input: CreateEventInput) -> Result<u64, String> {
+    pub async fn new(group_id: u64, input: CreateEventInput) -> Result<Event, String> {
         let caller = ic_cdk::api::msg_caller();
         
         // Validate group_id exists (TODO: implement group validation)
@@ -26,11 +27,7 @@ impl Event {
             return Err("Event date must be in the future".to_string());
         }
 
-        let event_id = NEXT_EVENT_ID.with(|id| {
-            let current_id = *id.borrow();
-            *id.borrow_mut() = current_id + 1;
-            current_id
-        });
+        let event_id = generate_unique_id().await?;
 
         let now = time();
         let new_event = Event {
@@ -44,7 +41,7 @@ impl Event {
             location: input.location,
             sport: input.sport,
             max_participants: input.max_participants,
-            participants: vec![caller], // Creator is first participant
+            participants: vec![], // Creator is not added to participants
             status: EventStatus::Upcoming,
             images: input.images,
             cost_per_person: input.cost_per_person,
@@ -54,10 +51,10 @@ impl Event {
         };
 
         EVENTS.with(|events| {
-            events.borrow_mut().insert(event_id, new_event);
+            events.borrow_mut().insert(event_id, new_event.clone());
         });
 
-        Ok(event_id)
+        Ok(new_event)
     }
 
     pub fn get_by_id(event_id: u64) -> Option<Event> {

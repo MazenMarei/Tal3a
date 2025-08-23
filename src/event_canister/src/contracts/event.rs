@@ -1,11 +1,13 @@
 use crate::types::event::{Event, EventUpdate, CreateEventInput};
 use crate::types::filter::EventFilter;
+use crate::types::response::EventResponse;
 use candid::Principal;
 use ic_cdk::{query, update};
 
 #[update]
-fn create_event(group_id: u64, event_data: CreateEventInput) -> Result<u64, String> {
-    Event::new(group_id, event_data)
+async fn create_event(group_id: u64, event_data: CreateEventInput) -> Result<EventResponse, String> {
+    let event = Event::new(group_id, event_data).await?;
+    Ok(EventResponse::from(event))
 }
 
 #[update]
@@ -29,8 +31,8 @@ fn leave_event(event_id: u64, user_id: Principal) -> Result<(), String> {
 }
 
 #[query]
-fn get_event(event_id: u64) -> Option<Event> {
-    Event::get_by_id(event_id)
+fn get_event(event_id: u64) -> Option<EventResponse> {
+    Event::get_by_id(event_id).map(EventResponse::from)
 }
 
 #[query]
@@ -39,11 +41,11 @@ fn get_event_participants(event_id: u64) -> Result<Vec<Principal>, String> {
 }
 
 #[query]
-fn get_all_events() -> Vec<Event> {
-    Event::get_all()
+fn get_all_events() -> Vec<EventResponse> {
+    Event::get_all().into_iter().map(EventResponse::from).collect()
 }
 
 #[query]
-fn filter_events(filter: EventFilter) -> Vec<Event> {
-    Event::filter_events(filter)
+fn filter_events(filter: EventFilter) -> Vec<EventResponse> {
+    Event::filter_events(filter).into_iter().map(EventResponse::from).collect()
 }
