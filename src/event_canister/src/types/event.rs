@@ -1,6 +1,7 @@
 use candid::{CandidType, Principal};
 use serde::{Deserialize, Serialize};
 use crate::types::sport::Sports;
+use crate::types::location::Location;
 
 // Event status enum
 #[derive(Debug, Clone, Deserialize, Serialize, CandidType, PartialEq)]
@@ -21,7 +22,7 @@ pub struct Event {
     pub description: Option<String>,
     pub event_date: u64,          // timestamp
     pub duration_hours: u8,       // duration in hours
-    pub location: String,         // location
+    pub location: Location,       // location with governorate, city, description
     pub sport: Sports,            // sport type
     pub max_participants: Option<u16>, // maximum participants
     pub participants: Vec<Principal>,   // participants list
@@ -40,7 +41,7 @@ pub struct CreateEventInput {
     pub description: Option<String>,
     pub event_date: u64,
     pub duration_hours: u8,
-    pub location: String,
+    pub location: Location,
     pub sport: Sports,
     pub max_participants: Option<u16>,
     pub images: Vec<Vec<u8>>,
@@ -55,7 +56,7 @@ pub struct EventUpdate {
     pub description: Option<String>,
     pub event_date: Option<u64>,
     pub duration_hours: Option<u8>,
-    pub location: Option<String>,
+    pub location: Option<Location>,
     pub sport: Option<Sports>,
     pub max_participants: Option<u16>,
     pub status: Option<EventStatus>,
