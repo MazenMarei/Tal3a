@@ -1,5 +1,3 @@
-use candid::Principal;
-use ic_cdk::api::msg_caller;
 use ic_cdk::management_canister::raw_rand;
 
 pub async fn generate_unique_id() -> Result<u64, String> {
@@ -12,8 +10,4 @@ pub async fn generate_unique_id() -> Result<u64, String> {
             id_bytes.copy_from_slice(&bytes[..8]);
             u64::from_be_bytes(id_bytes)
         })
-}
-
-pub fn get_caller() -> Principal {
-    msg_caller()
 }

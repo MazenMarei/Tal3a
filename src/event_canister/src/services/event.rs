@@ -1,6 +1,7 @@
 use crate::storage::EVENTS;
 use crate::types::event::{Event, EventUpdate, CreateEventInput, EventStatus};
 use crate::types::filter::EventFilter;
+use crate::types::response::seconds_to_nanoseconds;
 use crate::utils::generate_unique_id;
 use candid::Principal;
 use ic_cdk::api::time;
@@ -23,7 +24,9 @@ impl Event {
             return Err("Location description cannot be empty".to_string());
         }
 
-        if input.event_date <= time() {
+        // Convert frontend seconds to nanoseconds for comparison
+        let event_date_nanos = seconds_to_nanoseconds(input.event_date);
+        if event_date_nanos <= time() {
             return Err("Event date must be in the future".to_string());
         }
 
@@ -36,7 +39,7 @@ impl Event {
             creator_id: caller,
             title: input.title,
             description: input.description,
-            event_date: input.event_date,
+            event_date: event_date_nanos,
             duration_hours: input.duration_hours,
             location: input.location,
             sport: input.sport,
@@ -92,10 +95,11 @@ impl Event {
                     event.location = location;
                 }
                 if let Some(event_date) = updated_data.event_date {
-                    if event_date <= time() {
+                    let event_date_nanos = seconds_to_nanoseconds(event_date);
+                    if event_date_nanos <= time() {
                         return Err("Event date must be in the future".to_string());
                     }
-                    event.event_date = event_date;
+                    event.event_date = event_date_nanos;
                 }
                 if let Some(duration_hours) = updated_data.duration_hours {
                     event.duration_hours = duration_hours;
