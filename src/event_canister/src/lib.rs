@@ -1,4 +1,5 @@
 mod contracts;
+mod middleware;
 mod services;
 mod storage;
 mod types;
