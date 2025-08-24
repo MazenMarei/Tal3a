@@ -71,7 +71,7 @@ impl Like {
                 Ok(())
             }
 
-            LikeTarget::Comment(comment_id) => {
+            LikeTarget::Comment(_comment_id) => {
                 // * check if the comment exists
                 Ok(())
             }
@@ -134,10 +134,32 @@ impl Like {
                 Ok(())
             }
 
-            LikeTarget::Comment(comment_id) => {
+            LikeTarget::Comment(_comment_id) => {
                 // * check if the comment exists
                 Ok(())
             }
         }
+    }
+
+    pub fn get_user_likes(user_id: Principal) -> Vec<Like> {
+        LIKES_BY_USER.with(|user_likes| {
+            let user_likes_vec = user_likes.borrow().get(&user_id);
+            if let Some(user_likes_vec) = user_likes_vec {
+                user_likes_vec.likes.clone()
+            } else {
+                vec![]
+            }
+        })
+    }
+
+    pub fn get_post_likes(post_id: String) -> Vec<Like> {
+        LIKES_BY_POST.with(|post_likes| {
+            let post_likes_vec = post_likes.borrow().get(&post_id);
+            if let Some(post_likes_vec) = post_likes_vec {
+                post_likes_vec.likes.clone()
+            } else {
+                vec![]
+            }
+        })
     }
 }

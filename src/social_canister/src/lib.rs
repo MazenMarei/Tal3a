@@ -10,7 +10,7 @@ use ic_cdk;
 use crate::types::{
     group::{CreatingGroup, Group, GroupFilter},
     group_members::GroupMember,
-    likes::LikeTarget,
+    likes::{Like, LikeTarget},
     posts::{NewPost, Post, UpdatePost},
 };
 
