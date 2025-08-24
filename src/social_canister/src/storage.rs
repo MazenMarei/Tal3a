@@ -8,7 +8,8 @@ use std::cell::RefCell;
 
 use candid::Principal;
 
-use crate::types::{comments, group, group_members, posts, tal3a, tal3a_members};
+use crate::types::likes::Likes;
+use crate::types::{comments, group, group_members, likes, posts, tal3a, tal3a_members};
 
 use candid::{Decode, Encode};
 
@@ -64,6 +65,21 @@ impl Storable for group_members::GroupMembers {
     }
 }
 
+impl Storable for likes::Likes {
+    fn to_bytes(&self) -> Cow<'_, [u8]> {
+        Cow::Owned(Encode!(self).unwrap())
+    }
+
+    fn from_bytes(bytes: Cow<[u8]>) -> Self {
+        Decode!(bytes.as_ref(), Self).unwrap()
+    }
+
+    const BOUND: Bound = Bound::Unbounded;
+
+    fn into_bytes(self) -> Vec<u8> {
+        Encode!(&self).unwrap()
+    }
+}
 
 impl Storable for tal3a::Tal3a {
     fn to_bytes(&self) -> Cow<'_, [u8]> {
@@ -157,6 +173,7 @@ thread_local! {
             )
         );
 
+
     pub static TAL3A: RefCell<StableBTreeMap<String, tal3a::Tal3a, _Memory>> =
         RefCell::new(
             StableBTreeMap::init(
@@ -207,14 +224,14 @@ thread_local! {
             )
         );
 
-    pub static LIKES_BY_POST: RefCell<StableBTreeMap<String, StringVec, _Memory>> = // save the user id in the StringVec
+    pub static LIKES_BY_POST: RefCell<StableBTreeMap<String, Likes, _Memory>> = 
         RefCell::new(
             StableBTreeMap::init(
                 MEMORY_MANAGER.with(|m| m.borrow().get( MemoryId::new(11))),
             )
         );
 
-    pub static POST_LIKES_BY_USER: RefCell<StableBTreeMap<Principal, StringVec, _Memory>> = // save the post id in the StringVec
+    pub static LIKES_BY_USER: RefCell<StableBTreeMap<Principal, Likes, _Memory>> = 
         RefCell::new(
             StableBTreeMap::init(
                 MEMORY_MANAGER.with(|m| m.borrow().get( MemoryId::new(12))),
