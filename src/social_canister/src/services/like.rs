@@ -3,6 +3,7 @@ use candid::Principal;
 use crate::{
     storage::{LIKES_BY_POST, LIKES_BY_USER, POSTS},
     types::{
+        group::Group,
         likes::{Like, LikeTarget, Likes},
         posts::Post,
     },
@@ -19,6 +20,21 @@ impl Like {
                     return Err("cannot like unknown post".into());
                 }
 
+                // * check if the post belongs to a group and user in this group
+                let post_group = Group::get_by_id(&post.unwrap().group_id);
+                if post_group.is_err() {
+                    return Err("cannot like post from unknown group".into());
+                }
+
+                if post_group
+                    .unwrap()
+                    .get_group_members()
+                    .iter()
+                    .any(|m| m.user_id == like.user_id)
+                {
+                    return Err("cannot like post from group you are not a member of".into());
+                }
+
                 LIKES_BY_POST.with(|posts_list| {
                     let post_likes = posts_list.borrow_mut().get(&post_id);
                     // * initialize the post likes vector if it doesn't exist
@@ -28,7 +44,7 @@ impl Like {
                             .insert(post_id.clone(), Likes { likes: vec![] });
                     }
 
-                    let mut post_likes = post_likes.unwrap();
+                    let mut post_likes = posts_list.borrow_mut().get(&post_id).unwrap();
                     // * user already liked the post
                     if post_likes.likes.iter().any(|l| l.user_id == like.user_id) {
                         return Err("User already liked this post".to_string());
@@ -50,7 +66,7 @@ impl Like {
                             .insert(like.user_id, Likes { likes: vec![] });
                     }
 
-                    let mut user_likes_vec = user_likes_vec.unwrap();
+                    let mut user_likes_vec = user_likes.borrow_mut().get(&like.user_id).unwrap();
                     // * check if the user already liked the post
                     if user_likes_vec.likes.iter().any(|l| l.target == like.target) {
                         return;

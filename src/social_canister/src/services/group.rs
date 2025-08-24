@@ -156,6 +156,10 @@ impl Group {
         })
     }
 
+    pub fn get_group_members(&self) -> Vec<GroupMember> {
+        Self::get_members(&self.id)
+    }
+
     pub fn join(&self, user: Principal) -> Result<(), String> {
         let group_id = self.id.clone();
 
