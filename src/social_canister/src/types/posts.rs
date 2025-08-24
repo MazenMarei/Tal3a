@@ -12,6 +12,9 @@ pub struct Post {
     pub images: Option<Vec<Vec<u8>>>,
     pub created_at: u64,
     pub updated_at: u64,
+
+    pub likes: u64,
+    pub comments: u64,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, CandidType)]

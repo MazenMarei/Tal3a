@@ -46,7 +46,7 @@ pub fn get_group_members(group_id: &str) -> Vec<GroupMember> {
 pub async fn join_group(group_id: &str) -> Result<(), String> {
     let user = msg_caller();
     let group = Group::get_by_id(group_id)?;
-    group.join(user).await
+    group.join(user)
 }
 
 #[update]

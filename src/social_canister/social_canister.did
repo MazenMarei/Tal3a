@@ -10,6 +10,7 @@ type CreatingGroup = record {
 };
 type Group = record {
   id : text;
+  members : nat;
   governorate_id : nat8;
   city_id : nat16;
   name : text;
@@ -20,17 +21,20 @@ type Group = record {
   created_at : nat64;
   created_by : principal;
   image : blob;
+  posts : nat;
 };
 type GroupFilter = record {
   governorate_id : opt nat8;
   city_id : opt nat16;
   sport_type : opt Sports;
+  group_type : opt GroupType;
 };
 type GroupMember = record {
   user_id : principal;
   group_id : text;
   joined_at : nat64;
 };
+type GroupType = variant { Club; Group };
 type NewPost = record {
   content : text;
   group_id : text;
@@ -42,7 +46,9 @@ type Post = record {
   content : text;
   created_at : nat64;
   author : principal;
+  likes : nat64;
   group_id : text;
+  comments : nat64;
   images : opt vec blob;
 };
 type Result = variant { Ok : Group; Err : text };

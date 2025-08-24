@@ -2,6 +2,12 @@ use crate::types::sport::Sports;
 use candid::{CandidType, Principal};
 use serde::{Deserialize, Serialize};
 
+#[derive(Debug, Clone, Deserialize, Serialize, CandidType, PartialEq)]
+pub enum GroupType {
+    Group,
+    Club,
+}
+
 #[derive(Debug, Clone, Deserialize, Serialize, CandidType)]
 
 pub struct Group {
@@ -16,6 +22,9 @@ pub struct Group {
     pub image: Vec<u8>,
     pub parent_group_id: Option<String>,
     pub public: bool,
+
+    pub members: u128,
+    pub posts: u128,
 }
 #[derive(Debug, Clone, Deserialize, Serialize, CandidType)]
 pub struct CreatingGroup {
@@ -33,4 +42,5 @@ pub struct GroupFilter {
     pub governorate_id: Option<u8>,
     pub city_id: Option<u16>,
     pub sport_type: Option<Sports>,
+    pub group_type: Option<GroupType>,
 }

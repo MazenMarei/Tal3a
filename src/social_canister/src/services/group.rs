@@ -1,11 +1,12 @@
 use crate::storage::{StringVec, GROUPS, GROUPS_BY_USER, GROUP_MEMBERS, POSTS};
-use crate::types::group::{CreatingGroup, Group, GroupFilter};
+use crate::types::group::{CreatingGroup, Group, GroupFilter, GroupType};
 use crate::types::group_members::{GroupMember, GroupMembers};
 use crate::types::notification::{NewNotification, NotificationType};
 use crate::types::posts::Post;
 use crate::utils::{add_notification, get_city};
 use candid::Principal;
 use ic_cdk::api::{msg_caller, time};
+use ic_cdk::futures::spawn;
 impl Group {
     pub async fn new(new_group: CreatingGroup) -> Result<Self, String> {
         // * getting the city data
@@ -15,15 +16,32 @@ impl Group {
         }
         let city_data = city_data.unwrap();
         if let Some(parent_group_id) = new_group.parent_group_id.clone() {
-            if Self::get_by_id(&parent_group_id).is_err() {
+            let parent_group = Self::get_by_id(&parent_group_id);
+            if let Err(e) = parent_group {
                 return Err(format!(
-                    "Parent group with ID {} not found",
-                    parent_group_id
+                    "Parent group with ID {} not found : {}",
+                    parent_group_id, e
                 ));
+            } else if parent_group.unwrap().parent_group_id.is_some() {
+                return Err("Cannot create a club under another club".to_string());
+            } else {
+                // * check if user in the parent group
+                let user_id = msg_caller();
+                let is_member = GROUP_MEMBERS.with(|group_members| {
+                    group_members
+                        .borrow()
+                        .get(&parent_group_id)
+                        .map(|members| members.members.iter().any(|m| m.user_id == user_id))
+                        .unwrap_or(false)
+                });
+                if !is_member {
+                    return Err("User is not a member of the parent group".to_string());
+                }
             }
         }
 
         let new_id = if let Some(_parent_group_id) = new_group.parent_group_id.clone() {
+            // * check if user in the parent group
             format!(
                 "{}-{}-{}-club",
                 city_data.slug.to_lowercase(),
@@ -58,6 +76,8 @@ impl Group {
             created_by: msg_caller(),
             parent_group_id: new_group.parent_group_id,
             public: new_group.public,
+            members: 0,
+            posts: 0,
         };
 
         GROUPS.with(|groups| {
@@ -66,7 +86,7 @@ impl Group {
                 .insert(new_group.id.clone(), new_group.clone());
         });
         // * make user join group
-        let _ = new_group.join(msg_caller()).await;
+        let _ = new_group.join(msg_caller());
         Ok(new_group)
     }
 
@@ -92,7 +112,11 @@ impl Group {
                         && (filter.city_id.is_none() || filter.city_id == Some(group.city_id))
                         && (filter.sport_type.is_none()
                             || filter.sport_type == Some(group.sport_type.clone()))
-                        && group.parent_group_id.is_none()
+                        && (filter.group_type == Some(GroupType::Group)
+                            && group.parent_group_id.is_none()
+                            || filter.group_type == Some(GroupType::Club)
+                                && group.parent_group_id.is_some()
+                            || filter.group_type.is_none())
                         && group.public
                 })
                 .collect()
@@ -132,7 +156,7 @@ impl Group {
         })
     }
 
-    pub async fn join(&self, user: Principal) -> Result<(), String> {
+    pub fn join(&self, user: Principal) -> Result<(), String> {
         let group_id = self.id.clone();
 
         // check if parent group exists and user in it
@@ -147,7 +171,7 @@ impl Group {
             }
         }
 
-        // Ensure group members list exists
+        // * Ensure group members list exists
         let group_members_exists =
             GROUP_MEMBERS.with(|group| group.borrow().get(&group_id.to_string()).is_some());
         if !group_members_exists {
@@ -162,7 +186,7 @@ impl Group {
             });
         }
 
-        // Add user to group members
+        // * Add user to group members
         let mut already_member = false;
         let group_members_result = GROUP_MEMBERS.with(|group_memb| {
             let mut group_members_list = group_memb.borrow_mut().get(&group_id.to_string());
@@ -219,14 +243,33 @@ impl Group {
             ));
         }
 
-        add_notification(
-            user.clone(),
-            NewNotification {
-                content: format!("Welcome to {} Group / Club.,", self.name.clone()),
-                notification_type: NotificationType::Message,
-            },
-        )
-        .await?;
+        // * Update group member count
+        GROUPS.with(|groups| {
+            let mut group = groups.borrow_mut().get(&group_id);
+            if let Some(group) = &mut group {
+                group.members += 1;
+                groups.borrow_mut().insert(group_id, group.clone());
+            }
+        });
+
+        // * send welcome group notification
+        let group_name = self.name.clone();
+        ic_cdk_timers::set_timer(std::time::Duration::from_nanos(1), move || {
+            let user_id = user.clone();
+            let group_name = group_name.clone();
+            spawn(async move {
+                let _ = add_notification(
+                    user_id,
+                    NewNotification {
+                        content: format!("Welcome to {} Group / Club.,", group_name),
+                        notification_type: NotificationType::Message,
+                    },
+                )
+                .await;
+
+                drop(group_name);
+            });
+        });
 
         Ok(())
     }
@@ -247,6 +290,16 @@ impl Group {
                             user_groups_borrow.insert(user, joined_groups);
                         }
                     });
+
+                    // * decrement group member count
+                    GROUPS.with(|groups| {
+                        let mut group = groups.borrow_mut().get(&group_id);
+                        if let Some(group) = &mut group {
+                            group.members -= 1;
+                            groups.borrow_mut().insert(group_id, group.clone());
+                        }
+                    });
+
                     Ok(())
                 } else {
                     Err(format!(
@@ -277,16 +330,27 @@ impl Group {
     }
 
     pub fn delete(&self) -> Result<(), String> {
+        self.delete_internal(None)
+    }
+
+    pub fn delete_internal(&self, parent_delete: Option<bool>) -> Result<(), String> {
         GROUPS.with(|groups| {
             let group_id = self.id.clone();
             let user = ic_cdk::api::msg_caller();
-            if user != self.created_by {
+            let parent_group = match &self.parent_group_id {
+                Some(parent_id) => Group::get_by_id(parent_id).ok(),
+                None => None,
+            };
+            if user != self.created_by
+                && (parent_group.is_none()
+                    || parent_delete == Some(true) && parent_group.unwrap().created_by != user)
+            {
                 return Err("Only the group creator can delete the group".to_string());
             }
             let group = Group::get_by_id(&group_id).unwrap();
             // * delete sub clubs
             for sub_club in group.get_sub_clubs() {
-                sub_club.delete().unwrap();
+                sub_club.delete_internal(Some(true))?;
             }
             drop(group);
             if groups.borrow_mut().remove(&group_id).is_some() {
@@ -310,6 +374,7 @@ impl Group {
                         members.borrow_mut().remove(&group_id);
                     }
                 });
+
                 Ok(())
             } else {
                 Err(format!("Group with ID {} not found", group_id))

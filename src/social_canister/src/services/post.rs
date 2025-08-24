@@ -3,7 +3,9 @@ use ic_cdk::{api::msg_caller, futures::spawn};
 
 use crate::{
     contracts::group,
-    storage::{StringVec, COMMENTS_BY_POST, POSTS, POSTS_BY_GROUP, POSTS_BY_USER, UNSEEN_POSTS},
+    storage::{
+        StringVec, COMMENTS_BY_POST, GROUPS, POSTS, POSTS_BY_GROUP, POSTS_BY_USER, UNSEEN_POSTS,
+    },
     types::{
         notification::{NewNotification, NotificationType},
         posts::{NewPost, Post, UpdatePost},
@@ -35,6 +37,8 @@ impl Post {
             images: post.images,
             created_at,
             updated_at,
+            comments: 0,
+            likes: 0,
         };
 
         POSTS.with(|posts| {
@@ -89,7 +93,18 @@ impl Post {
             });
         });
 
-        // Schedule notification sending using a timer (truly non-blocking)
+        // * increment group post count
+        GROUPS.with(|groups| {
+            let mut group = groups.borrow_mut().get(&post.group_id.clone());
+            if let Some(group) = &mut group {
+                group.posts += 1;
+                groups
+                    .borrow_mut()
+                    .insert(post.group_id.clone(), group.clone());
+            }
+        });
+
+        // * Schedule notification sending using a timer (truly non-blocking)
         let group_members = group.clone();
         let post_author = new_post.author;
         let post_content = new_post.content.clone();
@@ -190,6 +205,17 @@ impl Post {
 
         COMMENTS_BY_POST.with(|comments_by_post| {
             comments_by_post.borrow_mut().remove(&post_id.to_string());
+        });
+
+        // * decrement group post count
+        GROUPS.with(|groups| {
+            let mut group = groups.borrow_mut().get(&post.group_id.clone());
+            if let Some(group) = &mut group {
+                group.posts -= 1;
+                groups
+                    .borrow_mut()
+                    .insert(post.group_id.clone(), group.clone());
+            }
         });
 
         Ok(())
