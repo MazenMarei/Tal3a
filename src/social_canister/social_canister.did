@@ -35,6 +35,12 @@ type GroupMember = record {
   joined_at : nat64;
 };
 type GroupType = variant { Club; Group };
+type Like = record {
+  liked_at : nat64;
+  user_id : principal;
+  target : LikeTarget;
+};
+type LikeTarget = variant { Post : text; Comment : text };
 type NewPost = record {
   content : text;
   group_id : text;
@@ -85,12 +91,16 @@ service : {
   get_group_posts : (text) -> (vec Post) query;
   get_member_groups : (principal) -> (vec Group) query;
   get_post : (text) -> (Result_1) query;
+  get_post_likes : (text) -> (vec Like) query;
   get_posts_by_user : (principal) -> (vec Post) query;
   get_sub_club : (text, text) -> (vec Group) query;
   get_sub_clubs : (text) -> (vec Group) query;
   get_unseen_posts : () -> (vec Post) query;
+  get_user_likes : () -> (vec Like) query;
   join_group : (text) -> (Result_2);
   leave_group : (text) -> (Result_2);
+  like : (LikeTarget) -> (Result_2);
   mark_post_as_read : (text) -> (Result_2);
+  unlike : (LikeTarget) -> (Result_2);
   update_post : (text, UpdatePost) -> (Result_1);
 }
