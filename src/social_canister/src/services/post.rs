@@ -4,7 +4,8 @@ use ic_cdk::{api::msg_caller, futures::spawn};
 use crate::{
     contracts::group,
     storage::{
-        StringVec, COMMENTS_BY_POST, GROUPS, POSTS, POSTS_BY_GROUP, POSTS_BY_USER, UNSEEN_POSTS,
+        StringVec, COMMENTS_BY_POST, GROUPS, LIKES_BY_POST, POSTS, POSTS_BY_GROUP, POSTS_BY_USER,
+        UNSEEN_POSTS,
     },
     types::{
         notification::{NewNotification, NotificationType},
@@ -298,5 +299,55 @@ impl Post {
                 })
                 .unwrap_or_default()
         })
+    }
+
+    pub fn like(&mut self, user: Principal) -> Result<(), String> {
+        LIKES_BY_POST.with(|likes_by_post| {
+            let mut likes_list = likes_by_post.borrow_mut().get(&self.post_id);
+            if let Some(user_ids) = &mut likes_list {
+                if user_ids.0.contains(&user.to_string()) {
+                    return Err("User already liked this post".to_string());
+                }
+                user_ids.0.push(user.to_string());
+                likes_by_post
+                    .borrow_mut()
+                    .insert(self.post_id.clone(), user_ids.clone());
+            } else {
+                // * first like for the post
+                likes_by_post.borrow_mut().insert(
+                    self.post_id.clone(),
+                    StringVec {
+                        0: vec![user.to_string()],
+                    },
+                );
+            }
+
+            // * add like to user likes
+            POSTS_BY_USER.with(|post_likes_by_user| {
+                let mut user_likes = post_likes_by_user.borrow_mut().get(&user);
+                if let Some(post_ids) = &mut user_likes {
+                    // * if user was already liking the post
+                    if post_ids.0.contains(&self.post_id) {
+                        return;
+                    }
+                    post_ids.0.push(self.post_id.clone());
+                } else {
+                    // * first like for the user
+                    post_likes_by_user.borrow_mut().insert(
+                        user,
+                        StringVec {
+                            0: vec![self.post_id.clone()],
+                        },
+                    );
+                }
+            });
+
+            Ok(())
+        })?;
+        Ok(())
+    }
+
+    pub fn unlike(&mut self, user: Principal) -> Result<(), String> {
+        Ok(())
     }
 }
