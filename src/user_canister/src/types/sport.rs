@@ -2,9 +2,8 @@ use candid::CandidType;
 use serde::{Deserialize, Serialize};
 
 // * sports enum
-#[derive(Clone , CandidType, Deserialize, Serialize)]
+#[derive(Clone, CandidType, Deserialize, Serialize, PartialEq)]
 pub enum Sports {
-    
     Football,
     Basketball,
     Volleyball,
@@ -18,5 +17,4 @@ pub enum Sports {
     Camping,
     Fitness,
     Swimming,
-    
 }

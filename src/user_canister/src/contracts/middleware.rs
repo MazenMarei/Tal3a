@@ -10,7 +10,7 @@ fn inspect_message() {
     if caller == Principal::anonymous() {
         // * Allow query methods for anonymous users, but block update methods
         if is_update_method(&method_name) {
-            ic_cdk::api::trap(&format!(
+            ic_cdk::api::msg_reject(&format!(
                 "Anonymous users cannot call update method: {}",
                 method_name
             ));

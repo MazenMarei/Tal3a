@@ -3,3 +3,4 @@ pub mod sport;
 pub mod city;
 pub mod governorate;
 pub mod notification;
+pub mod activity;

@@ -17,6 +17,19 @@ type Notification = record {
   notification_type : NotificationType;
 };
 type NotificationType = variant { Reminder; Message; Alert };
+type PublicUser = record {
+  bio : opt text;
+  username : text;
+  city : CityData;
+  avatar_url : opt blob;
+  role : UserRole;
+  created_at : nat64;
+  last_active : nat64;
+  is_online : bool;
+  governorate : GovernorateData;
+  principal_id : principal;
+  sports : vec Sports;
+};
 type RegisteringUser = record {
   bio : opt text;
   username : text;
@@ -30,6 +43,7 @@ type Result = variant { Ok; Err : text };
 type Result_1 = variant { Ok : User; Err : text };
 type Result_2 = variant { Ok : CityData; Err : text };
 type Result_3 = variant { Ok : GovernorateData; Err : text };
+type Result_4 = variant { Ok : PublicUser; Err : text };
 type Sports = variant {
   Basketball;
   Tennis;
@@ -62,16 +76,25 @@ type User = record {
   free_days : opt blob;
   avatar_url : opt blob;
   role : UserRole;
+  manual_status : bool;
   created_at : nat64;
-  joined_tal3a : vec nat64;
+  last_active : nat64;
   is_online : bool;
   governorate : GovernorateData;
   principal_id : principal;
   sports : vec Sports;
-  joined_groups : vec nat64;
+  activity : vec UserActivity;
 };
-type UserRole = variant { User };
+type UserActivity = record {
+  duration : nat64;
+  time : nat64;
+  distance : opt float64;
+  user_id : principal;
+  sport : Sports;
+};
+type UserRole = variant { User; Admin };
 service : {
+  add_activity : (UserActivity) -> (Result);
   add_notification : (NewNotification) -> (Result);
   create_user : (RegisteringUser) -> (Result_1);
   delete_account : () -> (Result);
@@ -80,12 +103,9 @@ service : {
   get_city : (nat16, nat8) -> (Result_2) query;
   get_current_user : () -> (Result_1) query;
   get_governorate : (nat8) -> (Result_3) query;
-  get_user : (principal) -> (Result_1) query;
-  join_group : (nat64) -> (Result);
-  join_tal3a : (nat64) -> (Result);
-  leave_group : (nat64) -> (Result);
-  leave_tal3a : (nat64) -> (Result);
+  get_user : (principal) -> (Result_4) query;
   mark_notification_as_read : (text) -> (Result);
+  ping : () -> (Result);
   set_account_status : (bool) -> (Result);
   update_profile : (UpdatingUser) -> (Result);
 }

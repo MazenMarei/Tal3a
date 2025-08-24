@@ -1,8 +1,11 @@
 use crate::storage::USERS;
-use crate::types::notification::{NewNotification, Notification};
+use crate::types::sport::Sports;
+use crate::types::user::PublicUser;
 use crate::types::{
+    activity::UserActivity,
     city::CityData,
     governorate::GovernorateData,
+    notification::{NewNotification, Notification},
     user::{RegisteringUser, UpdatingUser, User, UserRole},
 };
 use base64::Engine;
@@ -17,7 +20,8 @@ impl User {
             return Err("User already exists".to_string());
         }
 
-        if registering_user.username.is_empty() {
+        // validate data
+        if registering_user.username.trim().is_empty() {
             return Err("Username is required".to_string());
         }
         if registering_user.governorate == 0 {
@@ -43,8 +47,6 @@ impl User {
             username: registering_user.username,
             governorate,
             city,
-            joined_groups: Vec::new(),
-            joined_tal3a: Vec::new(),
             bio: registering_user.bio,
             avatar_url: registering_user.avatar_url,
             sports: registering_user.sports,
@@ -52,6 +54,9 @@ impl User {
             free_days: registering_user.free_days,
             is_online: true,           // default value
             notifications: Vec::new(), // Initialize with an empty vector
+            last_active: created_at,
+            activity: Vec::new(),
+            manual_status: false,
         };
         USERS.with(|users| {
             users.borrow_mut().insert(principal_id, new_user.clone());
@@ -61,13 +66,33 @@ impl User {
 
     pub fn get_user(principal_id: Principal) -> Result<Self, String> {
         USERS.with(|users| {
-            let user = users.borrow().get(&principal_id);
-            if let Some(user) = user {
+            let mut user = users.borrow().get(&principal_id);
+
+            if let Some(user) = &mut user {
+                // check if user is online with the last active timestamp
+                user.is_online();
+
                 Ok(user.clone())
             } else {
                 Err("User not found".to_string())
             }
         })
+    }
+
+    pub fn to_public(&self) -> PublicUser {
+        PublicUser {
+            principal_id: self.principal_id.clone(),
+            created_at: self.created_at.clone(),
+            username: self.username.clone(),
+            governorate: self.governorate.clone(),
+            city: self.city.clone(),
+            bio: self.bio.clone(),
+            avatar_url: self.avatar_url.clone(),
+            sports: self.sports.clone(),
+            role: self.role.clone(),
+            is_online: self.is_online.clone(),
+            last_active: self.last_active.clone(),
+        }
     }
 
     pub fn update(&mut self, updating_user: UpdatingUser) -> Result<(), String> {
@@ -109,64 +134,12 @@ impl User {
     }
 
     pub fn set_status(&mut self, is_online: bool) -> Result<(), String> {
-        let old_status = self.is_online.clone();
         self.is_online = is_online;
+        self.manual_status = !is_online;
         USERS.with(|users| {
             users.borrow_mut().insert(self.principal_id, self.clone());
         });
-        if old_status != is_online {
-            Ok(())
-        } else {
-            Err("Status not changed".to_string())
-        }
-    }
-
-    pub fn join_group(&mut self, group_id: u64) -> Result<(), String> {
-        if !self.joined_groups.contains(&group_id) {
-            self.joined_groups.push(group_id);
-            USERS.with(|users| {
-                users.borrow_mut().insert(self.principal_id, self.clone());
-            });
-            Ok(())
-        } else {
-            Err("Already a member of the group".to_string())
-        }
-    }
-
-    pub fn join_tal3a(&mut self, tal3a_id: u64) -> Result<(), String> {
-        if !self.joined_tal3a.contains(&tal3a_id) {
-            self.joined_tal3a.push(tal3a_id);
-            USERS.with(|users| {
-                users.borrow_mut().insert(self.principal_id, self.clone());
-            });
-            Ok(())
-        } else {
-            Err("Already a member of the Tal3a".to_string())
-        }
-    }
-
-    pub fn leave_group(&mut self, group_id: u64) -> Result<(), String> {
-        if self.joined_groups.contains(&group_id) {
-            self.joined_groups.retain(|&id| id != group_id);
-            USERS.with(|users| {
-                users.borrow_mut().insert(self.principal_id, self.clone());
-            });
-            Ok(())
-        } else {
-            Err("Not a member of the group".to_string())
-        }
-    }
-
-    pub fn leave_tal3a(&mut self, tal3a_id: u64) -> Result<(), String> {
-        if self.joined_tal3a.contains(&tal3a_id) {
-            self.joined_tal3a.retain(|&id| id != tal3a_id);
-            USERS.with(|users| {
-                users.borrow_mut().insert(self.principal_id, self.clone());
-            });
-            Ok(())
-        } else {
-            Err("Not a member of the Tal3a".to_string())
-        }
+        Ok(())
     }
 
     pub async fn add_notification(&mut self, notification: NewNotification) -> Result<(), String> {
@@ -203,5 +176,56 @@ impl User {
         } else {
             Err("Notification not found".to_string())
         }
+    }
+
+    pub fn ping(&mut self) -> Result<(), String> {
+        self.last_active = time();
+        USERS.with(|users| {
+            users.borrow_mut().insert(self.principal_id, self.clone());
+        });
+        Ok(())
+    }
+
+    pub fn is_online(&mut self) -> bool {
+        const THRESHOLD: u64 = 10_000_000_000; // 120 seconds (nano seconds)
+        let now = time();
+        self.is_online = !self.manual_status && self.last_active + THRESHOLD > now;
+        USERS.with(|users| {
+            users.borrow_mut().insert(self.principal_id, self.clone());
+        });
+        self.is_online
+    }
+
+    pub fn add_activity(&mut self, activity: UserActivity) -> Result<(), String> {
+        // data validation
+        if activity.duration == 0 {
+            return Err("Duration must be greater than zero".to_string());
+        }
+
+        if activity.time == 0 {
+            return Err("Start time must be greater than zero".to_string());
+        }
+
+        if activity.time > time() {
+            return Err("Start time cannot be in the future".to_string());
+        }
+
+        if activity.sport == Sports::Running || activity.sport == Sports::Cycling {
+            if let Some(distance) = activity.distance {
+                if distance == 0.0 {
+                    return Err(
+                        "Distance must be greater than zero for running and cycling".to_string()
+                    );
+                }
+            } else {
+                return Err("Distance is required for running and cycling".to_string());
+            }
+        }
+
+        self.activity.push(activity);
+        USERS.with(|users| {
+            users.borrow_mut().insert(self.principal_id, self.clone());
+        });
+        Ok(())
     }
 }
