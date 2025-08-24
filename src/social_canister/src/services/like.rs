@@ -26,7 +26,7 @@ impl Like {
                     return Err("cannot like post from unknown group".into());
                 }
 
-                if post_group
+                if !post_group
                     .unwrap()
                     .get_group_members()
                     .iter()
@@ -103,6 +103,20 @@ impl Like {
                     return Err("cannot unlike unknown post".to_string());
                 }
 
+                // * check if the post belongs to a group and user in this group
+                let post_group = Group::get_by_id(&post.unwrap().group_id);
+                if post_group.is_err() {
+                    return Err("cannot like post from unknown group".into());
+                }
+
+                if !post_group
+                    .unwrap()
+                    .get_group_members()
+                    .iter()
+                    .any(|m| m.user_id == user_id)
+                {
+                    return Err("cannot unlike post from group you are not a member of".into());
+                }
                 LIKES_BY_POST.with(|posts_list| {
                     let post_likes = posts_list.borrow_mut().get(&post_id);
                     // * post likes vector doesn't exist
