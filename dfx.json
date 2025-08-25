@@ -1,5 +1,10 @@
 {
   "canisters": {
+    "event_canister": {
+      "candid": "src/event_canister/event_canister.did",
+      "package": "event_canister",
+      "type": "rust"
+    },
     "social_canister": {
       "candid": "src/social_canister/social_canister.did",
       "package": "social_canister",

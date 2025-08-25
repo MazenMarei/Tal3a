@@ -1,0 +1,98 @@
+type CostFilter = variant {
+  Free;
+  Paid;
+  Range : record { max : nat64; min : nat64 };
+};
+type CreateEventInput = record {
+  title : text;
+  description : opt text;
+  cost_per_person : opt nat64;
+  max_participants : opt nat16;
+  duration_hours : nat8;
+  sport : Sports;
+  requirements : vec text;
+  event_date : nat64;
+  location : Location;
+  images : vec blob;
+};
+type EventFilter = record {
+  status : opt EventStatus;
+  city : opt nat16;
+  sport : opt Sports;
+  governorate : opt nat8;
+  cost_filter : opt CostFilter;
+};
+type EventResponse = record {
+  id : nat64;
+  status : EventStatus;
+  title : text;
+  updated_at : nat64;
+  participants : vec principal;
+  creator_id : principal;
+  event_date_formatted : text;
+  description : opt text;
+  created_at : nat64;
+  cost_per_person : opt nat64;
+  max_participants : opt nat16;
+  duration_hours : nat8;
+  sport : Sports;
+  requirements : vec text;
+  event_date : nat64;
+  location : Location;
+  images : vec blob;
+};
+type EventStatus = variant { Cancelled; InProgress; Completed; Upcoming };
+type EventUpdate = record {
+  status : opt EventStatus;
+  title : opt text;
+  description : opt text;
+  cost_per_person : opt nat64;
+  max_participants : opt nat16;
+  duration_hours : opt nat8;
+  sport : opt Sports;
+  requirements : opt vec text;
+  event_date : opt nat64;
+  location : opt Location;
+  images : opt vec blob;
+};
+type Location = record { city : nat16; description : text; governorate : nat8 };
+type Result = variant { Ok : EventResponse; Err : text };
+type Result_1 = variant { Ok; Err : text };
+type Result_2 = variant { Ok : vec principal; Err : text };
+type Result_3 = variant { Ok : nat64; Err : text };
+type Review = record {
+  id : nat64;
+  created_at : nat64;
+  user_id : principal;
+  comment : opt text;
+  rating : nat8;
+  event_id : nat64;
+};
+type Sports = variant {
+  Basketball;
+  Tennis;
+  Volleyball;
+  Football;
+  Padel;
+  Fitness;
+  Cycling;
+  Handball;
+  Camping;
+  Running;
+  Skateboarding;
+  Swimming;
+};
+service : {
+  create_event : (CreateEventInput) -> (Result);
+  delete_event : (nat64) -> (Result_1);
+  filter_events : (EventFilter) -> (vec EventResponse) query;
+  get_all_events : () -> (vec EventResponse) query;
+  get_event : (nat64) -> (opt EventResponse) query;
+  get_event_participants : (nat64) -> (Result_2) query;
+  get_event_reviews : (nat64) -> (vec Review) query;
+  get_review : (nat64) -> (opt Review) query;
+  join_event : (nat64) -> (Result_1);
+  leave_event : (nat64) -> (Result_1);
+  review_event : (nat64, nat8, opt text) -> (Result_3);
+  update_event : (nat64, EventUpdate) -> (Result_1);
+}
