@@ -11,7 +11,7 @@
       ]
     },
     "tal3a_frontend": {
-      "dependencies": ["tal3a_backend"],
+      "dependencies": ["user_canister"],
       "source": ["src/tal3a_frontend/dist"],
       "type": "assets",
       "workspace": "tal3a_frontend"
