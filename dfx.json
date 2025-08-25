@@ -1,10 +1,5 @@
 {
   "canisters": {
-    "tal3a_backend": {
-      "candid": "src/tal3a_backend/tal3a_backend.did",
-      "package": "tal3a_backend",
-      "type": "rust"
-    },
     "tal3a_frontend": {
       "dependencies": ["tal3a_backend"],
       "source": ["src/tal3a_frontend/dist"],
