@@ -5,8 +5,8 @@ use candid::Principal;
 use ic_cdk::{query, update};
 
 #[update]
-async fn create_event(group_id: u64, event_data: CreateEventInput) -> Result<EventResponse, String> {
-    let event = Event::new(group_id, event_data).await?;
+async fn create_event(event_data: CreateEventInput) -> Result<EventResponse, String> {
+    let event = Event::new( event_data).await?;
     Ok(EventResponse::from(event))
 }
 

@@ -16,7 +16,6 @@ pub enum EventStatus {
 #[derive(Debug, Clone, Deserialize, Serialize, CandidType)]
 pub struct Event {
     pub id: u64,
-    pub group_id: u64,
     pub creator_id: Principal,
     pub title: String,
     pub description: Option<String>,

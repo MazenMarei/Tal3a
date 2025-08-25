@@ -20,7 +20,6 @@ pub fn format_timestamp(nanos: u64) -> String {
 #[derive(Debug, Clone, Deserialize, Serialize, CandidType)]
 pub struct EventResponse {
     pub id: u64,
-    pub group_id: u64,
     pub creator_id: candid::Principal,
     pub title: String,
     pub description: Option<String>,
@@ -43,7 +42,6 @@ impl From<crate::types::event::Event> for EventResponse {
     fn from(event: crate::types::event::Event) -> Self {
         Self {
             id: event.id,
-            group_id: event.group_id,
             creator_id: event.creator_id,
             title: event.title,
             description: event.description,

@@ -1,18 +1,14 @@
-use crate::storage::{EVENTS, NEXT_EVENT_ID};
-use crate::types::event::{Event, EventUpdate, CreateEventInput, EventStatus};
+use crate::storage::{EVENTS};
+use crate::types::event::{CreateEventInput, Event, EventStatus, EventUpdate};
 use crate::types::filter::EventFilter;
 use crate::types::response::seconds_to_nanoseconds;
+use crate::utils::generate_unique_id;
 use candid::Principal;
 use ic_cdk::api::time;
 
 impl Event {
-    pub async fn new(group_id: u64, input: CreateEventInput) -> Result<Event, String> {
+    pub async fn new(input: CreateEventInput) -> Result<Event, String> {
         let caller = ic_cdk::api::msg_caller();
-        
-        // Validate group_id exists (TODO: implement group validation)
-        if group_id == 0 {
-            return Err("Invalid group ID".to_string());
-        }
 
         // Validate input data
         if input.title.trim().is_empty() {
@@ -23,23 +19,22 @@ impl Event {
             return Err("Location description cannot be empty".to_string());
         }
 
+        // Validate Location city and governorate using inter casnister call
+        
+      
+
         // Convert frontend seconds to nanoseconds for comparison
         let event_date_nanos = seconds_to_nanoseconds(input.event_date);
         if event_date_nanos <= time() {
             return Err("Event date must be in the future".to_string());
         }
 
-        // Use counter ID instead of random ID for easier iteration
-        let event_id = NEXT_EVENT_ID.with(|id| {
-            let current_id = *id.borrow();
-            *id.borrow_mut() = current_id + 1;
-            current_id
-        });
+        // Use random ID using raw_rand
+        let event_id = generate_unique_id().await;
 
         let now = time();
         let new_event = Event {
             id: event_id,
-            group_id,
             creator_id: caller,
             title: input.title,
             description: input.description,
@@ -65,9 +60,7 @@ impl Event {
     }
 
     pub fn get_by_id(event_id: u64) -> Option<Event> {
-        EVENTS.with(|events| {
-            events.borrow().get(&event_id)
-        })
+        EVENTS.with(|events| events.borrow().get(&event_id))
     }
 
     pub fn update(event_id: u64, updated_data: EventUpdate) -> Result<(), String> {
@@ -75,7 +68,7 @@ impl Event {
 
         EVENTS.with(|events| {
             let mut events_map = events.borrow_mut();
-            
+
             if let Some(mut event) = events_map.get(&event_id) {
                 // Check if caller is the creator
                 if event.creator_id != caller {
@@ -141,7 +134,7 @@ impl Event {
 
         EVENTS.with(|events| {
             let mut events_map = events.borrow_mut();
-            
+
             if let Some(event) = events_map.get(&event_id) {
                 // Check if caller is the creator
                 if event.creator_id != caller {
@@ -159,7 +152,7 @@ impl Event {
     pub fn join(event_id: u64, user_id: Principal) -> Result<(), String> {
         EVENTS.with(|events| {
             let mut events_map = events.borrow_mut();
-            
+
             if let Some(mut event) = events_map.get(&event_id) {
                 // Check if already joined
                 if event.participants.contains(&user_id) {
@@ -191,7 +184,7 @@ impl Event {
     pub fn leave(event_id: u64, user_id: Principal) -> Result<(), String> {
         EVENTS.with(|events| {
             let mut events_map = events.borrow_mut();
-            
+
             if let Some(mut event) = events_map.get(&event_id) {
                 // Check if user is creator (creator cannot leave)
                 if event.creator_id == user_id {
@@ -200,8 +193,10 @@ impl Event {
 
                 // Remove user from participants
                 let initial_len = event.participants.len();
-                event.participants.retain(|&participant| participant != user_id);
-                
+                event
+                    .participants
+                    .retain(|&participant| participant != user_id);
+
                 if event.participants.len() == initial_len {
                     return Err("User is not a participant".to_string());
                 }
@@ -229,14 +224,14 @@ impl Event {
         EVENTS.with(|events| {
             let events_map = events.borrow();
             let mut all_events = Vec::new();
-            
+
             // Since we're using counter IDs starting from 1, we can iterate efficiently
             let mut id = 1u64;
             while let Some(event) = events_map.get(&id) {
                 all_events.push(event.clone());
                 id += 1;
             }
-            
+
             all_events
         })
     }
@@ -244,63 +239,66 @@ impl Event {
     pub fn filter_events(filter: EventFilter) -> Vec<Event> {
         // Get all events first, then filter them
         let all_events = Self::get_all();
-        
-        all_events.into_iter().filter(|event| {
-            // Filter by governorate
-            if let Some(ref governorate) = filter.governorate {
-                if &event.location.governorate != governorate {
-                    return false;
-                }
-            }
 
-            // Filter by city
-            if let Some(ref city) = filter.city {
-                if &event.location.city != city {
-                    return false;
-                }
-            }
-
-            // Filter by sport
-            if let Some(ref sport) = filter.sport {
-                if &event.sport != sport {
-                    return false;
-                }
-            }
-
-            // Filter by status
-            if let Some(ref status) = filter.status {
-                if &event.status != status {
-                    return false;
-                }
-            }
-
-            // Filter by cost
-            if let Some(ref cost_filter) = filter.cost_filter {
-                use crate::types::filter::CostFilter;
-                match cost_filter {
-                    CostFilter::Free => {
-                        if event.cost_per_person.is_some() {
-                            return false;
-                        }
+        all_events
+            .into_iter()
+            .filter(|event| {
+                // Filter by governorate
+                if let Some(ref governorate) = filter.governorate {
+                    if &event.location.governorate != governorate {
+                        return false;
                     }
-                    CostFilter::Paid => {
-                        if event.cost_per_person.is_none() {
-                            return false;
-                        }
+                }
+
+                // Filter by city
+                if let Some(ref city) = filter.city {
+                    if &event.location.city != city {
+                        return false;
                     }
-                    CostFilter::Range { min, max } => {
-                        if let Some(cost) = event.cost_per_person {
-                            if cost < *min || cost > *max {
+                }
+
+                // Filter by sport
+                if let Some(ref sport) = filter.sport {
+                    if &event.sport != sport {
+                        return false;
+                    }
+                }
+
+                // Filter by status
+                if let Some(ref status) = filter.status {
+                    if &event.status != status {
+                        return false;
+                    }
+                }
+
+                // Filter by cost
+                if let Some(ref cost_filter) = filter.cost_filter {
+                    use crate::types::filter::CostFilter;
+                    match cost_filter {
+                        CostFilter::Free => {
+                            if event.cost_per_person.is_some() {
                                 return false;
                             }
-                        } else {
-                            return false;
+                        }
+                        CostFilter::Paid => {
+                            if event.cost_per_person.is_none() {
+                                return false;
+                            }
+                        }
+                        CostFilter::Range { min, max } => {
+                            if let Some(cost) = event.cost_per_person {
+                                if cost < *min || cost > *max {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
                         }
                     }
                 }
-            }
 
-            true
-        }).collect()
+                true
+            })
+            .collect()
     }
 }
