@@ -36,7 +36,6 @@ type EventResponse = record {
   max_participants : opt nat16;
   duration_hours : nat8;
   sport : Sports;
-  group_id : nat64;
   requirements : vec text;
   event_date : nat64;
   location : Location;
@@ -84,7 +83,7 @@ type Sports = variant {
   Swimming;
 };
 service : {
-  create_event : (nat64, CreateEventInput) -> (Result);
+  create_event : (CreateEventInput) -> (Result);
   delete_event : (nat64) -> (Result_1);
   filter_events : (EventFilter) -> (vec EventResponse) query;
   get_all_events : () -> (vec EventResponse) query;
@@ -92,8 +91,8 @@ service : {
   get_event_participants : (nat64) -> (Result_2) query;
   get_event_reviews : (nat64) -> (vec Review) query;
   get_review : (nat64) -> (opt Review) query;
-  join_event : (nat64, principal) -> (Result_1);
-  leave_event : (nat64, principal) -> (Result_1);
+  join_event : (nat64) -> (Result_1);
+  leave_event : (nat64) -> (Result_1);
   review_event : (nat64, nat8, opt text) -> (Result_3);
   update_event : (nat64, EventUpdate) -> (Result_1);
 }
