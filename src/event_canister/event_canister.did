@@ -1,67 +1,73 @@
-type Location = record {
-  governorate : nat8;
-  city : nat16;
-  description : text;
-};
-
-type EventFilter = record {
-  governorate : opt nat8;
-  city : opt nat16;
-  sport : opt Sports;
-  status : opt EventStatus;
-  cost_filter : opt CostFilter;
-};
-
 type CostFilter = variant {
   Free;
   Paid;
-  Range : record { min : nat64; max : nat64 };
+  Range : record { max : nat64; min : nat64 };
 };
-
-type EventResponse = record {
-  id : nat64;
-  group_id : nat64;
-  creator_id : principal;
-  title : text;
-  description : opt text;
-  event_date : nat64;
-  event_date_formatted : text;
-  duration_hours : nat8;
-  location : Location;
-  sport : Sports;
-  max_participants : opt nat16;
-  participants : vec principal;
-  status : EventStatus;
-  images : vec blob;
-  cost_per_person : opt nat64;
-  requirements : vec text;
-  created_at : nat64;
-  updated_at : nat64;
-};
-
 type CreateEventInput = record {
   title : text;
   description : opt text;
-  event_date : nat64;
-  duration_hours : nat8;
-  location : Location;
-  sport : Sports;
-  max_participants : opt nat16;
-  images : vec blob;
   cost_per_person : opt nat64;
+  max_participants : opt nat16;
+  duration_hours : nat8;
+  sport : Sports;
   requirements : vec text;
+  event_date : nat64;
+  location : Location;
+  images : vec blob;
 };
+type EventFilter = record {
+  status : opt EventStatus;
+  city : opt nat16;
+  sport : opt Sports;
+  governorate : opt nat8;
+  cost_filter : opt CostFilter;
+};
+type EventResponse = record {
+  id : nat64;
+  status : EventStatus;
+  title : text;
+  updated_at : nat64;
+  participants : vec principal;
+  creator_id : principal;
+  event_date_formatted : text;
+  description : opt text;
+  created_at : nat64;
+  cost_per_person : opt nat64;
+  max_participants : opt nat16;
+  duration_hours : nat8;
+  sport : Sports;
+  group_id : nat64;
+  requirements : vec text;
+  event_date : nat64;
+  location : Location;
+  images : vec blob;
+};
+type EventStatus = variant { Cancelled; InProgress; Completed; Upcoming };
+type EventUpdate = record {
+  status : opt EventStatus;
+  title : opt text;
+  description : opt text;
+  cost_per_person : opt nat64;
+  max_participants : opt nat16;
+  duration_hours : opt nat8;
+  sport : opt Sports;
+  requirements : opt vec text;
+  event_date : opt nat64;
+  location : opt Location;
+  images : opt vec blob;
+};
+type Location = record { city : nat16; description : text; governorate : nat8 };
 type Result = variant { Ok : EventResponse; Err : text };
-type ReviewResult = variant { Ok : nat64; Err : text };
 type Result_1 = variant { Ok; Err : text };
 type Result_2 = variant { Ok : vec principal; Err : text };
+type Result_3 = variant { Ok : nat64; Err : text };
 type Review = record {
   id : nat64;
-  event_id : nat64;
-  user_id : principal;
-  rating : nat8;
-  comment : opt text;
   created_at : nat64;
+  user_id : principal;
+  comment : opt text;
+  rating : nat8;
+  event_id : nat64;
 };
 type Sports = variant {
   Basketball;
@@ -77,39 +83,6 @@ type Sports = variant {
   Skateboarding;
   Swimming;
 };
-type Event = record {
-  id : nat64;
-  group_id : nat64;
-  creator_id : principal;
-  title : text;
-  description : opt text;
-  event_date : nat64;
-  duration_hours : nat8;
-  location : Location;
-  sport : Sports;
-  max_participants : opt nat16;
-  participants : vec principal;
-  status : EventStatus;
-  images : vec blob;
-  cost_per_person : opt nat64;
-  requirements : vec text;
-  created_at : nat64;
-  updated_at : nat64;
-};
-type EventStatus = variant { Upcoming; InProgress; Completed; Cancelled };
-type EventUpdate = record {
-  title : opt text;
-  description : opt text;
-  event_date : opt nat64;
-  duration_hours : opt nat8;
-  location : opt Location;
-  sport : opt Sports;
-  max_participants : opt nat16;
-  status : opt EventStatus;
-  images : opt vec blob;
-  cost_per_person : opt nat64;
-  requirements : opt vec text;
-};
 service : {
   create_event : (nat64, CreateEventInput) -> (Result);
   delete_event : (nat64) -> (Result_1);
@@ -121,6 +94,6 @@ service : {
   get_review : (nat64) -> (opt Review) query;
   join_event : (nat64, principal) -> (Result_1);
   leave_event : (nat64, principal) -> (Result_1);
-  review_event : (nat64, nat8, opt text) -> (ReviewResult);
+  review_event : (nat64, nat8, opt text) -> (Result_3);
   update_event : (nat64, EventUpdate) -> (Result_1);
 }

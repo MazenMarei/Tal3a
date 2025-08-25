@@ -1,6 +1,6 @@
 use candid::Principal;
 use ic_cdk;
-use ic_cdk::{inspect_message};
+use ic_cdk::inspect_message;
 
 #[inspect_message]
 fn inspect_message() {
@@ -10,7 +10,7 @@ fn inspect_message() {
     if caller == Principal::anonymous() {
         // * Allow query methods for anonymous users, but block update methods
         if is_update_method(&method_name) {
-            ic_cdk::api::trap(&format!(
+            ic_cdk::api::msg_reject(&format!(
                 "Anonymous users cannot call update method: {}",
                 method_name
             ));
@@ -24,6 +24,7 @@ fn is_update_method(method_name: &str) -> bool {
     // * Check if method follows update patterns
     let update_patterns = [
         "set_", "update_", "create_", "delete_", "add_", "remove_", "join_", "leave_", "save_",
+        "review_",
     ];
 
     update_patterns
