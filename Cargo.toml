@@ -1,7 +1,7 @@
-[workspace]
 members = [
     "src/user_canister",
     "src/social_canister",
     "src/event_canister"
+
 ]
 resolver = "2"

@@ -4,9 +4,11 @@ mod storage;
 mod types;
 
 use crate::types::{
+    activity::UserActivity,
     city::CityData,
     governorate::GovernorateData,
-    user::{RegisteringUser, UpdatingUser, User},
+    notification::NewNotification,
+    user::{PublicUser, RegisteringUser, UpdatingUser, User},
 };
 
 use candid::Principal;
