@@ -1,8 +1,10 @@
-use crate::storage::{EVENTS};
+use crate::storage::EVENTS;
 use crate::types::event::{CreateEventInput, Event, EventStatus, EventUpdate};
+use crate::types::filter::CostFilter;
 use crate::types::filter::EventFilter;
+use crate::types::notification::{NewNotification, NotificationType};
 use crate::types::response::seconds_to_nanoseconds;
-use crate::utils::generate_unique_id;
+use crate::utils::{add_notification, generate_unique_id, get_city};
 use candid::Principal;
 use ic_cdk::api::time;
 
@@ -19,9 +21,16 @@ impl Event {
             return Err("Location description cannot be empty".to_string());
         }
 
-        // Validate Location city and governorate using inter casnister call
-        
-      
+        // Validate Location city and governorate using inter canister call
+        let city_data = get_city(
+            input.location.city.clone(),
+            input.location.governorate.clone(),
+        )
+        .await;
+
+        if let Err(e) = city_data {
+            return Err(format!("City not found: {}", e));
+        }
 
         // Convert frontend seconds to nanoseconds for comparison
         let event_date_nanos = seconds_to_nanoseconds(input.event_date);
@@ -149,8 +158,11 @@ impl Event {
         })
     }
 
-    pub fn join(event_id: u64, user_id: Principal) -> Result<(), String> {
-        EVENTS.with(|events| {
+    pub async fn join(event_id: u64, user_id: Principal) -> Result<(), String> {
+        let mut event_opt = None;
+        let mut event_title = String::new();
+
+        let result = EVENTS.with(|events| {
             let mut events_map = events.borrow_mut();
 
             if let Some(mut event) = events_map.get(&event_id) {
@@ -171,14 +183,35 @@ impl Event {
                     return Err("Cannot join event that is not upcoming".to_string());
                 }
 
-                event.participants.push(user_id);
+                event.participants.push(user_id.clone());
                 event.updated_at = time();
-                events_map.insert(event_id, event);
+                event_title = event.title.clone();
+                event_opt = Some(event.clone());
+                events_map.insert(event_id, event.clone());
+
                 Ok(())
             } else {
                 Err("Event not found".to_string())
             }
-        })
+        });
+
+        if let Err(e) = result {
+            return Err(e);
+        }
+
+        // Only send notification if event was successfully joined
+        if let Some(_event) = event_opt {
+            add_notification(
+                user_id.clone(),
+                NewNotification {
+                    content: format!("You have joined the event: {}", event_title),
+                    notification_type: NotificationType::Message,
+                },
+            )
+            .await?;
+        }
+
+        Ok(())
     }
 
     pub fn leave(event_id: u64, user_id: Principal) -> Result<(), String> {
@@ -221,19 +254,7 @@ impl Event {
     }
 
     pub fn get_all() -> Vec<Event> {
-        EVENTS.with(|events| {
-            let events_map = events.borrow();
-            let mut all_events = Vec::new();
-
-            // Since we're using counter IDs starting from 1, we can iterate efficiently
-            let mut id = 1u64;
-            while let Some(event) = events_map.get(&id) {
-                all_events.push(event.clone());
-                id += 1;
-            }
-
-            all_events
-        })
+        EVENTS.with(|events| events.borrow().values().collect::<Vec<Event>>())
     }
 
     pub fn filter_events(filter: EventFilter) -> Vec<Event> {
@@ -243,61 +264,20 @@ impl Event {
         all_events
             .into_iter()
             .filter(|event| {
-                // Filter by governorate
-                if let Some(ref governorate) = filter.governorate {
-                    if &event.location.governorate != governorate {
-                        return false;
-                    }
-                }
-
-                // Filter by city
-                if let Some(ref city) = filter.city {
-                    if &event.location.city != city {
-                        return false;
-                    }
-                }
-
-                // Filter by sport
-                if let Some(ref sport) = filter.sport {
-                    if &event.sport != sport {
-                        return false;
-                    }
-                }
-
-                // Filter by status
-                if let Some(ref status) = filter.status {
-                    if &event.status != status {
-                        return false;
-                    }
-                }
-
-                // Filter by cost
-                if let Some(ref cost_filter) = filter.cost_filter {
-                    use crate::types::filter::CostFilter;
-                    match cost_filter {
-                        CostFilter::Free => {
-                            if event.cost_per_person.is_some() {
-                                return false;
-                            }
-                        }
-                        CostFilter::Paid => {
-                            if event.cost_per_person.is_none() {
-                                return false;
-                            }
-                        }
-                        CostFilter::Range { min, max } => {
-                            if let Some(cost) = event.cost_per_person {
-                                if cost < *min || cost > *max {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                        }
-                    }
-                }
-
-                true
+                (filter.governorate.is_none()
+                    || Some(event.location.governorate) == filter.governorate)
+                    && (filter.city.is_none() || Some(event.location.city) == filter.city)
+                    && (filter.sport.is_none() || Some(event.sport.clone()) == filter.sport)
+                    && (filter.status.is_none() || Some(event.status.clone()) == filter.status)
+                    && (filter.cost_filter.is_none()
+                        || match filter.cost_filter.as_ref().unwrap() {
+                            CostFilter::Free => event.cost_per_person.is_none(),
+                            CostFilter::Paid => event.cost_per_person.is_some(),
+                            CostFilter::Range { min, max } => event
+                                .cost_per_person
+                                .map(|cost| cost >= *min && cost <= *max)
+                                .unwrap_or(false),
+                        })
             })
             .collect()
     }
