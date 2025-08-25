@@ -56,7 +56,6 @@ pub struct UpdatingUser {
     pub free_days: Option<Vec<u8>>,
 }
 
-
 // * PublicUser struct for user general information
 #[derive(CandidType, Deserialize, Serialize, Clone)]
 pub struct PublicUser {

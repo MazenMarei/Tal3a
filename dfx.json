@@ -1,10 +1,15 @@
 {
-  "canisters": {    
+  "canisters": {
+    "social_canister": {
+      "candid": "src/social_canister/social_canister.did",
+      "package": "social_canister",
+      "type": "rust"
+    },
     "user_canister": {
       "candid": "src/user_canister/user_canister.did",
       "package": "user_canister",
-      "id": "uxrrr-q7777-77774-qaaaq-cai",
       "type": "rust",
+
       "build": [
         "cargo build --target wasm32-unknown-unknown --release -p user_canister",
         "candid-extractor target/wasm32-unknown-unknown/release/user_canister.wasm > user_canister/user_canister.did"
