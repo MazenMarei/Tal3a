@@ -1,15 +1,15 @@
+use crate::types::location::Location;
+use crate::types::sport::Sports;
 use candid::{CandidType, Principal};
 use serde::{Deserialize, Serialize};
-use crate::types::sport::Sports;
-use crate::types::location::Location;
 
 // Event status enum
 #[derive(Debug, Clone, Deserialize, Serialize, CandidType, PartialEq)]
 pub enum EventStatus {
-    Upcoming,    // upcoming
-    InProgress,  // in progress
-    Completed,   // completed
-    Cancelled,   // cancelled
+    Upcoming,   // upcoming
+    InProgress, // in progress
+    Completed,  // completed
+    Cancelled,  // cancelled
 }
 
 // Main Event struct
@@ -19,16 +19,16 @@ pub struct Event {
     pub creator_id: Principal,
     pub title: String,
     pub description: Option<String>,
-    pub event_date: u64,          // timestamp
-    pub duration_hours: u8,       // duration in hours
-    pub location: Location,       // location with governorate, city, description
-    pub sport: Sports,            // sport type
+    pub event_date: u64,               // timestamp
+    pub duration_hours: u8,            // duration in hours
+    pub location: Location,            // location with governorate, city, description
+    pub sport: Sports,                 // sport type
     pub max_participants: Option<u16>, // maximum participants
-    pub participants: Vec<Principal>,   // participants list
+    pub participants: Vec<Principal>,  // participants list
     pub status: EventStatus,
-    pub images: Vec<Vec<u8>>,     // event images
-    pub cost_per_person: Option<u64>,   // cost per person
-    pub requirements: Vec<String>, // event requirements
+    pub images: Vec<Vec<u8>>,         // event images
+    pub cost_per_person: Option<u64>, // cost per person
+    pub requirements: Vec<String>,    // event requirements
     pub created_at: u64,
     pub updated_at: u64,
 }
