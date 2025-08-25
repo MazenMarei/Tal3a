@@ -3,8 +3,8 @@ import Logo_1 from "../assets/Logo_1.svg";
 import { Button } from "./button";
 import { Menu, X, ChevronDown, User, Settings, LogOut } from "lucide-react";
 import { useLocation } from "react-router-dom";
-import { createActor } from "declarations/tal3a_backend";
-import { canisterId as importedCanisterId } from "declarations/tal3a_backend/index.js";
+import { createActor } from "declarations/user_canister";
+import { canisterId as importedCanisterId } from "declarations/user_canister/index.js";
 import { AuthClient } from "@dfinity/auth-client";
 import { toast } from "@lucide/lab";
 import {
@@ -44,8 +44,8 @@ export default function Navbar() {
       console.log("Canister ID:", canisterId);
       console.log("Environment variables (import.meta.env):", import.meta.env);
       console.log("Specific env vars:", {
-        VITE_CANISTER_ID_tal3a_BACKEND: import.meta.env
-          .VITE_CANISTER_ID_tal3a_BACKEND,
+        VITE_CANISTER_ID_user_CANISTER: import.meta.env
+          .VITE_CANISTER_ID_user_CANISTER,
         VITE_DFX_NETWORK: import.meta.env.VITE_DFX_NETWORK,
       });
 
