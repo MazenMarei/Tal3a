@@ -1,7 +1,27 @@
 {
   "canisters": {
+    "event_canister": {
+      "candid": "src/event_canister/event_canister.did",
+      "package": "event_canister",
+      "type": "rust"
+    },
+    "social_canister": {
+      "candid": "src/social_canister/social_canister.did",
+      "package": "social_canister",
+      "type": "rust"
+    },
+    "user_canister": {
+      "candid": "src/user_canister/user_canister.did",
+      "package": "user_canister",
+      "type": "rust",
+
+      "build": [
+        "cargo build --target wasm32-unknown-unknown --release -p user_canister",
+        "candid-extractor target/wasm32-unknown-unknown/release/user_canister.wasm > user_canister/user_canister.did"
+      ]
+    },
     "frontend_canister": {
-      "dependencies": [],
+      "dependencies": ["user_canister"],
       "source": ["src/frontend_canister/dist"],
       "type": "assets",
       "workspace": "frontend_canister"

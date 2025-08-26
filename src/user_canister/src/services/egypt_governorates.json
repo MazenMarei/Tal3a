@@ -1,0 +1,158 @@
+{
+  "1": {
+    "name": "Cairo",
+    "name_l1": "القاهرة",
+    "slug": "cairo",
+    "id": 1
+  },
+  "2": {
+    "name": "Alexandria",
+    "name_l1": "الإسكندرية",
+    "slug": "alexandria",
+    "id": 2
+  },
+  "3": {
+    "name": "Port Said",
+    "name_l1": "بورسعيد",
+    "slug": "port-said",
+    "id": 3
+  },
+  "4": {
+    "name": "Luxor",
+    "name_l1": "الأقصر",
+    "slug": "luxor",
+    "id": 4
+  },
+  "5": {
+    "name": "Asyut",
+    "name_l1": "أسيوط",
+    "slug": "asyut",
+    "id": 5
+  },
+  "6": {
+    "name": "Aswan",
+    "name_l1": "أسوان",
+    "slug": "aswan",
+    "id": 6
+  },
+  "7": {
+    "name": "Dakahlia",
+    "name_l1": "الدقهلية",
+    "slug": "dakahlia",
+    "id": 7
+  },
+  "8": {
+    "name": "Beheira",
+    "name_l1": "البحيرة",
+    "slug": "beheira",
+    "id": 8
+  },
+  "9": {
+    "name": "Qalyubia",
+    "name_l1": "القليوبية",
+    "slug": "qalyubia",
+    "id": 9
+  },
+  "10": {
+    "name": "Sharqia",
+    "name_l1": "الشرقية",
+    "slug": "sharqia",
+    "id": 10
+  },
+  "11": {
+    "name": "Minya",
+    "name_l1": "المنيا",
+    "slug": "minya",
+    "id": 11
+  },
+  "12": {
+    "name": "Monufia",
+    "name_l1": "المنوفية",
+    "slug": "monufia",
+    "id": 12
+  },
+  "13": {
+    "name": "Kafr al-Sheikh",
+    "name_l1": "كفر الشيخ",
+    "slug": "kafr-al-sheikh",
+    "id": 13
+  },
+  "14": {
+    "name": "Fayoum",
+    "name_l1": "الفيوم",
+    "slug": "fayoum",
+    "id": 14
+  },
+  "15": {
+    "name": "Suez",
+    "name_l1": "السويس",
+    "slug": "suez",
+    "id": 15
+  },
+  "16": {
+    "name": "Gharbia",
+    "name_l1": "الغربية",
+    "slug": "gharbia",
+    "id": 16
+  },
+  "17": {
+    "name": "Ismailia",
+    "name_l1": "الإسماعيلية",
+    "slug": "ismailia",
+    "id": 17
+  },
+  "18": {
+    "name": "Giza",
+    "name_l1": "الجيزة",
+    "slug": "giza",
+    "id": 18
+  },
+  "19": {
+    "name": "South Sinai",
+    "name_l1": "جنوب سيناء",
+    "slug": "south-sinai",
+    "id": 19
+  },
+  "20": {
+    "name": "Red Sea",
+    "name_l1": "البحر الأحمر",
+    "slug": "red-sea",
+    "id": 20
+  },
+  "21": {
+    "name": "Matruh",
+    "name_l1": "مطروح",
+    "slug": "matruh",
+    "id": 21
+  },
+  "22": {
+    "name": "Beni Suef",
+    "name_l1": "بني سويف",
+    "slug": "beni-suef",
+    "id": 22
+  },
+  "23": {
+    "name": "Damietta",
+    "name_l1": "دمياط",
+    "slug": "damietta",
+    "id": 23
+  },
+  "24": {
+    "name": "New Valley",
+    "name_l1": "الوادي الجديد",
+    "slug": "new-valley",
+    "id": 24
+  },
+  "25": {
+    "name": "Qena",
+    "name_l1": "قنا",
+    "slug": "qena",
+    "id": 25
+  },
+  "26": {
+    "name": "Sohag",
+    "name_l1": "سوهاج",
+    "slug": "sohag",
+    "id": 26
+  }
+}
