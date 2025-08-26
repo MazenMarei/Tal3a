@@ -1,0 +1,14 @@
+{
+  "event_canister": {
+    "ic": "bval5-vyaaa-aaaai-atlgq-cai"
+  },
+  "frontend_canister": {
+    "ic": "b4dab-dqaaa-aaaai-atlha-cai"
+  },
+  "social_canister": {
+    "ic": "bsbnj-yaaaa-aaaai-atlga-cai"
+  },
+  "user_canister": {
+    "ic": "bhg4e-ziaaa-aaaai-atlfq-cai"
+  }
+}

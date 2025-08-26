@@ -1,5 +1,7 @@
 [workspace]
 members = [
-    "src/tal3a_backend"
+    "src/user_canister",
+    "src/social_canister",
+    "src/event_canister"
 ]
 resolver = "2"

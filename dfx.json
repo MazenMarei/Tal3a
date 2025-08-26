@@ -1,26 +1,42 @@
 {
   "canisters": {
-    "tal3a_backend": {
-      "candid": "src/tal3a_backend/tal3a_backend.did",
-      "package": "tal3a_backend",
+    "event_canister": {
+      "candid": "src/event_canister/event_canister.did",
+      "package": "event_canister",
       "type": "rust"
     },
-    "tal3a_frontend": {
-      "dependencies": ["tal3a_backend"],
-      "source": ["src/tal3a_frontend/dist"],
-      "type": "assets",
-      "workspace": "tal3a_frontend"
+    "social_canister": {
+      "candid": "src/social_canister/social_canister.did",
+      "package": "social_canister",
+      "type": "rust"
     },
-    "internet_identity": {
-      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
-      "type": "custom",
-      "specified_id": "rdmx6-jaaaa-aaaaa-aaadq-cai",
-      "remote": {
-        "id": {
-          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
-        }
-      },
-      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
+    "user_canister": {
+      "candid": "src/user_canister/user_canister.did",
+      "package": "user_canister",
+      "type": "rust",
+
+      "build": [
+        "cargo build --target wasm32-unknown-unknown --release -p user_canister",
+        "candid-extractor target/wasm32-unknown-unknown/release/user_canister.wasm > user_canister/user_canister.did"
+      ]
+    },
+    "frontend_canister": {
+      "dependencies": ["user_canister", "social_canister", "event_canister"],
+      "source": ["src/frontend_canister/dist"],
+      "type": "assets",
+      "workspace": "frontend_canister"
+    }
+  },
+  "networks": {
+    "ic": {
+      "providers": ["https://ic0.app"],
+      "type": "persistent",
+      "canister_id": {
+        "user_canister": "bhg4e-ziaaa-aaaai-atlfq-cai",
+        "social_canister": "bsbnj-yaaaa-aaaai-atlga-cai",
+        "event_canister": "bval5-vyaaa-aaaai-atlgq-cai",
+        "frontend_canister": "b4dab-dqaaa-aaaai-atlha-cai"
+      }
     }
   },
   "defaults": {

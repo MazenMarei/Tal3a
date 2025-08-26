@@ -1,176 +1,347 @@
-# Tal3a 🏆
+# 🏃‍♂️ Tal3a (طلعة) - Decentralized Social Fitness Platform
 
-_Building the Future of Sports Communities in Egypt_
+[![IC](https://img.shields.io/badge/Internet%20Computer-Protocol-blue)](https://internetcomputer.org)
+[![Rust](https://img.shields.io/badge/Rust-Backend-orange)](https://www.rust-lang.org)
+[![React](https://img.shields.io/badge/React-Frontend-blue)](https://reactjs.org)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-<div align="center">
+> **Connecting Egypt's Athletic Community Through Web3**
 
-[![Made in Egypt](https://img.shields.io/badge/Made%20in-Egypt-red?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjgiIGZpbGw9IiNDRTExMjYiLz4KPHJlY3QgeT0iOCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjgiIGZpbGw9IiNGRkZGRkYiLz4KPHJlY3QgeT0iMTYiIHdpZHRoPSIyNCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwMDAwIi8+Cjwvc3ZnPgo=)](https://github.com/MazenMarei/Tal3a)
-[![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
-[![Rust](https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white)](https://www.rust-lang.org/)
-[![Internet Computer](https://img.shields.io/badge/Internet%20Computer-29ABE2?style=for-the-badge&logo=internet-computer&logoColor=white)](https://internetcomputer.org/)
-[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+Tal3a is a decentralized social fitness platform built on the Internet Computer (ICP), designed to connect, motivate, and reward the athletic community in Egypt. It bridges the gap between the desire to be physically active and the logistical challenges that prevent it.
 
-**نحن نبني مستقبل المجتمعات الرياضية في مصر**
+## 🎯 Mission
 
-</div>
+To build the future of sports communities in Egypt by breaking down barriers of isolation and disorganization that hinder athletic participation. We create a seamless, engaging, and rewarding digital environment that empowers every individual to pursue a healthier lifestyle.
 
-## 🎯 About Tal3a
+## 🚀 Key Features
 
-In Egypt, people who want to play sports or stay active often face a lack of organization, difficulty in finding local events or teammates, and limited access to safe, trusted, and verified communities. Whether it's joining a football match, organizing a cycling ride, or finding a fitness group, individuals struggle with scattered communication, trust issues, and no centralized platform to connect like-minded athletes.
+### 🏘️ Community Hub
 
-**Tal3a solves this by creating a decentralized, sport-specific social hub** where users can easily create, discover, and join verified sporting events and groups in their area. Through integrated tools like group chats, wallets, ride requests, and a recommendation system, Tal3a makes it easy for Egyptians to stay active, meet new people, and build a healthier, more connected community.
+- **Public Groups**: Find and join sports groups based on location and sport type
+- **Private Clubs**: Create intimate, trusted circles for friends and teammates
+- **City-based Organization**: Groups organized by Egyptian governorates and cities
 
-### 🌟 Why Tal3a?
+### 📅 Smart Event Coordination ("Tal3a")
 
-- **🏟️ Real Sports Events**: Connect with real athletes in your city
-- **🔐 Blockchain Security**: Built on Internet Computer for transparent and secure transactions
-- **🇪🇬 Made for Egypt**: Arabic support, local payment methods, Egyptian sports culture
-- **👥 Community First**: Build lasting friendships through sports
-- **⚡ Web3 Technology**: Decentralized, transparent, and user-owned platform
+- **Event Creation**: Users can create sporting activities with detailed information
+- **RSVP Management**: Automated participant tracking and management
+- **Notifications**: Smart reminders and updates for all participants
+- **Location Integration**: GPS-based event discovery and navigation
 
-## 🚀 Quick Start
+### 🏆 Incentivized Participation
+
+- **Participate-to-Earn**: Reward users with points for activity participation
+- **NFT Achievements**: Collectible badges for milestones and achievements
+- **Marketplace Integration**: Redeem points for real-world rewards
+- **Progress Tracking**: Monitor workouts and fitness milestones
+
+### 🌍 Centralized Discovery
+
+- **Event Discovery**: One-stop shop for local sporting events
+- **Marathon Listings**: Official and community-organized races
+- **Tournament Information**: Local competitions and challenges
+
+## 🏗️ Technical Architecture
+
+### Backend Canisters (Rust)
+
+```
+src/
+├── user_canister/          # User management and authentication
+├── social_canister/        # Groups, posts, and social features
+└── event_canister/         # Event management and coordination
+```
+
+**Canister IDs (IC Mainnet):**
+
+- **User Canister**: `bhg4e-ziaaa-aaaai-atlfq-cai`
+- **Social Canister**: `bsbnj-yaaaa-aaaai-atlga-cai`
+- **Event Canister**: `bval5-vyaaa-aaaai-atlgq-cai`
+
+### Frontend (React + Vite)
+
+```
+src/frontend_canister/
+├── src/
+│   ├── components/         # Reusable UI components
+│   ├── pages/             # Application pages
+│   ├── context/           # React context providers
+│   └── utils/             # Utility functions
+├── public/                # Static assets
+└── dist/                  # Built application
+```
+
+## 🛠️ Development Setup
 
 ### Prerequisites
 
-Before running the project, make sure you have:
+- [DFX](https://internetcomputer.org/docs/current/developer-docs/setup/install/) >= 0.28.0
+- [Rust](https://rustup.rs/) with `wasm32-unknown-unknown` target
+- [Node.js](https://nodejs.org/) >= 18.0.0
+- [npm](https://www.npmjs.com/) >= 7.0.0
 
-- **Node.js** (v16.0.0 or higher)
-- **npm** (v7.0.0 or higher)
-- **DFX** (Internet Computer SDK)
-- **Rust** (for backend development)
+### Installation
 
-### Installation & Setup
+1. **Clone the repository:**
 
-1. **Clone the repository**
+```bash
+git clone https://github.com/MazenMarei/Tal3a.git
+cd Tal3a
+```
 
-   ```bash
-   git clone https://github.com/MazenMarei/Tal3a.git
-   cd Tal3a
-   ```
+2. **Install dependencies:**
 
-2. **Install dependencies**
+```bash
+npm install --legacy-peer-deps
+```
 
-   ```bash
-   npm install
-   ```
+3. **Start local replica:**
 
-3. **Start the development environment**
-   ```bash
-   npm run dev
-   ```
+```bash
+dfx start --clean --background
+```
 
-This command will:
+4. **Deploy canisters:**
 
-- Stop any running DFX processes
-- Start a clean local Internet Computer replica
-- Deploy all canisters (backend and frontend)
-- Generate type declarations
+```bash
+dfx deploy
+```
 
-4. **Access the application**
+5. **Start development server:**
 
-   Once deployment is complete, your application will be available at:
+```bash
+npm run dev
+```
 
-   ```
-   http://localhost:4943?canisterId={frontend_canister_id}
-   ```
-
-### 🛠️ Development Scripts
-
-| Command                  | Description                                             |
-| ------------------------ | ------------------------------------------------------- |
-| `npm run dev`            | Start development environment (DFX + Deploy + Generate) |
-| `npm run build`          | Build all workspaces                                    |
-| `npm start`              | Start frontend development server                       |
-| `npm test`               | Run tests                                               |
-| `dfx start --background` | Start DFX replica in background                         |
-| `dfx deploy`             | Deploy canisters                                        |
-| `dfx generate`           | Generate type declarations                              |
-
-## 🏗️ Project Structure
+### Project Structure
 
 ```
 Tal3a/
-├── 📁 src/
-│   ├── 📁 tal3a_backend/          # Rust backend canister
-│   │   ├── src/lib.rs             # Main backend logic
-│   │   ├── Cargo.toml             # Rust dependencies
-│   │   └── tal3a_backend.did      # Candid interface
-│   │
-│   ├── 📁 tal3a_frontend/         # React frontend
+├── Cargo.toml                 # Rust workspace configuration
+├── dfx.json                   # DFX configuration
+├── package.json               # Node.js dependencies
+├── src/
+│   ├── event_canister/        # Event management backend
 │   │   ├── src/
-│   │   │   ├── App.jsx           # Main app component
-│   │   │   ├── pages/            # Page components
-│   │   │   ├── components/       # Reusable UI components
-│   │   │   ├── assets/           # Static assets
-│   │   │   └── styles/           # CSS and styling
-│   │   ├── package.json          # Frontend dependencies
-│   │   ├── vite.config.js        # Vite configuration
-│   │   └── tailwind.config.js    # Tailwind CSS config
+│   │   │   ├── lib.rs
+│   │   │   ├── storage.rs
+│   │   │   ├── types/
+│   │   │   ├── services/
+│   │   │   └── contracts/
+│   │   └── event_canister.did
 │   │
-│   └── 📁 declarations/           # Auto-generated type declarations
+│   ├── social_canister/       # Social features backend
+│   │   ├── src/
+│   │   │   ├── lib.rs
+│   │   │   ├── storage.rs
+│   │   │   ├── types/
+│   │   │   ├── services/
+│   │   │   └── contracts/
+│   │   └── social_canister.did
+│   │
+│   ├── user_canister/         # User management backend
+│   │   ├── src/
+│   │   │   ├── lib.rs
+│   │   │   ├── storage.rs
+│   │   │   ├── types/
+│   │   │   ├── services/
+│   │   │   └── contracts/
+│   │   └── user_canister.did
+│   │
+│   └── frontend_canister/     # React frontend
+│       ├── src/
+│       │   ├── components/
+│       │   ├── pages/
+│       │   ├── context/
+│       │   └── utils/
+│       ├── package.json
+│       └── vite.config.js
 │
-├── dfx.json                       # DFX configuration
-├── Cargo.toml                     # Workspace configuration
-└── package.json                   # Root package configuration
+├── .gitignore
+└── README.md
 ```
 
-## ✨ Current Features
+## 🔧 Technical Challenges Solved
 
-### 🎯 Core Platform Features
+### 1. Scalable Group & Event Management
 
-- **🔐 Internet Identity Integration**: Secure Web3 authentication
-- **🏠 Landing Page**: Professional homepage with hero section
-- **📱 Responsive Design**: Mobile-first design with Tailwind CSS
-- **🌙 Dark/Light Mode**: Theme switching support
-- **🇪🇬 Arabic Support**: RTL text and Arabic translations
+- Optimized canister-to-canister communication
+- Efficient data indexing for social feeds
+- Performance optimization for thousands of concurrent groups
+- Smart RSVP and notification management
 
-### 🏃‍♂️ Sports & Events
 
-- **⚽ Football Events**: Join local football matches
-- **🚴 Cycling Groups**: Discover cycling rides and events
-- **💪 Fitness Activities**: Find fitness bootcamps and training sessions
-- **📍 Location-based Discovery**: Find events in your city
-- **⭐ Community Ratings**: User reviews and ratings system
+### 2. Stable Memory Management
 
-### 👥 Community Features
+- Large-scale user data persistence using `StableBTreeMap`
+- Memory growth optimization
+- Robust data migration strategies
+- Zero-downtime canister upgrades
 
-- **👤 User Profiles**: Personalized athlete profiles
-- **💬 Group Chat**: Integrated communication tools
-- **🏆 Achievement System**: Track your sports activity
-- **📊 Statistics Dashboard**: Personal and community stats
+### 5. Cross-Platform UI/UX
 
-### 🏆 Tournament System
+- Consistent experience between web and mobile
+- Unified state management
+- Location services integration
+- Push notifications across platforms
 
-- **🏆 Multi-stage Tournaments**: Organize and participate in tournaments
-- **📊 Bracket Management**: Visual tournament brackets
-- **🏅 Leaderboards**: Competitive rankings and achievements
+## 🚀 Available Scripts
 
-## 🛠️ Technology Stack
+```bash
+# Development
+npm run dev              # Start frontend development server
+npm run build           # Build frontend for production
+npm run preview         # Preview production build
 
-### Frontend
+# DFX Commands
+dfx start               # Start local replica
+dfx deploy              # Deploy all canisters
+dfx generate            # Generate type declarations
+dfx canister call       # Call canister methods
 
-- **⚛️ React 19.1** - Modern UI library
-- **⚡ Vite** - Fast build tool and development server
-- **🎨 Tailwind CSS** - Utility-first CSS framework
-- **🧩 Lucide React** - Beautiful icon library
-- **📱 Radix UI** - Accessible component primitives
+# Testing
+npm test                # Run tests
+cargo test              # Run Rust tests
+```
 
-### Backend
+## 🌐 Environment Configuration
 
-- **🦀 Rust** - Systems programming language
-- **🌐 Internet Computer** - Decentralized cloud platform
-- **📡 IC-CDK** - Internet Computer development kit
-- **🔧 Candid** - Interface description language
+### Local Development
 
-### Development Tools
+```bash
+# .env (auto-generated)
+VITE_DFX_NETWORK=local
+CANISTER_ID_USER_CANISTER=local_canister_id
+CANISTER_ID_SOCIAL_CANISTER=local_canister_id
+CANISTER_ID_EVENT_CANISTER=local_canister_id
+```
 
-- **📦 NPM Workspaces** - Monorepo management
-- **🔧 DFX** - Internet Computer development environment
-- **🎯 ESLint** - Code linting and formatting
-- **🔄 Git** - Version control
+### IC Mainnet
+
+```bash
+VITE_DFX_NETWORK=ic
+CANISTER_ID_USER_CANISTER=bhg4e-ziaaa-aaaai-atlfq-cai
+CANISTER_ID_SOCIAL_CANISTER=bsbnj-yaaaa-aaaai-atlga-cai
+CANISTER_ID_EVENT_CANISTER=bval5-vyaaa-aaaai-atlgq-cai
+```
+
+## 🔐 Authentication
+
+Tal3a supports multiple authentication methods:
+
+- **Internet Identity**: Native IC authentication
+- **NFID**: User-friendly Web3 wallet
+- **Plug Wallet**: Browser extension wallet
+
+## 🏆 Core Data Models
+
+### User Profile
+
+```rust
+pub struct User {
+    pub principal_id: Principal,
+    pub username: String,
+    pub city: CityData,
+    pub governorate: GovernorateData,
+    pub sports: Vec<Sports>,
+    pub free_days: Option<Vec<String>>,
+    // ... more fields
+}
+```
+
+### Group/Club
+
+```rust
+pub struct Group {
+    pub id: String,
+    pub name: String,
+    pub sport_type: Sports,
+    pub city_id: u16,
+    pub governorate_id: u8,
+    pub public: bool,
+    pub parent_group_id: Option<String>,
+    // ... more fields
+}
+```
+
+### Event ("Tal3a")
+
+```rust
+pub struct Event {
+    pub id: String,
+    pub title: String,
+    pub group_id: String,
+    pub location: Location,
+    pub date_time: u64,
+    pub max_participants: u32,
+    // ... more fields
+}
+```
+
+## 📱 Supported Sports
+
+- ⚽ Football
+- 🏀 Basketball
+- 🎾 Tennis
+- 🏃 Running
+- 🚴 Cycling
+- 🏊 Swimming
+- 🥊 Boxing
+- 🧘 Yoga
+- 🏋️ Weightlifting
+- 🏐 Volleyball
+- And more...
+
+## 🗺️ Coverage Areas
+
+Currently serving all Egyptian governorates:
+
+- Cairo, Alexandria, Giza
+- Dakahlia, Red Sea, Beheira
+- Fayoum, Gharbeya, Ismailia
+- And all other governorates
+
+## 🤝 Contributing
+
+We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and submission process.
+
+### Development Workflow
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes and test thoroughly
+4. Commit your changes: `git commit -m 'Add amazing feature'`
+5. Push to the branch: `git push origin feature/amazing-feature`
+6. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Internet Computer Protocol** for providing the decentralized infrastructure
+- **Dfinity Foundation** for the development tools and resources
+- **Egyptian Sports Community** for inspiration and feedback
+
+## 📞 Contact & Support
+
+- **Website**: [Coming Soon]
+- **Email**: tal3a.egypt@gmail.com
+- **Twitter**: [@Tal3aEgypt](https://twitter.com/Tal3aEgypt)
+- **Discord**: [Join our community](https://discord.gg/tal3a)
+
+---
 
 <div align="center">
-
-**Built with ❤️ in Egypt for the Egyptian Sports Community**
-
+  <strong>Made with ❤️ for the Egyptian Sports Community</strong>
 </div>
+
+---
+
+## 🔄 Recent Updates
+
+- ✅ **v1.0**: Core platform with groups and events
+- 🚧 **v1.1**: NFT achievements system (in progress)
+- 📅 **v1.2**: Mobile app development (planned)
+- 📅 **v2.0**: Advanced analytics and ML recommendations (planned)
