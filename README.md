@@ -59,6 +59,126 @@ In Egypt, people who want to play sports or stay active often face a lack of org
 
 ## 🏗️ Technical Architecture
 
+### System Architecture Diagram
+
+```
+                           TAL3A PLATFORM ARCHITECTURE
+                     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+                    ┌───────────────────────────────────┐
+                    │               CLIENT LAYER        │ 
+                    ├─────────────────┬─────────────────┤
+                    │   Web Browser   │  Mobile App     │
+                    │   (React SPA)   │ (React Native)  │
+                    └─────────────────┴─────────────────┴
+         │                    │                    │                   │
+         └────────────────────┼────────────────────┼───────────────────┘
+                              │                    │
+                          Requests        Authentication
+                              │                    │
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        INTERNET COMPUTER NETWORK                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                            BOUNDARY NODES                                   │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐            │
+│  │   Load Balancer │  │  Asset Gateway  │  │   API Gateway   │            │
+│  │   Distribution  │  │   Static Files  │  │  Query/Update   │            │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘            │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                               Canister Calls
+                                      │
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           CANISTER SUBNET                                   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐         │
+│  │  USER CANISTER  │    │ SOCIAL CANISTER │    │ EVENT CANISTER  │         │
+│  │ bhg4e-ziaaa-... │    │ bsbnj-yaaaa-... │    │ bval5-vyaaa-... │         │
+│  │                 │    │                 │    │                 │         │
+│  │ • User Profiles │    │ • Groups/Clubs  │    │ • Events/Tal3at │         │
+│  │ • Authentication│    │ • Posts/Feed    │    │ • Registrations │         │
+│  │ • Notifications │    │ • Comments      │    │ • Locations     │         │
+│  │ • Settings      │    │ • Memberships   │    │ • Schedules     │         │
+│  │ • Activity Log  │    │ • Social Graph  │    │ • Participants  │         │
+│  │ • Governorates  │    │ • Moderation    │    │ • Reminders     │         │
+│  │ • Cities Data   │    │ • Group Types   │    │ • Event Types   │         │
+│  └─────────────────┘    └─────────────────┘    └─────────────────┘         │
+│           │                       │                       │               │
+│           └───────────────────────┼───────────────────────┘               │
+│                                   │                                       │
+│                        Inter-Canister Calls                               │
+│                                   │                                       │
+│  ┌─────────────────┐              │              ┌─────────────────┐      │
+│  │ FRONTEND        │              │              │    FUTURE       │      │
+│  │ CANISTER        │              │              │   CANISTERS     │      │
+│  │                 │              │              │                 │      │
+│  │ • Static Assets │              │              │ • Token/NFT     │      │
+│  │ • HTML/CSS/JS   │              │              │ • Rewards       │      │
+│  │ • PWA Manifest  │              │              │ • Analytics     │      │
+│  │ • Service Worker│              │              │ • ML/AI         │      │
+│  │ • Media Files   │              │              │ • Payments      │      │
+│  └─────────────────┘              │              └─────────────────┘      │
+│                                   │                                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                         Data Persistence Layer
+                                    │
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            STABLE MEMORY                                    │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐         │
+│  │   USER DATA     │    │   SOCIAL DATA   │    │   EVENT DATA    │         │
+│  │                 │    │                 │    │                 │         │
+│  │ StableBTreeMap  │    │ StableBTreeMap  │    │ StableBTreeMap  │         │
+│  │                 │    │                 │    │                 │         │
+│  │ • User Profiles │    │ • Groups        │    │ • Events        │         │
+│  │ • User Sessions │    │ • Posts         │    │ • Participants  │         │
+│  │ • Notifications │    │ • Comments      │    │ • Locations     │         │
+│  │ • Activities    │    │ • Memberships   │    │ • Schedules     │         │
+│  │ • Preferences   │    │ • Social Links  │    │ • Event History │         │
+│  └─────────────────┘    └─────────────────┘    └─────────────────┘         │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                              Consensus Layer
+                                    │
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         BLOCKCHAIN SUBSTRATE                                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐         │
+│  │ CONSENSUS       │    │ NETWORKING      │    │ CRYPTOGRAPHY    │         │
+│  │                 │    │                 │    │                 │         │
+│  │ • Chain Key     │    │ • P2P Protocol  │    │ • Digital Sigs  │         │
+│  │ • Validation    │    │ • Node Comm     │    │ • Hash Functions│         │
+│  │ • Finalization  │    │ • Replication   │    │ • Key Management│         │
+│  │ • Fork Choice   │    │ • Load Balancing│    │ • Authentication│         │
+│  └─────────────────┘    └─────────────────┘    └─────────────────┘         │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                            External Integrations
+                                    │
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        EXTERNAL SERVICES                                    │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐         │
+│  │ IDENTITY        │    │ THIRD-PARTY     │    │ REAL-WORLD      │         │
+│  │ PROVIDERS       │    │ APIS            │    │ INTEGRATIONS    │         │
+│  │                 │    │                 │    │                 │         │
+│  │ • Internet ID   │    │ • Maps/GPS      │    │ • Sports Venues │         │
+│  │ • NFID          │    │ • Weather APIs  │    │ • Gyms/Clubs    │         │
+│  │ • Plug Wallet   │    │ • Social Media  │    │ • Event Venues  │         │
+│  │ • Custom Auth   │    │ • Analytics     │    │ • Local Partners│         │
+│  └─────────────────┘    └─────────────────┘    └─────────────────┘         │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+                              DATA FLOW PATTERNS
+                     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ### Backend Canisters (Rust)
 
 ```
