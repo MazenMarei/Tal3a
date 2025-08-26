@@ -21,7 +21,7 @@
       ]
     },
     "frontend_canister": {
-      "dependencies": ["user_canister"],
+      "dependencies": ["user_canister", "social_canister", "event_canister"],
       "source": ["src/frontend_canister/dist"],
       "type": "assets",
       "workspace": "frontend_canister"
