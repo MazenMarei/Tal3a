@@ -1,17 +1,33 @@
-# 🏃‍♂️ Tal3a (طلعة) - Decentralized Social Fitness Platform
+# Tal3a 🏆
 
-[![IC](https://img.shields.io/badge/Internet%20Computer-Protocol-blue)](https://internetcomputer.org)
-[![Rust](https://img.shields.io/badge/Rust-Backend-orange)](https://www.rust-lang.org)
-[![React](https://img.shields.io/badge/React-Frontend-blue)](https://reactjs.org)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+_Building the Future of Sports Communities in Egypt_
 
-> **Connecting Egypt's Athletic Community Through Web3**
+<div align="center">
 
-Tal3a is a decentralized social fitness platform built on the Internet Computer (ICP), designed to connect, motivate, and reward the athletic community in Egypt. It bridges the gap between the desire to be physically active and the logistical challenges that prevent it.
+[![Made in Egypt](https://img.shields.io/badge/Made%20in-Egypt-red?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjgiIGZpbGw9IiNDRTExMjYiLz4KPHJlY3QgeT0iOCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjgiIGZpbGw9IiNGRkZGRkYiLz4KPHJlY3QgeT0iMTYiIHdpZHRoPSIyNCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwMDAwIi8+Cjwvc3ZnPgo=)](https://github.com/MazenMarei/Tal3a)
+[![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+[![Rust](https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white)](https://www.rust-lang.org/)
+[![Internet Computer](https://img.shields.io/badge/Internet%20Computer-29ABE2?style=for-the-badge&logo=internet-computer&logoColor=white)](https://internetcomputer.org/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 
-## 🎯 Mission
+**نحن نبني مستقبل المجتمعات الرياضية في مصر**
 
-To build the future of sports communities in Egypt by breaking down barriers of isolation and disorganization that hinder athletic participation. We create a seamless, engaging, and rewarding digital environment that empowers every individual to pursue a healthier lifestyle.
+</div>
+
+## 🎯 About Tal3a
+
+In Egypt, people who want to play sports or stay active often face a lack of organization, difficulty in finding local events or teammates, and limited access to safe, trusted, and verified communities. Whether it's joining a football match, organizing a cycling ride, or finding a fitness group, individuals struggle with scattered communication, trust issues, and no centralized platform to connect like-minded athletes.
+
+**Tal3a solves this by creating a decentralized, sport-specific social hub** where users can easily create, discover, and join verified sporting events and groups in their area. Through integrated tools like group chats, wallets, ride requests, and a recommendation system, Tal3a makes it easy for Egyptians to stay active, meet new people, and build a healthier, more connected community.
+
+### 🌟 Why Tal3a?
+
+- **🏟️ Real Sports Events**: Connect with real athletes in your city
+- **🔐 Blockchain Security**: Built on Internet Computer for transparent and secure transactions
+- **🇪🇬 Made for Egypt**: Arabic support, local payment methods, Egyptian sports culture
+- **👥 Community First**: Build lasting friendships through sports
+- **⚡ Web3 Technology**: Decentralized, transparent, and user-owned platform
+
 
 ## 🚀 Key Features
 
@@ -301,10 +317,6 @@ Currently serving all Egyptian governorates:
 - Fayoum, Gharbeya, Ismailia
 - And all other governorates
 
-## 🤝 Contributing
-
-We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and submission process.
-
 ### Development Workflow
 
 1. Fork the repository
@@ -314,9 +326,7 @@ We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) 
 5. Push to the branch: `git push origin feature/amazing-feature`
 6. Open a Pull Request
 
-## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
@@ -324,24 +334,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Dfinity Foundation** for the development tools and resources
 - **Egyptian Sports Community** for inspiration and feedback
 
-## 📞 Contact & Support
-
-- **Website**: [Coming Soon]
-- **Email**: tal3a.egypt@gmail.com
-- **Twitter**: [@Tal3aEgypt](https://twitter.com/Tal3aEgypt)
-- **Discord**: [Join our community](https://discord.gg/tal3a)
-
 ---
 
 <div align="center">
-  <strong>Made with ❤️ for the Egyptian Sports Community</strong>
+  <strong>Made with ❤️</strong>
 </div>
 
 ---
-
-## 🔄 Recent Updates
-
-- ✅ **v1.0**: Core platform with groups and events
-- 🚧 **v1.1**: NFT achievements system (in progress)
-- 📅 **v1.2**: Mobile app development (planned)
-- 📅 **v2.0**: Advanced analytics and ML recommendations (planned)
