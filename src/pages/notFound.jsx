@@ -1,7 +1,7 @@
-import React from 'react';
-import Header from '../layouts/header';
-import Footer from '../layouts/footer';
-import NotFoundCard from '../components/notFoundPage/notFoundCard';
+import React from "react";
+import Header from "../layouts/Header";
+import Footer from "../layouts/Footer";
+import NotFoundCard from "../components/notFoundPage/notFoundCard";
 
 function NotFoundPage() {
   return (

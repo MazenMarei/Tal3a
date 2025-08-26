@@ -1,10 +1,10 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import NavBar from '../components/loginPage/NavBar';
-import Footer from '../layouts/footer';
-import Step1Location from '../components/LoginFlowPage/locationStep';
-import Step2Sports from '../components/LoginFlowPage/sportStep';
-import Step3PersonalInfo from '../components/LoginFlowPage/personalInfoStep';
-import Step4SocialPassword from '../components/LoginFlowPage/passwordStep';
+import { Routes, Route, Navigate } from "react-router-dom";
+import NavBar from "../components/loginPage/navBar";
+import Footer from "../layouts/Footer";
+import Step1Location from "../components/loginFlowPage/locationStep";
+import Step2Sports from "../components/loginFlowPage/sportStep";
+import Step3PersonalInfo from "../components/loginFlowPage/personalInfoStep";
+import Step4SocialPassword from "../components/loginFlowPage/passwordStep";
 
 const LoginFlow = () => {
   return (
@@ -21,6 +21,6 @@ const LoginFlow = () => {
       </main>
       <Footer />
     </div>
-  )
-}
+  );
+};
 export default LoginFlow;

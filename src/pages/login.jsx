@@ -1,13 +1,13 @@
-import NavBar from '../components/loginPage/navBar'
-import Body from '../components/loginPage/loginCard'
-import Footer from '@/layouts/footer'
+import NavBar from "../components/loginPage/navBar";
+import Body from "../components/loginPage/loginCard";
+import Footer from "@/layouts/Footer";
 const Login = () => {
-    return (
-        <div className="bg-gray-900 min-h-screen text-white">
-            <NavBar />
-            <Body />
-            <Footer/>
-        </div>
-    )
-}
+  return (
+    <div className="bg-gray-900 min-h-screen text-white">
+      <NavBar />
+      <Body />
+      <Footer />
+    </div>
+  );
+};
 export default Login;

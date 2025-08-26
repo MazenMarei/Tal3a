@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import Header from '../components/profilePage/navBar';
-import Footer from '../layouts/footer';
-import NavBar from '../components/eventsPage/navBar';
-import SideBar from '../components/eventsPage/sideBar';
-import MainBody from '../components/eventsPage/eventsCard';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu } from 'lucide-react';
+import React, { useState } from "react";
+import Header from "../components/profilePage/navBar";
+import Footer from "../layouts/Footer";
+import NavBar from "../components/eventsPage/navBar";
+import SideBar from "../components/eventsPage/sideBar";
+import MainBody from "../components/eventsPage/eventsCard";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
 
 const Events = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
