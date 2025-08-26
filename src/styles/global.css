@@ -1,0 +1,160 @@
+:root {
+    /* Color Palette */
+    --green-50: #f0fdf4;  /* Lightest green for backgrounds */
+    --green-100: #dcfce7; /* Light green for hover/active states */
+    --green-200: #bbf7d0; /* Secondary backgrounds */
+    --green-300: #86efac; /* Light accents */
+    --green-400: #4ade80; /* Medium green for borders, focus rings */
+    --green-500: #22c55e; /* Primary green for buttons, CTAs */
+    --green-600: #16a34a; /* Default text color, hover states */
+    --green-700: #15803d; /* Darker green for hover text */
+    --green-800: #166534; /* Active link color, dark accents */
+    --green-900: #14532d; /* Darkest green for deep backgrounds */
+    
+    --gray-50: #f9fafb;   /* Lightest gray for backgrounds */
+    --gray-100: #f3f4f6;  /* Light gray for input backgrounds */
+    --gray-200: #e5e7eb;  /* Borders, subtle dividers */
+    --gray-400: #9ca3af;  /* Text/icons (e.g., search icon) */
+    --gray-800: #1f2937;  /* Primary text color */
+    
+    --white: #ffffff;      /* Pure white for text, backgrounds */
+    --black: #000000;     /* Pure black for contrast */
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    
+    /* Transitions */
+    --transition-all: all 200ms ease-in-out;
+  }
+  
+  /* Base Styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--gray-50);
+    color: var(--gray-800);
+    line-height: 1.5;
+    font-size: 16px;
+  }
+  
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: var(--gray-800);
+  }
+  
+  h1 {
+    font-size: 2.25rem; /* 36px */
+    line-height: 2.5rem;
+  }
+  
+  h2 {
+    font-size: 1.875rem; /* 30px */
+    line-height: 2.25rem;
+  }
+  
+  h3 {
+    font-size: 1.5rem; /* 24px.*/
+    line-height: 2rem;
+  }
+  
+  p {
+    font-size: 1rem; /* 16px */
+    margin-bottom: 1rem;
+  }
+  
+  /* Links */
+  a {
+    color: var(--green-600);
+    text-decoration: none;
+    transition: var(--transition-all);
+  }
+  
+  a:hover {
+    color: var(--green-700);
+  }
+  
+  /* Buttons */
+  button {
+    font-family: inherit;
+    font-size: 0.875rem; /* 14px */
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    transition: var(--transition-all);
+  }
+  
+  button.primary {
+    background-color: var(--green-500);
+    color: var(--white);
+  }
+  
+  button.primary:hover {
+    background-color: var(--green-600);
+    box-shadow: var(--shadow-md);
+  }
+  
+  button.primary:active {
+    background-color: var(--green-700);
+    transform: scale(0.95);
+  }
+  
+  /* Inputs */
+  input, textarea {
+    font-family: inherit;
+    font-size: 0.875rem; /* 14px */
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 0.5rem;
+    background-color: var(--gray-100);
+    color: var(--gray-800);
+    transition: var(--transition-all);
+  }
+  
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--green-400);
+    box-shadow: 0 0 0 2px var(--green-100);
+  }
+  
+  /* Navigation Active State */
+  nav a.active {
+    color: var(--green-800) !important;
+    background-color: var(--green-100);
+    font-weight: 600;
+    border-radius: 0.5rem;
+  }
+  
+  /* Utility Classes */
+  .container {
+    max-width: 80rem; /* 1280px, matches max-w-7xl */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  
+  .shadow-sm {
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .shadow-md {
+    box-shadow: var(--shadow-md);
+  }
+  
+  .shadow-lg {
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .transition-all {
+    transition: var(--transition-all);
+  }
