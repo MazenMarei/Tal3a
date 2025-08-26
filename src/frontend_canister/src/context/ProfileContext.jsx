@@ -1,5 +1,21 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { Calendar, Users, Star, Clock, Award, Wallet } from "lucide-react";
+import { AuthClient } from "@dfinity/auth-client";
+import { canisterId as useCanisterId } from "declarations/user_canister/index.js";
+import { createActor } from "declarations/user_canister";
+
+const network = import.meta.env.DFX_NETWORK;
+console.log(import.meta.env);
+
+const identityProvider =
+  network == "ic"
+    ? "https://identity.ic0.app"
+    : "http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943"; // Local
+
+const nfidProvider =
+  network == "ic"
+    ? "https://nfid.one"
+    : "http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943"; // Local
 
 const ProfileContext = createContext();
 
@@ -12,6 +28,13 @@ export const useProfile = () => {
 };
 
 export const ProfileProvider = ({ children }) => {
+  const [state, setState] = useState({
+    actor: undefined,
+    authClient: undefined,
+    isAuthenticated: false,
+    principal: "",
+  });
+
   const [profileData, setProfileData] = useState({
     name: "Ahmed Hassan",
     username: "@ahmed_hassan",
@@ -223,16 +246,52 @@ export const ProfileProvider = ({ children }) => {
     }));
   };
 
-  const login = (type) => {
+  const login = async (type) => {
     // Implement login logic here
-    setIsAuthenticated(true);
-    document.location.href = "/login-flow";
+    const provider = type === "nfid" ? nfidProvider : identityProvider;
+    await state.authClient.login({
+      provider,
+      onSuccess: updateActor,
+    });
   };
-  const logout = () => {
+  const logout = async () => {
     // Implement logout logic here
-    setIsAuthenticated(false);
-    document.location.href = "/";
+    await state.authClient.logout();
+    updateActor();
   };
+
+  const updateActor = async () => {
+    const authClient = await AuthClient.create();
+    const isAuthenticated = await authClient.isAuthenticated();
+    const identity = authClient.getIdentity();
+
+    const actor = createActor(useCanisterId, {
+      identity,
+    });
+    setIsAuthenticated(isAuthenticated);
+    setState((prev) => ({
+      ...prev,
+      actor,
+      authClient,
+    }));
+
+    if (isAuthenticated) {
+      // getting user data
+      const userData = await actor.get_current_user();
+      if (userData.Ok) {
+        console.log("User data fetched successfully:", userData.Ok);
+      } else {
+        // Handle error case
+        console.error("Failed to fetch user data:", userData.Err);
+      }
+    }
+  };
+
+  // Initialize auth client
+  useEffect(() => {
+    updateActor();
+  }, []);
+
   const value = {
     profileData,
     updateProfile,
