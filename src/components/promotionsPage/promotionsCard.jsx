@@ -139,7 +139,7 @@ const PromotionsCard = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-10">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">
             Available Promotions

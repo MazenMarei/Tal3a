@@ -4,8 +4,8 @@ import { Percent, Gift, Tag } from "lucide-react";
 
 const NavBar = () => {
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="bg-cream-100/95 backdrop-blur-sm border-b border-gray-200 h-75 flex justify-between items-center  shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Header from "../components/profilePage/navBar";
+import Header from "../components/ui/navBar";
 import Footer from "../layouts/Footer";
 import NavBar from "../components/promotionsPage/navBar";
 import SideBar from "../components/promotionsPage/sideBar";
@@ -13,14 +13,14 @@ const Promotions = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex flex-col">
       <Header />
-      <div className="mt-15">
+      <div className="mt-15 mb-4">
         <NavBar />
       </div>
-      <div className="flex-1 flex flex-row mt-3 px-3">
+      <div className="flex-1 flex flex-row mt-3 px-3 pb-50">
         <div className="hidden md:block flex-shrink-0">
           <SideBar />
         </div>
-        <div className="flex-1 mx-3">
+        <div className="flex-1 mx-3 pt-10">
           <MainBody />
         </div>
 

@@ -1,4 +1,4 @@
-import NavBar from '../components/profilePage/navBar';
+import NavBar from '../components/ui/navBar';
 import Footer from '../layouts/Footer';
 import PostCard from '../components/createPostPage/postCard'
 const CreatePost = () => {

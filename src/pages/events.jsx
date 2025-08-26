@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Header from "../components/profilePage/navBar";
+import Header from "../components/ui/navBar";
 import Footer from "../layouts/Footer";
 import NavBar from "../components/eventsPage/navBar";
 import SideBar from "../components/eventsPage/sideBar";
@@ -23,8 +23,8 @@ const Events = () => {
         <div className="md:hidden">
           <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
             <SheetTrigger asChild>
-              <button className="fixed top-100 left-4 z-50 p-2 rounded-full bg-white shadow-md">
-                <Menu className="h-6 w-6 text-gray-700" />
+              <button className="md:hidden fixed bottom-4 right-4 bg-green-600 text-white p-3 rounded-full shadow-lg hover:bg-green-700 transition-colors z-50">
+              <Menu className="h-6 w-6" />
               </button>
             </SheetTrigger>
             <SheetContent side="left" className="w-80 p-0">

@@ -1,4 +1,4 @@
-import Header from "../components/profilePage/navBar";
+import Header from "../components/ui/navBar";
 import Footer from "../layouts/Footer";
 import MapCard from "../components/mapPage/mapCard";
 
