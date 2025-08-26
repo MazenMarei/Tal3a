@@ -14,10 +14,11 @@
   },
   "type": "module",
   "workspaces": [
-    "src/tal3a_frontend"
+    "src/frontend_canister"
   ],
   "devDependencies": {
-    "react-router-dom": "^7.7.0"
+    "react-router-dom": "^7.7.0",
+    "rollup": "^4.48.1"
   },
   "dependencies": {
     "@dfinity/auth-client": "^3.1.0",
