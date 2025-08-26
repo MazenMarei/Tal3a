@@ -63,11 +63,11 @@ const GroupsCard = () => {
   console.log('Rendering groups:', groups);
 
   return (
-    <div className="flex-1 bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
-      <div className="p-8">
+    <div className="flex-col w-full bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
+      <div className="p-0 md:p-8">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row items-center justify-between">
               <div>
                 <h2 className="text-2xl font-bold text-green-600 mb-2">TOP SPORTS GROUPS</h2>
               </div>
@@ -166,7 +166,7 @@ const GroupsCard = () => {
       </div>
       <Link to='/login'>
         <Button
-          className="w-100 bg-gradient-to-r items-center my-4 from-green-600 to-green-500 hover:from-green-600 hover:to-green-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 group/btn cursor-pointer flex items-center justify-center gap-2 mx-auto"
+          className="w-full md:w-100 bg-gradient-to-r my-4 from-green-600 to-green-500 hover:from-green-600 hover:to-green-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 group/btn cursor-pointer flex items-center justify-center gap-2 mx-auto"
         >
           <span>EXPLORE ALL GROUPS</span>
           <ArrowRight className="h-4 w-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />

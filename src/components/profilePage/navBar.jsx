@@ -401,46 +401,6 @@ const NavBar = () => {
                     </Link>
                   </motion.div>
                 ))}
-                <motion.div 
-                  className="relative mt-4 pt-4 border-t border-green-100"
-                  variants={mobileNavItemVariants}
-                >
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    className="bg-gray-50 text-gray-800 px-4 py-3 pr-10 pl-4 rounded-full border border-gray-200 focus:border-green-400 focus:outline-none focus:ring-2 focus:ring-green-100 text-sm w-full transition-all"
-                  />
-                  <Search className="absolute right-3 top-7 h-4 w-4 text-gray-400" />
-                </motion.div>
-                <motion.div
-                  variants={mobileNavItemVariants}
-                  whileHover={{ 
-                    x: 8,
-                    backgroundColor: "rgba(34, 197, 94, 0.05)"
-                  }}
-                >
-                  <Link
-                    to="/profile"
-                    className="text-green-600 hover:text-green-700 hover:bg-green-50 transition-colors text-md font-medium py-3 px-4 rounded-lg block w-full text-left cursor-pointer"
-                    onClick={toggleMenu}
-                  >
-                    Profile
-                  </Link>
-                </motion.div>
-                <motion.div
-                  variants={mobileNavItemVariants}
-                  whileHover={{ 
-                    x: 8,
-                    backgroundColor: "rgba(239, 68, 68, 0.05)"
-                  }}
-                >
-                  <button
-                    onClick={handleSignOut}
-                    className="text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors text-md font-medium py-3 px-4 rounded-lg block w-full text-left cursor-pointer"
-                  >
-                    Sign Out
-                  </button>
-                </motion.div>
               </nav>
             </motion.div>
           )}

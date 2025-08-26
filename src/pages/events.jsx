@@ -23,11 +23,11 @@ const Events = () => {
         <div className="md:hidden">
           <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
             <SheetTrigger asChild>
-              <button className="fixed top-4 left-4 z-50 p-2 rounded-full bg-white shadow-md">
+              <button className="fixed top-100 left-4 z-50 p-2 rounded-full bg-white shadow-md">
                 <Menu className="h-6 w-6 text-gray-700" />
               </button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-64 p-0">
+            <SheetContent side="left" className="w-80 p-0">
               <SideBar />
             </SheetContent>
           </Sheet>

@@ -50,7 +50,7 @@ const EventsCard = () => {
   console.log('Rendering events:', events);
 
   return (
-    <div className="flex flex-col items-center justify-center px-4 pb-8 bg-light-green-50 min-h-screen sm:px-6 lg:px-8">
+    <div className="flex w-full flex-col items-center justify-center px-0 md:px-4 pb-8 bg-light-green-50 min-h-screen sm:px-6 lg:px-8">
            <div className="flex justify-end w-full mb-2">
         <Link to='/createEvent'>
         <Button
@@ -61,7 +61,7 @@ const EventsCard = () => {
         </Button>
       </Link>
       </div>
-      <div className="sm:w-150 lg:w-280 bg-white">
+      <div className="w-full lg:w-280 bg-white  rounded-lg">
         <div className="grid grid-cols-1 gap-6 p-4 sm:gap-8">
           {events.map((event, index) => {
             console.log(`Rendering event ${index}:`, event);

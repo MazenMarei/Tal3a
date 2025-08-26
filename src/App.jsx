@@ -13,8 +13,9 @@ import Posts from "./pages/posts";
 import CreatePost from "./pages/createPost";
 import EditProfile from "./pages/editProfile";
 import Map from "./pages/map";
+import Promotions from "./pages/promotions";
 import { DataProvider } from "./context/DataContext";
-import { ProfileProvider } from "./context/ProfileContext";
+import { ProfileProvider, useProfile } from "./context/ProfileContext";
 import { NotificationProvider } from "./context/NotificationContext";
 import { EventParticipationProvider } from "./context/EventsParticipationContext";
 import { CreateGroupProvider } from "./context/CreateGroupContext";
@@ -25,9 +26,10 @@ import Notification from "./pages/notification";
 import CreateEvent from "./pages/createEvent";
 import CreateGroup from "./pages/createGroup";
 
-const isAuthenticated = true;
-
 const ProtectedRoute = ({ element }) => {
+  const { isAuthenticated } = useProfile();
+  console.log("isAuthenticated", isAuthenticated);
+
   const location = useLocation();
   return isAuthenticated ? (
     element
@@ -119,6 +121,10 @@ const App = () => {
                       <Route
                         path="/map"
                         element={<ProtectedRoute element={<Map />} />}
+                      />
+                      <Route
+                        path="/promotions"
+                        element={<ProtectedRoute element={<Promotions />} />}
                       />
                       <Route
                         path="/groups/:groupId/posts"

@@ -27,7 +27,7 @@ const Groups = () => {
                 <Menu className="h-6 w-6 text-slate-700" />
               </button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-64 p-0">
+            <SheetContent side="left" className="w-80 p-0">
               <SideBar />
             </SheetContent>
           </Sheet>
