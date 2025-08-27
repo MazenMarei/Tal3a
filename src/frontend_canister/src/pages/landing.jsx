@@ -1,5 +1,5 @@
 import Header from "../layouts/header";
-import footer from "../layouts/footer";
+import Footer from "../layouts/footer";
 import Hero from "../components/landingPage/hero";
 import Groups from "../components/landingPage/groups";
 import Events from "../components/landingPage/events";
@@ -10,7 +10,7 @@ const LandingPage = () => {
       <Hero />
       <Groups />
       <Events />
-      <footer />
+      <Footer />
     </>
   );
 };

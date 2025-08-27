@@ -155,7 +155,7 @@ export const ProfileProvider = ({ children }) => {
       "Sohag Governorate",
     ],
   });
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const updateProfile = (updates) => {
     setProfileData((prev) => {
       const newData = { ...prev, ...updates };
@@ -247,54 +247,82 @@ export const ProfileProvider = ({ children }) => {
   };
 
   const login = async (type) => {
-    // Implement login logic here
-    const provider = type === "nfid" ? nfidProvider : identityProvider;
-    await state.authClient.login({
-      identityProvider: provider,
-      onSuccess: updateActor,
-    });
+    try {
+      if (!state.authClient) {
+        console.error("AuthClient not initialized");
+        return;
+      }
+      
+      const provider = type === "nfid" ? nfidProvider : identityProvider;
+      await state.authClient.login({
+        identityProvider: provider,
+        onSuccess: updateActor,
+      });
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
   const logout = async () => {
-    // Implement logout logic here
-    await state.authClient.logout();
-    updateActor();
+    try {
+      if (!state.authClient) {
+        console.error("AuthClient not initialized");
+        return;
+      }
+      
+      await state.authClient.logout();
+      await updateActor();
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   const updateActor = async () => {
-    const authClient = await AuthClient.create();
-    const isAuthenticated = await authClient.isAuthenticated();
-    const identity = authClient.getIdentity();
+    try {
+      const authClient = await AuthClient.create();
+      const isAuthenticated = await authClient.isAuthenticated();
+      const identity = authClient.getIdentity();
 
-    const actor = createActor(useCanisterId, {
-      agentOptions: {
-        identity,
-      },
-    });
+      const actor = createActor(useCanisterId, {
+        agentOptions: {
+          identity,
+        },
+      });
 
-    const principal = identity.getPrincipal().toString();
+      const principal = identity.getPrincipal().toString();
 
-    setIsAuthenticated(isAuthenticated);
-    setState((prev) => ({
-      ...prev,
-      actor,
-      authClient,
-      isAuthenticated,
-      principal,
-    }));
+      setIsAuthenticated(isAuthenticated);
+      setState((prev) => ({
+        ...prev,
+        actor,
+        authClient,
+        isAuthenticated,
+        principal,
+      }));
 
-    if (isAuthenticated) {
-      // getting user data
-      try {
-        const userData = await actor.get_current_user();
-        if (userData.Ok) {
-          console.log("User data fetched successfully:", userData.Ok);
-        } else {
-          // Handle error case
-          console.error("Failed to fetch user data:", userData.Err);
+      if (isAuthenticated) {
+        // getting user data
+        try {
+          const userData = await actor.get_current_user();
+          if (userData.Ok) {
+            console.log("User data fetched successfully:", userData.Ok);
+          } else {
+            // Handle error case
+            console.error("Failed to fetch user data:", userData.Err);
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
         }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
       }
+    } catch (error) {
+      console.error("Error in updateActor:", error);
+      setIsAuthenticated(false);
+      setState((prev) => ({
+        ...prev,
+        actor: undefined,
+        authClient: undefined,
+        isAuthenticated: false,
+        principal: "",
+      }));
     }
   };
 
