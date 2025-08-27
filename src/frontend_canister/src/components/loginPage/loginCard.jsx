@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import LogoImage from "../../assets/images/logo.png";
 import iiLogo from "../../assets/icons/ii_logo.png";
 import nfidLogo from "../../assets/icons/nfid_logo.png";
-import { useProfile } from "../../context/ProfileContext";
+import { useProfile } from "../../hooks/useProfile";
 const LoginCard = () => {
   const { login } = useProfile();
   const containerVariants = {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useProfile } from "../context/ProfileContext";
+import { useProfile } from "../hooks/useProfile";
 
 const WhoAmI = () => {
   const { state, login, logout, isAuthenticated } = useProfile();

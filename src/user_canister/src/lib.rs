@@ -16,7 +16,7 @@ use ic_cdk;
 
 #[ic_cdk::query]
 pub fn whoami() -> Principal {
-    ic_cdk::api::caller()
+    ic_cdk::caller()
 }
 
 // * export contracts

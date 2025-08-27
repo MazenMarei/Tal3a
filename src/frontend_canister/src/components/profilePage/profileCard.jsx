@@ -30,7 +30,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import { useProfile } from "../../context/ProfileContext";
+import { useProfile } from "../../hooks/useProfile";
 
 const ProfileCard = () => {
   const {

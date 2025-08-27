@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { Calendar, Users, Star, Clock, Award, Wallet } from "lucide-react";
 import { AuthClient } from "@dfinity/auth-client";
 import { canisterId as useCanisterId } from "declarations/user_canister/index.js";
@@ -19,15 +19,7 @@ const nfidProvider =
 
 const ProfileContext = createContext();
 
-export const useProfile = () => {
-  const context = useContext(ProfileContext);
-  if (!context) {
-    throw new Error("useProfile must be used within a ProfileProvider");
-  }
-  return context;
-};
-
-export const ProfileProvider = ({ children }) => {
+const ProfileProvider = ({ children }) => {
   const [state, setState] = useState({
     actor: undefined,
     authClient: undefined,
@@ -252,7 +244,7 @@ export const ProfileProvider = ({ children }) => {
         console.error("AuthClient not initialized");
         return;
       }
-      
+
       const provider = type === "nfid" ? nfidProvider : identityProvider;
       await state.authClient.login({
         identityProvider: provider,
@@ -268,7 +260,7 @@ export const ProfileProvider = ({ children }) => {
         console.error("AuthClient not initialized");
         return;
       }
-      
+
       await state.authClient.logout();
       await updateActor();
     } catch (error) {
@@ -348,3 +340,5 @@ export const ProfileProvider = ({ children }) => {
     <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>
   );
 };
+
+export { ProfileContext, ProfileProvider };
