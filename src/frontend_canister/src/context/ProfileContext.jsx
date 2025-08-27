@@ -8,12 +8,12 @@ const network = import.meta.env.DFX_NETWORK;
 console.log(import.meta.env);
 
 const identityProvider =
-  network == "ic"
+  network === "ic"
     ? "https://identity.ic0.app"
     : "http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943"; // Local
 
 const nfidProvider =
-  network == "ic"
+  network === "ic"
     ? "https://nfid.one"
     : "http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943"; // Local
 
@@ -250,7 +250,7 @@ export const ProfileProvider = ({ children }) => {
     // Implement login logic here
     const provider = type === "nfid" ? nfidProvider : identityProvider;
     await state.authClient.login({
-      provider,
+      identityProvider: provider,
       onSuccess: updateActor,
     });
   };
@@ -266,23 +266,34 @@ export const ProfileProvider = ({ children }) => {
     const identity = authClient.getIdentity();
 
     const actor = createActor(useCanisterId, {
-      identity,
+      agentOptions: {
+        identity,
+      },
     });
+
+    const principal = identity.getPrincipal().toString();
+
     setIsAuthenticated(isAuthenticated);
     setState((prev) => ({
       ...prev,
       actor,
       authClient,
+      isAuthenticated,
+      principal,
     }));
 
     if (isAuthenticated) {
       // getting user data
-      const userData = await actor.get_current_user();
-      if (userData.Ok) {
-        console.log("User data fetched successfully:", userData.Ok);
-      } else {
-        // Handle error case
-        console.error("Failed to fetch user data:", userData.Err);
+      try {
+        const userData = await actor.get_current_user();
+        if (userData.Ok) {
+          console.log("User data fetched successfully:", userData.Ok);
+        } else {
+          // Handle error case
+          console.error("Failed to fetch user data:", userData.Err);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
       }
     }
   };
@@ -301,6 +312,8 @@ export const ProfileProvider = ({ children }) => {
     login,
     logout,
     isAuthenticated,
+    state,
+    updateActor,
   };
 
   return (
