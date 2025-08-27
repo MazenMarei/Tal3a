@@ -1,4 +1,3 @@
-import path from "path";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
@@ -27,7 +26,7 @@ export default defineConfig({
     alias: [
       {
         find: "@",
-        replacement: path.resolve(__dirname, "./src"),
+        replacement: fileURLToPath(new URL("./src", import.meta.url)),
       },
       {
         find: "declarations",
@@ -36,6 +35,9 @@ export default defineConfig({
     ],
   },
   server: {
+    fs: {
+      allow: [".."],
+    },
     proxy: {
       "/api": {
         target: "http://127.0.0.1:4943",

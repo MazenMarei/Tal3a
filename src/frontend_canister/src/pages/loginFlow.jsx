@@ -5,6 +5,8 @@ import Step1Location from "../components/loginFlowPage/locationStep";
 import Step2Sports from "../components/loginFlowPage/sportStep";
 import Step3PersonalInfo from "../components/loginFlowPage/personalInfoStep";
 import Step4SocialPassword from "../components/loginFlowPage/passwordStep";
+import Step5Complete from "../components/loginFlowPage/completeStep";
+import DebugHelper from "../components/DebugHelper";
 
 const LoginFlow = () => {
   return (
@@ -17,9 +19,11 @@ const LoginFlow = () => {
           <Route path="sports" element={<Step2Sports />} />
           <Route path="personal-info" element={<Step3PersonalInfo />} />
           <Route path="social-password" element={<Step4SocialPassword />} />
+          <Route path="complete" element={<Step5Complete />} />
         </Routes>
       </main>
       <footer />
+      <DebugHelper />
     </div>
   );
 };

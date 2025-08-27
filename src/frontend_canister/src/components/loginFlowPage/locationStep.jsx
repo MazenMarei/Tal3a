@@ -1,24 +1,74 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { MapPin } from 'lucide-react';
-import { useData } from '../../context/DataContext';
-import LoadingCard from '../loadingPage/loadingCard';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { MapPin } from "lucide-react";
+import { useData } from "../../hooks/useCanisterHooks";
+import { useLoginFlow } from "../../context/LoginFlowContext";
+import LoadingCard from "../loadingPage/loadingCard";
 
 const Step1Location = () => {
-  const [governorate, setGovernorate] = useState('');
-  const [city, setCity] = useState('');
-  const { locations, loading, error } = useData() || { locations: [], loading: false, error: null };
+  const { formData, updateFormData } = useLoginFlow();
+  const navigate = useNavigate();
+  const [governorate, setGovernorate] = useState(
+    formData.governorate?.name || ""
+  );
+  const [city, setCity] = useState(formData.city?.name || "");
+  const { locations, loading, error } = useData() || {
+    locations: [],
+    loading: false,
+    error: null,
+  };
 
-  const sortedGovernorates = locations
-    .map((loc) => loc.name)
-    .sort((a, b) => a.localeCompare(b));
-  const sortedCities = governorate
-    ? locations
-        .find((loc) => loc.name === governorate)
-        ?.cities.map((city) => city.name)
-        .sort((a, b) => a.localeCompare(b)) || []
+  // Debug logging
+  useEffect(() => {
+    console.log("LocationStep - Debug Info:");
+    console.log("- locations:", locations);
+    console.log("- loading:", loading);
+    console.log("- error:", error);
+    console.log("- formData:", formData);
+    console.log("- governorate:", governorate);
+    console.log("- city:", city);
+  }, [locations, loading, error, formData, governorate, city]);
+
+  // Load saved data on mount
+  useEffect(() => {
+    if (formData.governorate) {
+      setGovernorate(formData.governorate.name || formData.governorate);
+    }
+    if (formData.city) {
+      setCity(formData.city.name || formData.city);
+    }
+  }, [formData]);
+
+  const handleContinue = () => {
+    // Find the full governorate and city objects
+    const selectedGovernorate = locations.find(
+      (loc) => loc.name === governorate
+    );
+    const selectedCity = selectedGovernorate?.cities.find(
+      (c) => c.name === city
+    );
+
+    // Save data to login flow context
+    updateFormData({
+      governorate: selectedGovernorate,
+      city: selectedCity,
+    });
+
+    // Navigate to next step
+    navigate("/login-flow/sports");
+  };
+
+  const sortedGovernorates = Array.isArray(locations)
+    ? locations.map((loc) => loc.name).sort((a, b) => a.localeCompare(b))
     : [];
+
+  const sortedCities =
+    governorate && Array.isArray(locations)
+      ? (locations.find((loc) => loc.name === governorate)?.cities || [])
+          .map((city) => city.name)
+          .sort((a, b) => a.localeCompare(b))
+      : [];
 
   const handleUseCurrentLocation = async () => {
     try {
@@ -33,7 +83,7 @@ const Step1Location = () => {
               locations.forEach((gov) => {
                 const govDistance = Math.sqrt(
                   Math.pow(position.coords.latitude - gov.lat, 2) +
-                  Math.pow(position.coords.longitude - gov.lng, 2)
+                    Math.pow(position.coords.longitude - gov.lng, 2)
                 );
                 if (govDistance < minDistance) {
                   minDistance = govDistance;
@@ -41,7 +91,7 @@ const Step1Location = () => {
                   gov.cities.forEach((city) => {
                     const cityDistance = Math.sqrt(
                       Math.pow(position.coords.latitude - city.lat, 2) +
-                      Math.pow(position.coords.longitude - city.lng, 2)
+                        Math.pow(position.coords.longitude - city.lng, 2)
                     );
                     if (cityDistance < minDistance) {
                       minDistance = cityDistance;
@@ -58,18 +108,18 @@ const Step1Location = () => {
                 }
               }
             } catch (error) {
-              console.error('Error processing geolocation data:', error);
+              console.error("Error processing geolocation data:", error);
             }
           },
           (error) => {
-            console.error('Geolocation error:', error);
+            console.error("Geolocation error:", error);
           }
         );
       } else {
-        console.error('Geolocation not supported');
+        console.error("Geolocation not supported");
       }
     } catch (error) {
-      console.error('Error in handleUseCurrentLocation:', error);
+      console.error("Error in handleUseCurrentLocation:", error);
     }
   };
 
@@ -142,11 +192,13 @@ const Step1Location = () => {
               value={governorate}
               onChange={(e) => {
                 setGovernorate(e.target.value);
-                setCity(''); // Reset city when governorate changes
+                setCity(""); // Reset city when governorate changes
               }}
               className="w-full appearance-none py-3 px-4 pr-8 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-emerald-500 focus:outline-none text-gray-800 bg-gray-50 transition-all"
             >
-              <option value="" disabled>Select Governorate</option>
+              <option value="" disabled>
+                Select Governorate
+              </option>
               {sortedGovernorates.map((gov) => (
                 <option key={gov} value={gov}>
                   {gov}
@@ -161,7 +213,9 @@ const Step1Location = () => {
               disabled={!governorate}
               className="w-full appearance-none py-3 px-4 pr-8 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-emerald-500 focus:outline-none text-gray-800 bg-gray-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <option value="" disabled>Select City</option>
+              <option value="" disabled>
+                Select City
+              </option>
               {sortedCities.map((city) => (
                 <option key={city} value={city}>
                   {city}
@@ -189,14 +243,13 @@ const Step1Location = () => {
           >
             Skip
           </Button>
-          <Link to="/login-flow/sports">
-            <Button
-              className="px-8 py-3 cursor-pointer text-lg font-medium bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl"
-              disabled={isContinueDisabled}
-            >
-              Continue
-            </Button>
-          </Link>
+          <Button
+            onClick={handleContinue}
+            className="px-8 py-3 cursor-pointer text-lg font-medium bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl"
+            disabled={isContinueDisabled}
+          >
+            Continue
+          </Button>
         </div>
       </div>
     </div>

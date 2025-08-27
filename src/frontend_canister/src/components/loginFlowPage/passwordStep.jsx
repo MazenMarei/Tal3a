@@ -1,33 +1,42 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
-import Swal from 'sweetalert2'
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { useLoginFlow } from "../../context/LoginFlowContext";
 
 const Step4FreeDays = () => {
-  const [selectedDays, setSelectedDays] = useState([])
-  const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+  const { formData, updateFormData, nextStep } = useLoginFlow();
+  const [selectedDays, setSelectedDays] = useState(formData.free_days || []);
+  const daysOfWeek = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+
+  // Load saved data on mount
+  useEffect(() => {
+    if (formData.free_days) {
+      setSelectedDays(formData.free_days);
+    }
+  }, [formData]);
 
   const handleDayToggle = (day) => {
     setSelectedDays((prev) =>
-      prev.includes(day)
-        ? prev.filter((d) => d !== day)
-        : [...prev, day]
-    )
-  }
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+    );
+  };
 
-  const handleSave = () => {
-    Swal.fire({
-      title: 'Congratulations!',
-      text: 'You have created your account moderately and professionally',
-      icon: 'success',
-      confirmButtonText: 'OK',
-      timer: 3000,
-      timerProgressBar: true,
-      customClass: {
-        popup: 'animated fadeInDown'
-      }
-    })
-  }
+  const handleContinue = () => {
+    // Save the selected days
+    updateFormData({
+      free_days: selectedDays,
+    });
+
+    // Go to completion step
+    nextStep();
+  };
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -45,7 +54,7 @@ const Step4FreeDays = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="relative z-10 text-center text-white">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             Welcome to <span className="text-emerald-400">Tal3a</span>
@@ -76,8 +85,8 @@ const Step4FreeDays = () => {
                 onClick={() => handleDayToggle(day)}
                 className={`px-6 py-3 rounded-xl border-2 text-lg font-medium transition-all duration-200 ${
                   selectedDays.includes(day)
-                    ? 'bg-emerald-500 text-white border-emerald-500'
-                    : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                    ? "bg-emerald-500 text-white border-emerald-500"
+                    : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
                 }`}
               >
                 {day}
@@ -86,23 +95,23 @@ const Step4FreeDays = () => {
           </div>
         </div>
         <div className="flex justify-between mt-12">
-          <Link to="/profile" onClick={handleSave}>
-            <Button 
-              variant="outline" 
-              className="px-8 py-3 cursor-pointer text-lg font-medium border-2 border-gray-300 text-gray-600 hover:bg-gray-50 rounded-xl"
-            >
-              Skip
-            </Button>
-          </Link>
-          <Link to="/profile" onClick={handleSave}>
-            <Button className="px-8 py-3 cursor-pointer text-lg font-medium bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl">
-              Done
-            </Button>
-          </Link>
+          <Button
+            variant="outline"
+            className="px-8 py-3 cursor-pointer text-lg font-medium border-2 border-gray-300 text-gray-600 hover:bg-gray-50 rounded-xl"
+            onClick={handleContinue}
+          >
+            Skip
+          </Button>
+          <Button
+            className="px-8 py-3 cursor-pointer text-lg font-medium bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl"
+            onClick={handleContinue}
+          >
+            Continue
+          </Button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Step4FreeDays;
