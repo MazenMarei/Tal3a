@@ -1,5 +1,5 @@
 import NavBar from '../components/ui/navBar';
-import Footer from '../layouts/Footer';
+import footer from '../layouts/footer';
 import EventDetialsCard from '../components/eventDetailsPage/eventDetailsCard';
 const EventDetails = () => {
   return (
@@ -8,7 +8,7 @@ const EventDetails = () => {
       <main className="flex-1 py-10 m-8">
          <EventDetialsCard/>
       </main>
-      <Footer />
+      <footer />
     </div>
   );
 };

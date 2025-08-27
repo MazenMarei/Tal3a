@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Header from "../components/ui/navBar";
-import Footer from "../layouts/Footer";
+import footer from "../layouts/footer";
 import NavBar from "../components/groupsPage/navBar";
 import SideBar from "../components/groupsPage/sideBar";
 import MainBody from "../components/groupsPage/mainBody";
@@ -34,7 +34,7 @@ const Groups = () => {
         </div>
         <MainBody />
       </div>
-      <Footer />
+      <footer />
     </div>
   );
 };

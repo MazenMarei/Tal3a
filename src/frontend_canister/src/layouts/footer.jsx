@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Twitter, Instagram, Youtube, MapPin, Heart } from 'lucide-react';
 
-const Footer = () => {
+const footer = () => {
   const footerVariants = {
     hidden: { y: 50, opacity: 0 },
     visible: { 
@@ -300,4 +300,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default footer;

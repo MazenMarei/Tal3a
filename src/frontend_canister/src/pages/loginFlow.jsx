@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import NavBar from "../components/loginPage/navBar";
-import Footer from "../layouts/Footer";
+import footer from "../layouts/footer";
 import Step1Location from "../components/loginFlowPage/locationStep";
 import Step2Sports from "../components/loginFlowPage/sportStep";
 import Step3PersonalInfo from "../components/loginFlowPage/personalInfoStep";
@@ -19,7 +19,7 @@ const LoginFlow = () => {
           <Route path="social-password" element={<Step4SocialPassword />} />
         </Routes>
       </main>
-      <Footer />
+      <footer />
     </div>
   );
 };

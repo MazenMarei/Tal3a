@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Header from "../components/ui/navBar";
-import Footer from "../layouts/Footer";
+import footer from "../layouts/footer";
 import NavBar from "../components/eventsPage/navBar";
 import SideBar from "../components/eventsPage/sideBar";
 import MainBody from "../components/eventsPage/eventsCard";
@@ -34,7 +34,7 @@ const Events = () => {
         </div>
         <MainBody />
       </div>
-      <Footer />
+      <footer />
     </div>
   );
 };

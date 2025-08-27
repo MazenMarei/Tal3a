@@ -78,7 +78,7 @@ function CardContent({
   return (<div data-slot="card-content" className={cn("px-6", className)} {...props} />);
 }
 
-function CardFooter({
+function Cardfooter({
   className,
   ...props
 }) {
@@ -93,7 +93,7 @@ function CardFooter({
 export {
   Card,
   CardHeader,
-  CardFooter,
+  Cardfooter,
   CardTitle,
   CardAction,
   CardDescription,

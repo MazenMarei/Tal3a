@@ -1,5 +1,5 @@
 import Header from "../components/ui/navBar";
-import Footer from "../layouts/Footer";
+import footer from "../layouts/footer";
 import MapCard from "../components/mapPage/mapCard";
 
 function Map() {
@@ -11,7 +11,7 @@ function Map() {
       <main className="flex-grow flex items-center justify-center my-5">
         <MapCard />
       </main>
-      <Footer />
+      <footer />
     </div>
   );
 }

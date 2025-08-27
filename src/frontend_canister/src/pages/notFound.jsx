@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../layouts/Header";
-import Footer from "../layouts/Footer";
+import Header from "../layouts/header";
+import footer from "../layouts/footer";
 import NotFoundCard from "../components/notFoundPage/notFoundCard";
 
 function NotFoundPage() {
@@ -10,7 +10,7 @@ function NotFoundPage() {
       <main className="flex-grow flex items-center justify-center p-4">
         <NotFoundCard />
       </main>
-      <Footer />
+      <footer />
     </div>
   );
 }

@@ -90,7 +90,7 @@ function SheetHeader({
   );
 }
 
-function SheetFooter({
+function Sheetfooter({
   className,
   ...props
 }) {
@@ -132,7 +132,7 @@ export {
   SheetClose,
   SheetContent,
   SheetHeader,
-  SheetFooter,
+  Sheetfooter,
   SheetTitle,
   SheetDescription,
 }

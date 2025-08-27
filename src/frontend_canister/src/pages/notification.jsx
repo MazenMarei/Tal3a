@@ -1,5 +1,5 @@
 import NavBar from '../components/ui/navBar';
-import Footer from '../layouts/Footer';
+import footer from '../layouts/footer';
 import NotificationCard from '@/components/notificationPage/notificationCard';
 
 const ProfilePage = () => {
@@ -9,7 +9,7 @@ const ProfilePage = () => {
       <main className="flex-1 py-10 m-8">
         <NotificationCard />
       </main>
-      <Footer />
+      <footer />
     </div>
   );
 };

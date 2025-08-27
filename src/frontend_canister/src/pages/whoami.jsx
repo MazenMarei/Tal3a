@@ -42,7 +42,7 @@ const WhoAmI = () => {
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
         <h1 className="text-2xl font-bold text-center mb-6">Who Am I?</h1>
-        
+
         <div className="space-y-4">
           {!isAuthenticated ? (
             <button
@@ -83,10 +83,12 @@ const WhoAmI = () => {
 
           <div className="mt-4 text-sm text-gray-600">
             <p>
-              <strong>Status:</strong> {isAuthenticated ? "Authenticated" : "Not authenticated"}
+              <strong>Status:</strong>{" "}
+              {isAuthenticated ? "Authenticated" : "Not authenticated"}
             </p>
             <p>
-              <strong>Actor:</strong> {state.actor ? "Initialized" : "Not initialized"}
+              <strong>Actor:</strong>{" "}
+              {state.actor ? "Initialized" : "Not initialized"}
             </p>
           </div>
         </div>

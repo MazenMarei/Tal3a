@@ -1,5 +1,5 @@
-import Header from "@/layouts/Header.jsx";
-import Footer from "@/layouts/Footer.jsx";
+import Header from "../layouts/header.jsx";
+import Footer from "../layouts/footer.jsx";
 import Hero from "@/components/onboardPage/Hero.jsx";
 import WhyChoose from "@/components/onboardPage/whyChooseUs.jsx";
 import PopularSports from "@/components/onboardPage/popularSports.jsx";

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Header from "../components/ui/navBar";
-import Footer from "../layouts/Footer";
+import footer from "../layouts/footer";
 import NavBar from "../components/promotionsPage/navBar";
 import SideBar from "../components/promotionsPage/sideBar";
 import MainBody from "../components/promotionsPage/promotionsCard";
@@ -36,7 +36,7 @@ const Promotions = () => {
           </SheetContent>
         </Sheet>
       </div>
-      <Footer />
+      <footer />
     </div>
   );
 };

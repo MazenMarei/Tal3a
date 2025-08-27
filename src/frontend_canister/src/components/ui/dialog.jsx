@@ -85,7 +85,7 @@ function DialogHeader({
   );
 }
 
-function DialogFooter({
+function Dialogfooter({
   className,
   ...props
 }) {
@@ -126,7 +126,7 @@ export {
   DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
+  Dialogfooter,
   DialogHeader,
   DialogOverlay,
   DialogPortal,

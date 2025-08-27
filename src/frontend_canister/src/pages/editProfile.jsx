@@ -1,5 +1,5 @@
 import NavBar from '../components/ui/navBar';
-import Footer from '../layouts/Footer';
+import footer from '../layouts/footer';
 import EditProfileCard from '../components/editProfilePage/editProfileCard';
 
 const EditProfile = () => {
@@ -9,7 +9,7 @@ const EditProfile = () => {
       <main className="flex-1 py-10 m-8 my-20">
         <EditProfileCard />
       </main>
-      <Footer />
+      <footer />
     </div>
   );
 };

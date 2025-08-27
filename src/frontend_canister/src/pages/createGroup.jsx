@@ -1,5 +1,5 @@
 import NavBar from '../components/ui/navBar';
-import Footer from '../layouts/Footer';
+import footer from '../layouts/footer';
 import CreateGroupCard from '../components/createGroupPage/createGroupCard';
 const CreateGroup = () => {
   return (
@@ -8,7 +8,7 @@ const CreateGroup = () => {
       <main className="flex-1 py-10 m-8">
          <CreateGroupCard/>
       </main>
-      <Footer />
+      <footer />
     </div>
   );
 };

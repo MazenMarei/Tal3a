@@ -1,5 +1,5 @@
 import NavBar from '../components/ui/navBar';
-import Footer from '../layouts/Footer';
+import footer from '../layouts/footer';
 import PostsCard from '../components/postsPage/postsCard'
 const Posts = () => {
   return (
@@ -8,7 +8,7 @@ const Posts = () => {
       <main className="flex-1 py-10 m-8">
          <PostsCard/>
       </main>
-      <Footer />
+      <footer />
     </div>
   );
 };
