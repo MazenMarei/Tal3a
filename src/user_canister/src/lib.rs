@@ -14,5 +14,10 @@ use crate::types::{
 use candid::Principal;
 use ic_cdk;
 
+#[ic_cdk::query]
+pub fn whoami() -> Principal {
+    ic_cdk::api::caller()
+}
+
 // * export contracts
 ic_cdk::export_candid!();
