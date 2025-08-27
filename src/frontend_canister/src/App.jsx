@@ -1,5 +1,8 @@
+// Main App component - Sets up routing and context providers for the Tal3a sports community platform
 import { HelmetProvider, Helmet } from "react-helmet-async";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+
+// Page imports
 import LandingPage from "./pages/landing";
 import Login from "./pages/login";
 import Groups from "./pages/groups";
@@ -14,13 +17,6 @@ import CreatePost from "./pages/createPost";
 import EditProfile from "./pages/editProfile";
 import Map from "./pages/map";
 import Promotions from "./pages/promotions";
-import { DataProvider } from "./context/DataContext";
-import { ProfileProvider } from "./context/ProfileContext";
-import { useProfile } from "./hooks/useProfile";
-import { NotificationProvider } from "./context/NotificationContext";
-import { EventParticipationProvider } from "./context/EventsParticipationContext";
-import { CreateGroupProvider } from "./context/CreateGroupContext";
-import { CreateEventProvider } from "./context/CreateEventContext";
 import GroupPosts from "./pages/groupPosts";
 import EventDetails from "./pages/eventDetails";
 import Notification from "./pages/notification";
@@ -28,6 +24,16 @@ import CreateEvent from "./pages/createEvent";
 import CreateGroup from "./pages/createGroup";
 import WhoAmI from "./pages/whoami";
 
+// Context providers
+import { DataProvider } from "./context/DataContext";
+import { ProfileProvider } from "./context/ProfileContext";
+import { useProfile } from "./hooks/useProfile";
+import { NotificationProvider } from "./context/NotificationContext";
+import { EventParticipationProvider } from "./context/EventsParticipationContext";
+import { CreateGroupProvider } from "./context/CreateGroupContext";
+import { CreateEventProvider } from "./context/CreateEventContext";
+
+// Protected route wrapper - redirects to login if user not authenticated
 const ProtectedRoute = ({ element }) => {
   const { isAuthenticated } = useProfile();
   console.log("isAuthenticated", isAuthenticated);
@@ -42,6 +48,7 @@ const ProtectedRoute = ({ element }) => {
 
 const App = () => {
   return (
+    // Wrap entire app with context providers for global state management
     <DataProvider>
       <ProfileProvider>
         <NotificationProvider>
@@ -56,6 +63,7 @@ const App = () => {
                       minHeight: "100vh",
                     }}
                   >
+                    {/* SEO meta tags for the application */}
                     <Helmet>
                       <title>Egypt Sports Community</title>
                       <meta
@@ -85,13 +93,15 @@ const App = () => {
                       />
                       <meta name="twitter:card" content="summary_large_image" />
                     </Helmet>
+                    {/* Application routing configuration */}
                     <Routes>
-                      {/* Public routes */}
+                      {/* Public routes - accessible without authentication */}
                       <Route path="/" element={<Onboarding />} />
                       <Route path="/home" element={<LandingPage />} />
                       <Route path="/login" element={<Login />} />
                       <Route path="/login-flow/*" element={<LoginFlow />} />
-                      {/* Protected routes */}
+
+                      {/* Protected routes - require authentication */}
                       <Route
                         path="/groups"
                         element={<ProtectedRoute element={<Groups />} />}

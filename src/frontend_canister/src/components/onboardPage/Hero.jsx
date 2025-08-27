@@ -1,12 +1,19 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
+
+  // Handle JOIN US NOW button click - Navigate to login page
+  const handleJoinClick = () => {
+    navigate('/login');
+  };
 
   const heroVariants = {
     hidden: { opacity: 0 },
@@ -220,6 +227,7 @@ const Hero = () => {
                   transition={{ delay: 2.5, duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
                 >
                   <motion.button
+                    onClick={handleJoinClick}
                     className="relative group bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4 text-xl font-bold rounded-2xl cursor-pointer shadow-2xl overflow-hidden mb-2"
                     whileHover={{ 
                       scale: 1.05,

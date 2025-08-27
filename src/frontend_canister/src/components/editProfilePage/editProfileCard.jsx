@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 
 const EditProfileCard = () => {
   const { profileData, updateProfile } = useProfile();
-  
+
   const [formData, setFormData] = useState({
     name: profileData.name,
     profileImage: profileData.profileImage,
@@ -18,13 +18,13 @@ const EditProfileCard = () => {
     governorate: profileData.governorate,
     bio: profileData.bio,
     favoriteSports: [...profileData.favoriteSports],
-    freeDays: [...profileData.freeDays]
+    freeDays: [...profileData.freeDays],
   });
 
   const handleInputChange = (field, value) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -33,7 +33,7 @@ const EditProfileCard = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        handleInputChange('profileImage', reader.result);
+        handleInputChange("profileImage", reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -42,11 +42,11 @@ const EditProfileCard = () => {
   const toggleSportSelection = (sport) => {
     const maxSports = 3; // Set maximum number of sports
     if (formData.favoriteSports.includes(sport)) {
-      const newSports = formData.favoriteSports.filter(s => s !== sport);
-      handleInputChange('favoriteSports', newSports);
+      const newSports = formData.favoriteSports.filter((s) => s !== sport);
+      handleInputChange("favoriteSports", newSports);
     } else if (formData.favoriteSports.length < maxSports) {
       const newSports = [...formData.favoriteSports, sport];
-      handleInputChange('favoriteSports', newSports);
+      handleInputChange("favoriteSports", newSports);
     } else {
       Swal.fire({
         title: "Limit Reached",
@@ -59,9 +59,9 @@ const EditProfileCard = () => {
 
   const toggleDaySelection = (day) => {
     const newDays = formData.freeDays.includes(day)
-      ? formData.freeDays.filter(d => d !== day)
+      ? formData.freeDays.filter((d) => d !== day)
       : [...formData.freeDays, day];
-    handleInputChange('freeDays', newDays);
+    handleInputChange("freeDays", newDays);
   };
 
   const handleSave = () => {
@@ -91,9 +91,9 @@ const EditProfileCard = () => {
 
   const getUserInitials = () => {
     return formData.name
-      .split(' ')
-      .map(name => name.charAt(0))
-      .join('')
+      .split(" ")
+      .map((name) => name.charAt(0))
+      .join("")
       .toUpperCase();
   };
 
@@ -119,7 +119,9 @@ const EditProfileCard = () => {
                 Change
               </label>
             </div>
-            <h2 className="text-2xl font-semibold text-teal-900 mt-4">Edit Profile</h2>
+            <h2 className="text-2xl font-semibold text-teal-900 mt-4">
+              Edit Profile
+            </h2>
           </CardHeader>
 
           <CardContent className="p-6">
@@ -127,39 +129,50 @@ const EditProfileCard = () => {
               {/* Left Column */}
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="fullName" className="text-sm font-medium text-teal-800">
+                  <Label
+                    htmlFor="fullName"
+                    className="text-sm font-medium text-teal-800"
+                  >
                     Full Name
                   </Label>
                   <Input
                     id="fullName"
                     value={formData.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    onChange={(e) => handleInputChange("name", e.target.value)}
                     className="w-full bg-gray-50 border-none focus:ring-2 focus:ring-teal-500 text-gray-800 placeholder-teal-400 p-3 rounded-lg"
                     placeholder="Enter your full name"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="city" className="text-sm font-medium text-teal-800">
+                  <Label
+                    htmlFor="city"
+                    className="text-sm font-medium text-teal-800"
+                  >
                     City
                   </Label>
                   <Input
                     id="city"
                     value={formData.city}
-                    onChange={(e) => handleInputChange('city', e.target.value)}
+                    onChange={(e) => handleInputChange("city", e.target.value)}
                     className="w-full bg-gray-50 border-none focus:ring-2 focus:ring-teal-500 text-gray-800 placeholder-teal-400 p-3 rounded-lg"
                     placeholder="Enter your city"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="governorate" className="text-sm font-medium text-teal-800">
+                  <Label
+                    htmlFor="governorate"
+                    className="text-sm font-medium text-teal-800"
+                  >
                     Governorate
                   </Label>
                   <select
                     id="governorate"
                     value={formData.governorate}
-                    onChange={(e) => handleInputChange('governorate', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("governorate", e.target.value)
+                    }
                     className="w-full bg-gray-50 border-none focus:ring-2 focus:ring-teal-500 text-gray-800 p-3 rounded-lg"
                   >
                     {profileData.governorates.map((gov) => (
@@ -171,13 +184,16 @@ const EditProfileCard = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="bio" className="text-sm font-medium text-teal-800">
+                  <Label
+                    htmlFor="bio"
+                    className="text-sm font-medium text-teal-800"
+                  >
                     Bio
                   </Label>
                   <Textarea
                     id="bio"
                     value={formData.bio}
-                    onChange={(e) => handleInputChange('bio', e.target.value)}
+                    onChange={(e) => handleInputChange("bio", e.target.value)}
                     className="w-full bg-gray-50 border-none focus:ring-2 focus:ring-teal-500 text-gray-800 placeholder-teal-400 p-3 rounded-lg min-h-[100px] resize-none"
                     placeholder="Tell us about yourself..."
                     maxLength={200}
@@ -207,7 +223,9 @@ const EditProfileCard = () => {
                       </span>
                     ))}
                     {formData.freeDays.length === 0 && (
-                      <span className="text-gray-500 text-sm">No days selected</span>
+                      <span className="text-gray-500 text-sm">
+                        No days selected
+                      </span>
                     )}
                   </div>
                 </div>
@@ -232,7 +250,9 @@ const EditProfileCard = () => {
                       </span>
                     ))}
                     {formData.favoriteSports.length === 0 && (
-                      <span className="text-gray-500 text-sm">No sports selected</span>
+                      <span className="text-gray-500 text-sm">
+                        No sports selected
+                      </span>
                     )}
                   </div>
                 </div>
@@ -240,7 +260,7 @@ const EditProfileCard = () => {
 
               {/* Right Column */}
               <div className="space-y-6">
-              <div className="space-y-2">
+                <div className="space-y-2">
                   <Label className="text-sm font-medium text-teal-800">
                     Available Days
                   </Label>
@@ -251,11 +271,13 @@ const EditProfileCard = () => {
                         onClick={() => toggleDaySelection(day)}
                         className={`p-3 rounded-lg cursor-pointer transition-all duration-200 border ${
                           formData.freeDays.includes(day)
-                            ? 'bg-green-100 border-green-500 shadow-sm'
-                            : 'bg-gray-50 border-gray-200 hover:bg-green-50'
+                            ? "bg-green-100 border-green-500 shadow-sm"
+                            : "bg-gray-50 border-gray-200 hover:bg-green-50"
                         }`}
                       >
-                        <span className="text-sm font-medium text-green-800">{day}</span>
+                        <span className="text-sm font-medium text-green-800">
+                          {day}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -263,8 +285,6 @@ const EditProfileCard = () => {
                     Click to select or deselect days
                   </div>
                 </div>
-
-            
 
                 <div className="space-y-3 ">
                   <Label className="text-sm font-medium text-teal-800">
@@ -277,11 +297,13 @@ const EditProfileCard = () => {
                         onClick={() => toggleSportSelection(sport)}
                         className={`p-3 rounded-lg cursor-pointer transition-all duration-200 border ${
                           formData.favoriteSports.includes(sport)
-                            ? 'bg-teal-100 border-teal-500 shadow-sm'
-                            : 'bg-gray-50 border-gray-200 hover:bg-teal-50'
+                            ? "bg-teal-100 border-teal-500 shadow-sm"
+                            : "bg-gray-50 border-gray-200 hover:bg-teal-50"
                         }`}
                       >
-                        <span className="text-sm font-medium text-teal-800">{sport}</span>
+                        <span className="text-sm font-medium text-teal-800">
+                          {sport}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -289,10 +311,6 @@ const EditProfileCard = () => {
                     Click to select or deselect sports (max 3)
                   </div>
                 </div>
-
-             
-
-           
               </div>
             </div>
 

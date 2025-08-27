@@ -1,3 +1,4 @@
+// WhoAmI Test Component - Tests Internet Identity authentication and backend connection
 import React, { useState } from "react";
 import { useProfile } from "../hooks/useProfile";
 
@@ -5,6 +6,8 @@ const WhoAmI = () => {
   const { state, login, logout, isAuthenticated } = useProfile();
   const [principal, setPrincipal] = useState("");
 
+  // Calls backend whoami function to get user's principal ID
+  // Calls backend whoami function to get user's principal ID
   const handleWhoAmI = async () => {
     if (!state.actor) {
       setPrincipal("Actor not initialized");
@@ -13,6 +16,7 @@ const WhoAmI = () => {
 
     try {
       setPrincipal("Loading...");
+      // Call backend canister method to get principal
       const result = await state.actor.whoami();
       setPrincipal(result.toString());
     } catch (error) {
@@ -21,6 +25,7 @@ const WhoAmI = () => {
     }
   };
 
+  // Handle Internet Identity login
   const handleLogin = async () => {
     try {
       await login("ii"); // Use Internet Identity
@@ -29,6 +34,7 @@ const WhoAmI = () => {
     }
   };
 
+  // Handle user logout and clear principal
   const handleLogout = async () => {
     try {
       await logout();
@@ -44,6 +50,7 @@ const WhoAmI = () => {
         <h1 className="text-2xl font-bold text-center mb-6">Who Am I?</h1>
 
         <div className="space-y-4">
+          {/* Login/Logout button based on authentication status */}
           {!isAuthenticated ? (
             <button
               onClick={handleLogin}
@@ -60,6 +67,7 @@ const WhoAmI = () => {
             </button>
           )}
 
+          {/* WhoAmI test button - disabled when not authenticated */}
           <button
             onClick={handleWhoAmI}
             disabled={!isAuthenticated}
@@ -72,6 +80,7 @@ const WhoAmI = () => {
             Who Am I?
           </button>
 
+          {/* Display principal ID result */}
           {principal && (
             <div className="mt-6">
               <h2 className="text-lg font-semibold mb-2">Your Principal ID:</h2>
@@ -81,6 +90,7 @@ const WhoAmI = () => {
             </div>
           )}
 
+          {/* Display connection status information */}
           <div className="mt-4 text-sm text-gray-600">
             <p>
               <strong>Status:</strong>{" "}

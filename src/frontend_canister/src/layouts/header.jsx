@@ -1,3 +1,4 @@
+// Main Header Component - Navigation bar with responsive design and animations
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Menu, X } from "lucide-react";
@@ -5,13 +6,16 @@ import logoImage from "../assets/images/logo.png";
 import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
+  // State for mobile menu toggle
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
+  // Toggle mobile menu visibility
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Animation variants for header entrance
   const headerVariants = {
     hidden: { y: -80, opacity: 0 },
     visible: {
@@ -27,6 +31,7 @@ const Header = () => {
     },
   };
 
+  // Animation variants for navigation items
   const navItemVariants = {
     hidden: { y: -20, opacity: 0 },
     visible: {

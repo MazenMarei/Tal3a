@@ -25,10 +25,6 @@
       "source": ["src/frontend_canister/dist"],
       "type": "assets",
       "workspace": "frontend_canister"
-    },
-    "internet_identity": {
-      "type": "pull",
-      "id": "rdmx6-jaaaa-aaaaa-aaadq-cai"
     }
   },
   "networks": {

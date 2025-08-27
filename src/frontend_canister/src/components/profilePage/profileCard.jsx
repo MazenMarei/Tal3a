@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -35,24 +35,24 @@ import { useProfile } from "../../hooks/useProfile";
 const ProfileCard = () => {
   const {
     profileData,
-    updateProfile,
+    // updateProfile, // Commented out unused
     getFavoriteSportsWithIcons,
     getUserInitials,
   } = useProfile();
   const [selectedChart, setSelectedChart] = useState("activity");
-  const hasToastShown = useRef(false);
+  // const hasToastShown = useRef(false); // Commented out unused variable
 
-  const handleShare = () => {
-    const referralUrl = `https://example.com/app/refer/${profileData.username}`;
-    navigator.clipboard
-      .writeText(referralUrl)
-      .then(() => {
-        updateProfile({ points: profileData.points + 100 });
-      })
-      .catch(() => {
-        console.log("Failed to copy referral link");
-      });
-  };
+  // const handleShare = () => { // Commented out unused function
+  //   const referralUrl = `https://example.com/app/refer/${profileData.username}`;
+  //   navigator.clipboard
+  //     .writeText(referralUrl)
+  //     .then(() => {
+  //       updateProfile({ points: profileData.points + 100 });
+  //     })
+  //     .catch(() => {
+  //       console.log("Failed to copy referral link");
+  //     });
+  // };
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -295,7 +295,7 @@ const ProfileCard = () => {
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-1 bg-white shadow-sm border-0 shadow-xl">
+        <Card className="lg:col-span-1 bg-white shadow-xl border-0">
           <CardContent className="p-6 text-center">
             <div className="mb-4">
               <div className="w-24 h-24 rounded-full mx-auto bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-2xl font-bold">

@@ -1,3 +1,4 @@
+// Groups Page - Main groups listing page with sidebar navigation and responsive design
 import React, { useState } from "react";
 import Header from "../components/ui/navBar";
 import footer from "../layouts/footer";
@@ -8,18 +9,27 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 
 const Groups = () => {
+  // State for mobile sidebar visibility
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex flex-col">
+      {/* Main header navigation */}
       <Header />
+
+      {/* Groups page navigation bar */}
       <div className="mt-15">
         <NavBar />
       </div>
+
+      {/* Main content area with sidebar and main body */}
       <div className="flex-1 flex flex-row mt-10 px-3">
+        {/* Desktop sidebar - hidden on mobile */}
         <div className="hidden md:block flex-shrink-0">
           <SideBar />
         </div>
+
+        {/* Mobile sidebar - uses sheet overlay */}
         <div className="md:hidden">
           <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
             <SheetTrigger asChild>

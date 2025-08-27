@@ -1,14 +1,18 @@
+// Login Card Component - Displays authentication options for users (Internet Identity & NFID)
 import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 import { Shield, Chrome, ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion } from "framer-motion"; // eslint-disable-line
 import LogoImage from "../../assets/images/logo.png";
 import iiLogo from "../../assets/icons/ii_logo.png";
 import nfidLogo from "../../assets/icons/nfid_logo.png";
 import { useProfile } from "../../hooks/useProfile";
+
 const LoginCard = () => {
   const { login } = useProfile();
+
+  // Animation variants for smooth transitions
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {

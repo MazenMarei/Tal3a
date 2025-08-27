@@ -1,12 +1,15 @@
+// Profile Context - Manages user authentication and profile data for the sports community platform
 import React, { createContext, useState, useEffect } from "react";
 import { Calendar, Users, Star, Clock, Award, Wallet } from "lucide-react";
 import { AuthClient } from "@dfinity/auth-client";
 import { canisterId as useCanisterId } from "declarations/user_canister/index.js";
 import { createActor } from "declarations/user_canister";
 
+// Environment configuration
 const network = import.meta.env.DFX_NETWORK;
 console.log(import.meta.env);
 
+// Authentication providers - switches between local and production
 const identityProvider =
   network === "ic"
     ? "https://identity.ic0.app"
@@ -17,9 +20,12 @@ const nfidProvider =
     ? "https://nfid.one"
     : "http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943"; // Local
 
+// Create context for profile data sharing
 const ProfileContext = createContext();
 
+// Profile provider component - wraps app with authentication and profile state
 const ProfileProvider = ({ children }) => {
+  // Authentication state management
   const [state, setState] = useState({
     actor: undefined,
     authClient: undefined,
@@ -27,6 +33,7 @@ const ProfileProvider = ({ children }) => {
     principal: "",
   });
 
+  // User profile data with default values
   const [profileData, setProfileData] = useState({
     name: "Ahmed Hassan",
     username: "@ahmed_hassan",
