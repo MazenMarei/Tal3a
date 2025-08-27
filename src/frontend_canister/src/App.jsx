@@ -25,6 +25,7 @@ import EventDetails from "./pages/eventDetails";
 import Notification from "./pages/notification";
 import CreateEvent from "./pages/createEvent";
 import CreateGroup from "./pages/createGroup";
+import WhoAmI from "./pages/whoami";
 
 const ProtectedRoute = ({ element }) => {
   const { isAuthenticated } = useProfile();
@@ -146,6 +147,7 @@ const App = () => {
                         path="/createGroup"
                         element={<ProtectedRoute element={<CreateGroup />} />}
                       />
+                      <Route path="/whoami" element={<WhoAmI />} />
                       {/* Catch-all route for 404 */}
                       <Route path="*" element={<NotFoundPage />} />
                     </Routes>
