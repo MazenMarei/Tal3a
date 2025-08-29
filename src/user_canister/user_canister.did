@@ -1,0 +1,112 @@
+type CityData = record { id : nat16; name : text; slug : text; name_l1 : text };
+type Error = record { code : nat16; error : text; message : text };
+type GovernorateData = record {
+  id : nat8;
+  name : text;
+  slug : text;
+  name_l1 : text;
+};
+type NewNotification = record {
+  content : text;
+  notification_type : NotificationType;
+};
+type Notification = record {
+  id : text;
+  is_read : bool;
+  content : text;
+  created_at : nat64;
+  notification_type : NotificationType;
+};
+type NotificationType = variant { Reminder; Message; Alert };
+type PublicUser = record {
+  bio : opt text;
+  username : text;
+  city : CityData;
+  avatar_url : opt blob;
+  role : UserRole;
+  created_at : nat64;
+  last_active : nat64;
+  is_online : bool;
+  governorate : GovernorateData;
+  principal_id : principal;
+  sports : vec Sports;
+};
+type RegisteringUser = record {
+  bio : opt text;
+  username : text;
+  city : nat16;
+  free_days : opt blob;
+  avatar_url : opt blob;
+  governorate : nat8;
+  sports : vec Sports;
+};
+type Result = variant { Ok; Err : Error };
+type Result_1 = variant { Ok : User; Err : Error };
+type Result_2 = variant { Ok : CityData; Err : Error };
+type Result_3 = variant { Ok : GovernorateData; Err : Error };
+type Result_4 = variant { Ok : PublicUser; Err : Error };
+type Sports = variant {
+  Basketball;
+  Tennis;
+  Volleyball;
+  Football;
+  Padel;
+  Fitness;
+  Cycling;
+  Handball;
+  Camping;
+  Running;
+  Skateboarding;
+  Swimming;
+};
+type UpdatingUser = record {
+  bio : opt text;
+  username : opt text;
+  city : opt nat16;
+  free_days : opt blob;
+  avatar_url : opt blob;
+  governorate : opt nat8;
+  sports : vec Sports;
+  points : opt nat64;
+};
+type User = record {
+  bio : opt text;
+  username : text;
+  notifications : vec Notification;
+  city : CityData;
+  free_days : opt blob;
+  avatar_url : opt blob;
+  role : UserRole;
+  manual_status : bool;
+  created_at : nat64;
+  last_active : nat64;
+  is_online : bool;
+  governorate : GovernorateData;
+  principal_id : principal;
+  sports : vec Sports;
+  activity : vec UserActivity;
+};
+type UserActivity = record {
+  duration : nat64;
+  time : nat64;
+  distance : opt float64;
+  user_id : principal;
+  sport : Sports;
+};
+type UserRole = variant { User; Admin };
+service : {
+  add_activity : (UserActivity) -> (Result);
+  add_notification : (NewNotification) -> (Result);
+  create_user : (RegisteringUser) -> (Result_1);
+  delete_account : () -> (Result);
+  get_all_cities_in_governorate : (nat8) -> (vec CityData) query;
+  get_all_governorates : () -> (vec GovernorateData) query;
+  get_city : (nat16, nat8) -> (Result_2) query;
+  get_current_user : () -> (Result_1) query;
+  get_governorate : (nat8) -> (Result_3) query;
+  get_user : (principal) -> (Result_4) query;
+  mark_notification_as_read : (text) -> (Result);
+  ping : () -> (Result);
+  set_account_status : (bool) -> (Result);
+  update_profile : (UpdatingUser) -> (Result);
+}

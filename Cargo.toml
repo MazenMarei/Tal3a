@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "src/social_canister",
+    "src/user_canister",
+    "src/event_canister"
+]
+resolver = "2"
