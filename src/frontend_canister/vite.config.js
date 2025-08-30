@@ -1,8 +1,10 @@
 import { fileURLToPath, URL } from "url";
+import path from "path";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import environment from "vite-plugin-environment";
 import dotenv from "dotenv";
+import tailwindcss from "@tailwindcss/vite";
 
 dotenv.config({ path: "../../.env" });
 
@@ -32,14 +34,17 @@ export default defineConfig({
     react(),
     environment("all", { prefix: "CANISTER_" }),
     environment("all", { prefix: "DFX_" }),
+    tailwindcss(),
   ],
   resolve: {
     alias: [
       {
         find: "declarations",
-        replacement: fileURLToPath(
-          new URL("../../declarations", import.meta.url)
-        ),
+        replacement: fileURLToPath(new URL("../declarations", import.meta.url)),
+      },
+      {
+        find: "@",
+        replacement: fileURLToPath(new URL("./src", import.meta.url)),
       },
     ],
     dedupe: ["@dfinity/agent"],
