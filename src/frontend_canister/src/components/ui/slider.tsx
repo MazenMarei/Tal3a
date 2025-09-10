@@ -10,7 +10,13 @@ function Slider({
   min = 0,
   max = 100,
   ...props
-}) {
+} :{
+  className?: string;
+  defaultValue?: number | number[];
+  value?: number | number[];
+  min?: number;
+  max?: number;
+} & React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>) {
   const _values = React.useMemo(() =>
     Array.isArray(value)
       ? value

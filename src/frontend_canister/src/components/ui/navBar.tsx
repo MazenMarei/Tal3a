@@ -1,18 +1,35 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Menu, X, User, ChevronDown, LogOut, UserCircle, Bell } from 'lucide-react';
-import logoImage from '../../assets/images/logo.png';
-import { Link } from 'react-router-dom';
-import { useNotifications } from '../../context/NotificationContext';
+import { useState } from "react";
+import { motion, AnimatePresence, Variants } from "framer-motion";
+import {
+  Search,
+  Menu,
+  X,
+  User,
+  ChevronDown,
+  LogOut,
+  UserCircle,
+  Bell,
+} from "lucide-react";
+import logoImage from "../../assets/images/logo.png";
+import { Link } from "react-router-dom";
+import { useNotifications } from "../../context/NotificationContext";
+
+interface Notification {
+  id: string;
+  read: boolean;
+}
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-  const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
+  const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
+    useState(false);
   const { notifications } = useNotifications();
 
   // Calculate unread notifications
-  const unreadCount = notifications.filter(notification => !notification.read).length;
+  const unreadCount = notifications.filter(
+    (notification: Notification) => !notification.read
+  ).length;
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -32,82 +49,82 @@ const NavBar = () => {
     setIsProfileDropdownOpen(false);
   };
 
-  const headerVariants = {
+  const headerVariants: Variants = {
     hidden: { y: -80, opacity: 0 },
-    visible: { 
-      y: 0, 
+    visible: {
+      y: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
         damping: 15,
         staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+      },
+    },
   };
 
-  const navItemVariants = {
+  const navItemVariants: Variants = {
     hidden: { y: -20, opacity: 0 },
-    visible: { 
-      y: 0, 
+    visible: {
+      y: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 120,
-        damping: 10
-      }
-    }
+        damping: 10,
+      },
+    },
   };
 
-  const mobileMenuVariants = {
-    hidden: { 
+  const mobileMenuVariants: Variants = {
+    hidden: {
       opacity: 0,
       height: 0,
       transition: {
         duration: 0.2,
-        ease: "easeInOut"
-      }
+        ease: [0.4, 0.0, 0.2, 1] as const,
+      },
     },
-    visible: { 
+    visible: {
       opacity: 1,
       height: "auto",
       transition: {
         duration: 0.3,
-        ease: "easeOut",
+        ease: [0.4, 0.0, 0.2, 1] as const,
         staggerChildren: 0.05,
-        delayChildren: 0.1
-      }
+        delayChildren: 0.1,
+      },
     },
     exit: {
       opacity: 0,
       height: 0,
       transition: {
         duration: 0.2,
-        ease: "easeInOut"
-      }
-    }
+        ease: [0.4, 0.0, 0.2, 1] as const,
+      },
+    },
   };
 
-  const dropdownVariants = {
-    hidden: { 
+  const dropdownVariants: Variants = {
+    hidden: {
       opacity: 0,
       scale: 0.95,
       y: -10,
       transition: {
         duration: 0.2,
-        ease: "easeInOut"
-      }
+        ease: [0.4, 0.0, 0.2, 1] as const,
+      },
     },
-    visible: { 
+    visible: {
       opacity: 1,
       scale: 1,
       y: 0,
       transition: {
         duration: 0.2,
-        ease: "easeOut",
-        staggerChildren: 0.05
-      }
+        ease: [0.4, 0.0, 0.2, 1] as const,
+        staggerChildren: 0.05,
+      },
     },
     exit: {
       opacity: 0,
@@ -115,52 +132,52 @@ const NavBar = () => {
       y: -10,
       transition: {
         duration: 0.15,
-        ease: "easeInOut"
-      }
-    }
+        ease: [0.4, 0.0, 0.2, 1] as const,
+      },
+    },
   };
 
-  const dropdownItemVariants = {
+  const dropdownItemVariants: Variants = {
     hidden: { x: -10, opacity: 0 },
-    visible: { 
-      x: 0, 
+    visible: {
+      x: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 300,
-        damping: 20
-      }
-    }
+        damping: 20,
+      },
+    },
   };
 
-  const mobileNavItemVariants = {
+  const mobileNavItemVariants: Variants = {
     hidden: { x: -30, opacity: 0 },
-    visible: { 
-      x: 0, 
+    visible: {
+      x: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 120,
-        damping: 12
-      }
-    }
+        damping: 12,
+      },
+    },
   };
 
   return (
     <div className="bg-gray-50">
-      <motion.header 
+      <motion.header
         className="bg-white shadow-lg border-b border-green-100 text-gray-800 px-6 h-16 fixed top-0 left-0 right-0 z-50 w-full"
         variants={headerVariants}
         initial="hidden"
         animate="visible"
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between h-full">
-          <motion.div 
+          <motion.div
             className="flex items-center md:hidden mr-4"
             variants={navItemVariants}
           >
-            <motion.button 
-              onClick={toggleMenu} 
+            <motion.button
+              onClick={toggleMenu}
               aria-label="Navigation menu"
               className="p-2 rounded-lg hover:bg-green-50 transition-colors cursor-pointer"
               whileHover={{ scale: 1.1 }}
@@ -191,7 +208,7 @@ const NavBar = () => {
               </AnimatePresence>
             </motion.button>
           </motion.div>
-          <motion.div 
+          <motion.div
             className="flex items-center"
             variants={navItemVariants}
             whileHover={{ scale: 1.05 }}
@@ -205,7 +222,7 @@ const NavBar = () => {
               />
             </Link>
           </motion.div>
-          <motion.nav 
+          <motion.nav
             className="hidden md:flex items-center justify-center flex-1 max-w-md mx-16"
             variants={navItemVariants}
           >
@@ -213,7 +230,7 @@ const NavBar = () => {
               { text: "Groups", to: "/groups" },
               { text: "Events", to: "/events" },
               { text: "Map", to: "/map" },
-              { text: "Promotions", to: "/promotions" }
+              { text: "Promotions", to: "/promotions" },
             ].map((item, index) => (
               <motion.div
                 key={item.text}
@@ -221,10 +238,10 @@ const NavBar = () => {
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4 + index * 0.1 }}
-                whileHover={{ 
+                whileHover={{
                   y: -2,
                   scale: 1.05,
-                  transition: { type: "spring", stiffness: 400, damping: 10 }
+                  transition: { type: "spring", stiffness: 400, damping: 10 },
                 }}
               >
                 <Link
@@ -236,11 +253,11 @@ const NavBar = () => {
               </motion.div>
             ))}
           </motion.nav>
-          <motion.div 
+          <motion.div
             className="flex items-center space-x-4 ml-auto"
             variants={navItemVariants}
           >
-            <motion.div 
+            <motion.div
               className="relative hidden md:block"
               initial={{ width: 0, opacity: 0 }}
               animate={{ width: "16rem", opacity: 1 }}
@@ -262,9 +279,9 @@ const NavBar = () => {
               <motion.button
                 onClick={toggleNotificationDropdown}
                 className="flex items-center space-x-2 bg-green-500 hover:bg-green-600 px-3 py-2 rounded-full transition-colors cursor-pointer relative"
-                whileHover={{ 
+                whileHover={{
                   scale: 1.05,
-                  boxShadow: "0 10px 25px rgba(34, 197, 94, 0.3)"
+                  boxShadow: "0 10px 25px rgba(34, 197, 94, 0.3)",
                 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -318,9 +335,9 @@ const NavBar = () => {
               <motion.button
                 onClick={toggleProfileDropdown}
                 className="flex items-center space-x-2 bg-green-500 hover:bg-green-600 px-3 py-2 rounded-full transition-colors cursor-pointer"
-                whileHover={{ 
+                whileHover={{
                   scale: 1.05,
-                  boxShadow: "0 10px 25px rgba(34, 197, 94, 0.3)"
+                  boxShadow: "0 10px 25px rgba(34, 197, 94, 0.3)",
                 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -369,7 +386,7 @@ const NavBar = () => {
         </div>
         <AnimatePresence>
           {isMenuOpen && (
-            <motion.div 
+            <motion.div
               className="md:hidden bg-white text-gray-800 px-6 py-4 absolute top-16 left-0 w-full z-10 shadow-xl border-t border-green-100 overflow-hidden"
               variants={mobileMenuVariants}
               initial="hidden"
@@ -382,14 +399,14 @@ const NavBar = () => {
                   { text: "Events", to: "/events" },
                   { text: "Activities", to: "/activities" },
                   { text: "Map", to: "/map" },
-                  { text: "Promotions", to: "/promotions" }
+                  { text: "Promotions", to: "/promotions" },
                 ].map((item, index) => (
                   <motion.div
                     key={item.text}
                     variants={mobileNavItemVariants}
-                    whileHover={{ 
+                    whileHover={{
                       x: 8,
-                      backgroundColor: "rgba(34, 197, 94, 0.05)"
+                      backgroundColor: "rgba(34, 197, 94, 0.05)",
                     }}
                   >
                     <Link

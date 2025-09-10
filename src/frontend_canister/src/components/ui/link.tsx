@@ -1,6 +1,14 @@
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from "react-router-dom";
+import { ReactNode } from "react";
 
-const Link = ({ to, className = '', children, ...props }) => {
+interface LinkProps {
+  to: string;
+  className?: string;
+  children: ReactNode;
+  [key: string]: any;
+}
+
+const Link = ({ to, className = "", children, ...props }: LinkProps) => {
   return (
     <RouterLink
       to={to}

@@ -1,3 +1,4 @@
+import "./polyfills.js";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
@@ -6,6 +7,14 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AuthProvider } from "@/contexts/AuthContext";
 import App from "./App";
 import "./index.css";
+
+// Debug crypto availability
+console.log("Crypto available:", typeof globalThis.crypto !== "undefined");
+console.log(
+  "Subtle crypto available:",
+  typeof globalThis.crypto?.subtle !== "undefined"
+);
+console.log("Crypto object:", globalThis.crypto);
 
 // Configure QueryClient
 const queryClient = new QueryClient({

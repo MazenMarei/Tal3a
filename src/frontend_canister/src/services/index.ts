@@ -45,7 +45,7 @@ export async function initIdentity() {
 export async function createAgent(identity?: Identity): Promise<HttpAgent> {
   const host = isLocal ? LOCAL_REPLICA_URL : IC_URL;
 
-  const agent = new HttpAgent({
+  const agent = await HttpAgent.create({
     host,
     identity,
   });

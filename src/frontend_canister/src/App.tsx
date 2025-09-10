@@ -6,6 +6,7 @@ import Landing from "@/pages/landing";
 import { ReactElement } from "react";
 import { useCurrentUser } from "./hooks/useAuth";
 import Login from "./pages/login";
+import MiddlePage from "./pages/MiddlePage";
 // import { ReactQueryExamples } from "./components/ReactQueryExamples";
 // import { UserDashboard } from "./components/UserDashboard";
 
@@ -63,6 +64,7 @@ const App = () => {
           {/* Public routes - accessible without authentication */}
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/middlepage" element={<MiddlePage />} />
           {/* <Route path="/ReactQueryExamples" element={<ReactQueryExamples />} />
           <Route path="/UserDashboard" element={<UserDashboard />} /> */}
         </Routes>

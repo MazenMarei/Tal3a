@@ -18,8 +18,18 @@ export const useResponsive = () => {
   };
 
   const getResponsiveStyle = (
-    styles: { [x: string]: string },
-    defaultValue = ""
+    styles: {
+      [x: string]: {
+        grid: string;
+        tile: string;
+        text: string;
+      };
+    },
+    defaultValue: {
+      grid: string;
+      tile: string;
+      text: string;
+    }
   ) => {
     const breakpoint = getBreakpoint();
     return styles[breakpoint] || defaultValue;

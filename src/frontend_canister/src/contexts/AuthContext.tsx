@@ -22,7 +22,45 @@ export const AuthProvider = ({
     let isMounted = true;
 
     const initializeAuth = async () => {
-      setIsAuthenticated(await authService.isAuthenticated());
+      // Wait for crypto to be available before initializing auth
+      const waitForCrypto = (): Promise<void> => {
+        return new Promise((resolve) => {
+          // Check if crypto is already available
+          if (globalThis.crypto && globalThis.crypto.subtle) {
+            resolve();
+            return;
+          }
+
+          // If not available, wait for the cryptoReady event
+          const handleCryptoReady = () => {
+            window.removeEventListener("cryptoReady", handleCryptoReady);
+            resolve();
+          };
+
+          window.addEventListener("cryptoReady", handleCryptoReady);
+
+          // Also check periodically in case the event was missed
+          const checkInterval = setInterval(() => {
+            if (globalThis.crypto && globalThis.crypto.subtle) {
+              clearInterval(checkInterval);
+              window.removeEventListener("cryptoReady", handleCryptoReady);
+              resolve();
+            }
+          }, 100);
+        });
+      };
+
+      try {
+        await waitForCrypto();
+        if (isMounted) {
+          setIsAuthenticated(await authService.isAuthenticated());
+        }
+      } catch (error) {
+        console.error("Error initializing auth:", error);
+        if (isMounted) {
+          setIsAuthenticated(false);
+        }
+      }
     };
 
     initializeAuth();

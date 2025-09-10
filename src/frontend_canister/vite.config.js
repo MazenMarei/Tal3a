@@ -19,6 +19,10 @@ export default defineConfig({
       },
     },
   },
+  define: {
+    global: "globalThis",
+    "process.env": {},
+  },
   server: {
     proxy: {
       "/api": {
@@ -29,6 +33,9 @@ export default defineConfig({
     watch: {
       usePolling: true,
     },
+    host: "0.0.0.0",
+    port: 5174,
+    https: false,
   },
   plugins: [
     react(),
@@ -45,6 +52,18 @@ export default defineConfig({
       {
         find: "@",
         replacement: fileURLToPath(new URL("./src", import.meta.url)),
+      },
+      {
+        find: "crypto",
+        replacement: "crypto-browserify",
+      },
+      {
+        find: "stream",
+        replacement: "stream-browserify",
+      },
+      {
+        find: "util",
+        replacement: "util",
       },
     ],
     dedupe: ["@dfinity/agent"],

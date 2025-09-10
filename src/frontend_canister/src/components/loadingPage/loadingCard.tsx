@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { useResponsive } from "@/utilities/responsive";
 
 const LoadingCard = ({
@@ -29,14 +29,17 @@ const LoadingCard = ({
 
   const responsiveSize = getResponsiveStyle(
     {
-      xs: sizeStyles[size] || sizeStyles.medium,
-      md: sizeStyles[size] || sizeStyles.medium,
-      lg: sizeStyles[size === "small" ? "medium" : size] || sizeStyles.medium,
+      xs: sizeStyles[size as keyof typeof sizeStyles] || sizeStyles.medium,
+      md: sizeStyles[size as keyof typeof sizeStyles] || sizeStyles.medium,
+      lg:
+        sizeStyles[
+          (size === "small" ? "medium" : size) as keyof typeof sizeStyles
+        ] || sizeStyles.medium,
     },
     sizeStyles.medium
   );
 
-  const tileVariants = {
+  const tileVariants: Variants = {
     pulse: {
       opacity: [1, 0.4, 1],
       scale: [1, 0.8, 1],
