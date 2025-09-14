@@ -3,10 +3,13 @@ mod services;
 mod storage;
 mod types;
 
+// Re-export all contract functions at the crate level
+pub use contracts::owners::*;
+pub use contracts::group_admins::*;
+
 use crate::types::{
     Owner, OwnerRole, Permission,
     GroupAdmin, GroupPermission,
-    Error,
 };
 
 use candid::Principal;
