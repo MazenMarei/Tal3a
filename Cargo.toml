@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "src/owners_canister",
     "src/social_canister",
     "src/user_canister",
     "src/event_canister"

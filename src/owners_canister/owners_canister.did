@@ -1,0 +1,57 @@
+type OwnerRole = variant {
+  SuperAdmin;
+  Admin;
+  Moderator;
+};
+
+type Permission = variant {
+  ManageOwners;
+  ManageGroups;
+  ManageUsers;
+  ModerateContent;
+  ViewAnalytics;
+  SystemConfiguration;
+};
+
+type GroupPermission = variant {
+  ManageMembers;
+  ModerateContent;
+  ManageEvents;
+  ConfigureGroup;
+  ViewGroupAnalytics;
+};
+
+type Owner = record {
+  "principal" : principal;
+  "name" : text;
+  "role" : OwnerRole;
+  "created_at" : nat64;
+  "created_by" : principal;
+  "permissions" : vec Permission;
+};
+
+type GroupAdmin = record {
+  "principal" : principal;
+  "group_id" : nat64;
+  "name" : text;
+  "permissions" : vec GroupPermission;
+  "added_at" : nat64;
+  "added_by" : principal;
+};
+
+service : {
+  "add_owner" : (principal, text, OwnerRole, vec Permission) -> (variant { Ok; Err : text });
+  "remove_owner" : (principal) -> (variant { Ok; Err : text });
+  "get_all_owners" : () -> (variant { Ok : vec Owner; Err : text }) query;
+  "get_my_owner_info" : () -> (variant { Ok : Owner; Err : text }) query;
+  "update_owner_permissions" : (principal, vec Permission) -> (variant { Ok; Err : text });
+  
+  "add_group_admin" : (nat64, principal, text, vec GroupPermission) -> (variant { Ok; Err : text });
+  "remove_group_admin" : (nat64, principal) -> (variant { Ok; Err : text });
+  "get_group_admins" : (nat64) -> (variant { Ok : vec GroupAdmin; Err : text }) query;
+  "get_my_group_admin_info" : () -> (vec GroupAdmin) query;
+  "update_group_admin_permissions" : (nat64, principal, vec GroupPermission) -> (variant { Ok; Err : text });
+  
+  "is_owner" : (principal) -> (bool) query;
+  "is_group_admin" : (nat64, principal) -> (bool) query;
+}
