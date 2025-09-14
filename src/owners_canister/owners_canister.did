@@ -54,4 +54,6 @@ service : {
   
   "is_owner" : (principal) -> (bool) query;
   "is_group_admin" : (nat64, principal) -> (bool) query;
+  "get_initialization_info" : () -> (variant { Ok : record { principal; nat64 }; Err : text }) query;
+  "whoami" : () -> (principal) query;
 }

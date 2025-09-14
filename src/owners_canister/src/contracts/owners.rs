@@ -61,3 +61,20 @@ pub fn update_owner_permissions(
 pub fn is_owner(principal: Principal) -> bool {
     crate::storage::owner_exists(&principal)
 }
+
+// Get initialization status and super admin info (useful for debugging)
+#[query]
+pub fn get_initialization_info() -> Result<(Principal, u64), String> {
+    let super_admin = crate::storage::get_super_admin()
+        .ok_or_else(|| "Canister not properly initialized".to_string())?;
+    
+    let owners_count = crate::storage::get_all_owners().len() as u64;
+    
+    Ok((super_admin, owners_count))
+}
+
+// Get current caller's principal (useful for testing)
+#[query]
+pub fn whoami() -> Principal {
+    ic_cdk::api::msg_caller()
+}
