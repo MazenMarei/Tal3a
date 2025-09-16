@@ -11,7 +11,7 @@ pub fn add_owner(
     role: OwnerRole,
     permissions: Vec<Permission>,
 ) -> Result<(), String> {
-    let caller = ic_cdk::api::caller();
+    let caller = ic_cdk::api::msg_caller();
     
     services::owner::add_owner(&caller, new_owner_principal, name, role, permissions)
         .map_err(|e| e.to_string())
@@ -20,7 +20,7 @@ pub fn add_owner(
 // Remove an owner (only super admins can do this)
 #[update]
 pub fn remove_owner(owner_principal: Principal) -> Result<(), String> {
-    let caller = ic_cdk::api::caller();
+    let caller = ic_cdk::api::msg_caller();
     
     services::owner::remove_owner(&caller, owner_principal)
         .map_err(|e| e.to_string())
@@ -29,7 +29,7 @@ pub fn remove_owner(owner_principal: Principal) -> Result<(), String> {
 // Get all owners (only owners can see this)
 #[query]
 pub fn get_all_owners() -> Result<Vec<Owner>, String> {
-    let caller = ic_cdk::api::caller();
+    let caller = ic_cdk::api::msg_caller();
     
     services::owner::get_all_owners(&caller)
         .map_err(|e| e.to_string())
@@ -38,7 +38,7 @@ pub fn get_all_owners() -> Result<Vec<Owner>, String> {
 // Get caller's owner info
 #[query]
 pub fn get_my_owner_info() -> Result<Owner, String> {
-    let caller = ic_cdk::api::caller();
+    let caller = ic_cdk::api::msg_caller();
     
     services::owner::get_owner_info(&caller)
         .map_err(|e| e.to_string())
@@ -50,7 +50,7 @@ pub fn update_owner_permissions(
     owner_principal: Principal,
     new_permissions: Vec<Permission>,
 ) -> Result<(), String> {
-    let caller = ic_cdk::api::caller();
+    let caller = ic_cdk::api::msg_caller();
     
     services::owner::update_owner_permissions(&caller, owner_principal, new_permissions)
         .map_err(|e| e.to_string())
