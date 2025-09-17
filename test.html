@@ -1,0 +1,1008 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tal3a - طلعة | تطبيق الرياضة الاجتماعية في مصر</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      window.FontAwesomeConfig = { autoReplaceSvg: 'nest' }
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#00B894',
+              secondary: '#004E64',
+              accent: '#FDC500',
+              light: '#F8F9FA',
+              dark: '#2E2E2E',
+              success: '#00C853',
+              highlight: '#06FF6D',
+              danger: '#D62828',
+            },
+            fontFamily: {
+              cairo: ['Cairo', 'sans-serif'],
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="font-cairo bg-light text-dark overflow-x-hidden">
+    <!-- Header Navigation -->
+    <header id="header" class="bg-white shadow-lg sticky top-0 z-50">
+      <div class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <div class="bg-primary rounded-xl p-2">
+              <i class="fas fa-running text-white text-2xl"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-primary">طلعة</h1>
+          </div>
+          <nav class="hidden md:flex items-center space-x-8">
+            <span
+              class="text-secondary hover:text-primary transition-colors font-medium cursor-pointer"
+              >الرئيسية</span
+            >
+            <span
+              class="text-secondary hover:text-primary transition-colors font-medium cursor-pointer"
+              >المميزات</span
+            >
+            <span
+              class="text-secondary hover:text-primary transition-colors font-medium cursor-pointer"
+              >المجتمع</span
+            >
+            <span
+              class="text-secondary hover:text-primary transition-colors font-medium cursor-pointer"
+              >المكافآت</span
+            >
+            <span
+              class="text-secondary hover:text-primary transition-colors font-medium cursor-pointer"
+              >التحميل</span
+            >
+          </nav>
+          <div class="flex items-center space-x-4">
+            <button
+              class="bg-primary text-white px-6 py-3 rounded-full font-semibold hover:bg-success transition-colors"
+            >
+              <i class="fas fa-download ml-2"></i>
+              حمل التطبيق
+            </button>
+            <button class="md:hidden text-secondary text-2xl">
+              <i class="fas fa-bars"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section
+      id="hero"
+      class="bg-gradient-to-br from-primary to-secondary text-white relative overflow-hidden h-[700px]"
+    >
+      <div class="absolute inset-0 bg-black opacity-20"></div>
+      <div class="container mx-auto px-6 py-20 relative z-10">
+        <div class="grid md:grid-cols-2 gap-12 items-center h-full">
+          <div class="space-y-8">
+            <div class="space-y-4">
+              <h2 class="text-6xl font-bold leading-tight">يلا بينا نتحرك!</h2>
+              <p class="text-2xl font-light">
+                صاحب الجدع اللي هيخليك تطلع تتمرن
+              </p>
+            </div>
+            <p class="text-xl text-gray-200 leading-relaxed">
+              طلعة هو التطبيق اللي هيساعدك تلاقي شريك الرياضة المثالي، تنضم
+              لمجموعات رياضية في منطقتك، وتكسب مكافآت على كل نشاط تعمله. مش بس
+              تتبع إحصائيات، ده تكوين صداقات حقيقية!
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4">
+              <button
+                class="bg-accent text-dark px-8 py-4 rounded-full text-lg font-semibold hover:bg-yellow-400 transition-colors flex items-center justify-center"
+              >
+                <i class="fab fa-apple ml-3 text-xl"></i>
+                حمل من App Store
+              </button>
+              <button
+                class="bg-white text-primary px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center"
+              >
+                <i class="fab fa-google-play ml-3 text-xl"></i>
+                حمل من Google Play
+              </button>
+            </div>
+            <div class="flex items-center space-x-6 pt-4">
+              <div class="text-center">
+                <div class="text-3xl font-bold">50K+</div>
+                <div class="text-sm text-gray-300">مستخدم نشط</div>
+              </div>
+              <div class="text-center">
+                <div class="text-3xl font-bold">1000+</div>
+                <div class="text-sm text-gray-300">طلعة يومياً</div>
+              </div>
+              <div class="text-center">
+                <div class="text-3xl font-bold">25+</div>
+                <div class="text-sm text-gray-300">رياضة مختلفة</div>
+              </div>
+            </div>
+          </div>
+          <div class="relative">
+            <div class="relative z-10">
+              <img
+                class="w-full max-w-md mx-auto rounded-3xl shadow-2xl"
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/28dff53cfe-1b3ea49b14567e518425.png"
+                alt="modern Egyptian young people playing football together in Cairo, vibrant community sports scene, mobile app interface mockup"
+              />
+            </div>
+            <div
+              class="absolute -top-8 -right-8 w-32 h-32 bg-accent rounded-full opacity-20 animate-pulse"
+            ></div>
+            <div
+              class="absolute -bottom-8 -left-8 w-24 h-24 bg-highlight rounded-full opacity-30 animate-bounce"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem Statement Section -->
+    <section id="problem" class="py-20 bg-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+          <h3 class="text-5xl font-bold text-secondary mb-6">
+            المشكلة اللي بنحلها
+          </h3>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            كتير من الشباب في مصر عايزين يتمرنوا ويلعبوا رياضة، بس مش لاقيين
+            الشريك المناسب أو المجموعة اللي تشاركهم نفس الاهتمام
+          </p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div
+            class="text-center p-8 rounded-2xl bg-gray-50 hover:shadow-lg transition-shadow"
+          >
+            <div
+              class="bg-danger w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-user-times text-white text-2xl"></i>
+            </div>
+            <h4 class="text-2xl font-bold text-secondary mb-4">عزلة رياضية</h4>
+            <p class="text-gray-600">
+              صعوبة في إيجاد شركاء للرياضة أو مجموعات منتظمة للانضمام إليها في
+              المنطقة
+            </p>
+          </div>
+          <div
+            class="text-center p-8 rounded-2xl bg-gray-50 hover:shadow-lg transition-shadow"
+          >
+            <div
+              class="bg-accent w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-comments text-white text-2xl"></i>
+            </div>
+            <h4 class="text-2xl font-bold text-secondary mb-4">فوضى التنظيم</h4>
+            <p class="text-gray-600">
+              استخدام واتساب ومنصات عامة لتنظيم الأنشطة الرياضية يخلق فوضى وعدم
+              تنظيم
+            </p>
+          </div>
+          <div
+            class="text-center p-8 rounded-2xl bg-gray-50 hover:shadow-lg transition-shadow"
+          >
+            <div
+              class="bg-secondary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-battery-empty text-white text-2xl"></i>
+            </div>
+            <h4 class="text-2xl font-bold text-secondary mb-4">قلة التحفيز</h4>
+            <p class="text-gray-600">
+              عدم وجود نظام مكافآت أو تحفيز يشجع على الاستمرار في ممارسة الرياضة
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gradient-to-br from-light to-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+          <h3 class="text-5xl font-bold text-secondary mb-6">مميزات طلعة</h3>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            كل حاجة محتاجها عشان تبدأ رحلتك الرياضية وتبني مجتمع من الأصدقاء
+            الرياضيين
+          </p>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-12 items-center mb-16">
+          <div class="space-y-8">
+            <div class="flex items-start space-x-4">
+              <div
+                class="bg-primary w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+              >
+                <i class="fas fa-search text-white"></i>
+              </div>
+              <div>
+                <h4 class="text-2xl font-bold text-secondary mb-2">
+                  اكتشف الطلعات
+                </h4>
+                <p class="text-gray-600">
+                  لاقي أنشطة رياضية في منطقتك بسهولة. فوتبول، جري، سباحة، تنس،
+                  وأكتر من 25 رياضة مختلفة
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div
+                class="bg-success w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+              >
+                <i class="fas fa-users text-white"></i>
+              </div>
+              <div>
+                <h4 class="text-2xl font-bold text-secondary mb-2">
+                  انضم للمجموعات
+                </h4>
+                <p class="text-gray-600">
+                  ادخل على مجموعات رياضية منتظمة في حيك أو كون مجموعة جديدة
+                  واجمع أصدقائك
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div
+                class="bg-accent w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+              >
+                <i class="fas fa-trophy text-white"></i>
+              </div>
+              <div>
+                <h4 class="text-2xl font-bold text-secondary mb-2">
+                  اكسب مكافآت
+                </h4>
+                <p class="text-gray-600">
+                  كل طلعة تشارك فيها تكسب نقاط تقدر تستبدلها بخصومات في محلات
+                  رياضية ومراكز لياقة
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="relative">
+            <img
+              class="w-full rounded-3xl shadow-2xl"
+              src="https://storage.googleapis.com/uxpilot-auth.appspot.com/b29c94c03c-d07b9dcb421a7a9eeb6c.png"
+              alt="mobile app interface showing sports activities discovery screen with Egyptian users, modern UI design"
+            />
+          </div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div
+            class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
+          >
+            <div
+              class="bg-primary w-16 h-16 rounded-2xl flex items-center justify-center mb-6"
+            >
+              <i class="fas fa-map-marker-alt text-white text-xl"></i>
+            </div>
+            <h4 class="text-xl font-bold text-secondary mb-4">مواقع قريبة</h4>
+            <p class="text-gray-600">
+              لاقي الأنشطة الرياضية الأقرب ليك باستخدام الـ GPS وشوف المسافة
+              والوقت المتوقع للوصول
+            </p>
+          </div>
+          <div
+            class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
+          >
+            <div
+              class="bg-success w-16 h-16 rounded-2xl flex items-center justify-center mb-6"
+            >
+              <i class="fas fa-calendar-alt text-white text-xl"></i>
+            </div>
+            <h4 class="text-xl font-bold text-secondary mb-4">جدولة ذكية</h4>
+            <p class="text-gray-600">
+              نظم وقتك بسهولة مع التذكيرات الذكية ومزامنة التقويم مع أنشطتك
+              الرياضية المفضلة
+            </p>
+          </div>
+          <div
+            class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
+          >
+            <div
+              class="bg-secondary w-16 h-16 rounded-2xl flex items-center justify-center mb-6"
+            >
+              <i class="fas fa-chart-line text-white text-xl"></i>
+            </div>
+            <h4 class="text-xl font-bold text-secondary mb-4">تتبع التقدم</h4>
+            <p class="text-gray-600">
+              شوف إحصائياتك الرياضية، عدد الأنشطة، السعرات المحروقة، والإنجازات
+              اللي حققتها
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community Section -->
+    <section
+      id="community"
+      class="py-20 bg-gradient-to-br from-primary to-secondary text-white"
+    >
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+          <h3 class="text-5xl font-bold mb-6">مجتمع طلعة</h3>
+          <p class="text-xl text-gray-200 max-w-3xl mx-auto">
+            انضم لأكبر مجتمع رياضي في مصر واتعرف على أصدقاء جدد يشاركوك نفس
+            الشغف
+          </p>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-12 items-center mb-16">
+          <div class="space-y-8">
+            <div
+              class="bg-white bg-opacity-10 p-6 rounded-2xl backdrop-blur-sm"
+            >
+              <div class="flex items-center space-x-4 mb-4">
+                <img
+                  src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg"
+                  alt="User"
+                  class="w-12 h-12 rounded-full"
+                />
+                <div>
+                  <h5 class="font-semibold">أحمد محمد</h5>
+                  <p class="text-sm text-gray-300">القاهرة الجديدة</p>
+                </div>
+              </div>
+              <p class="text-gray-200">
+                "طلعة غير حياتي تماماً! كنت بدور على ناس ألعب معاهم فوتبول وفي
+                خلال أسبوع لقيت مجموعة رائعة بنلعب كل يوم جمعة. عاش يا بطل!"
+              </p>
+            </div>
+            <div
+              class="bg-white bg-opacity-10 p-6 rounded-2xl backdrop-blur-sm"
+            >
+              <div class="flex items-center space-x-4 mb-4">
+                <img
+                  src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg"
+                  alt="User"
+                  class="w-12 h-12 rounded-full"
+                />
+                <div>
+                  <h5 class="font-semibold">فاطمة علي</h5>
+                  <p class="text-sm text-gray-300">الإسكندرية</p>
+                </div>
+              </div>
+              <p class="text-gray-200">
+                "أول مرة ألاقي تطبيق يفهم احتياجات البنات في الرياضة. مجموعة
+                الجري بتاعتنا بقت عائلة حقيقية والمكافآت محفزة جداً!"
+              </p>
+            </div>
+            <div
+              class="bg-white bg-opacity-10 p-6 rounded-2xl backdrop-blur-sm"
+            >
+              <div class="flex items-center space-x-4 mb-4">
+                <img
+                  src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg"
+                  alt="User"
+                  class="w-12 h-12 rounded-full"
+                />
+                <div>
+                  <h5 class="font-semibold">كريم حسن</h5>
+                  <p class="text-sm text-gray-300">الجيزة</p>
+                </div>
+              </div>
+              <p class="text-gray-200">
+                "التطبيق سهل جداً في الاستخدام والناس ودودة. كونت مجموعة تنس
+                وبقينا أصدقاء مش بس شركاء رياضة. يلا بينا!"
+              </p>
+            </div>
+          </div>
+          <div class="relative">
+            <img
+              class="w-full rounded-3xl shadow-2xl"
+              src="https://storage.googleapis.com/uxpilot-auth.appspot.com/b888c51f16-5e4be7402a2bb0a2745d.png"
+              alt="diverse group of young Egyptian people celebrating after sports activity, community spirit, friendship and fitness"
+            />
+            <div
+              class="absolute -top-4 -right-4 bg-accent text-dark p-4 rounded-2xl shadow-lg"
+            >
+              <div class="text-2xl font-bold">4.8⭐</div>
+              <div class="text-sm">تقييم المستخدمين</div>
+            </div>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-4 gap-8 text-center">
+          <div class="bg-white bg-opacity-10 p-6 rounded-2xl backdrop-blur-sm">
+            <div class="text-3xl font-bold mb-2">50,000+</div>
+            <div class="text-gray-300">عضو نشط</div>
+          </div>
+          <div class="bg-white bg-opacity-10 p-6 rounded-2xl backdrop-blur-sm">
+            <div class="text-3xl font-bold mb-2">1,000+</div>
+            <div class="text-gray-300">طلعة يومية</div>
+          </div>
+          <div class="bg-white bg-opacity-10 p-6 rounded-2xl backdrop-blur-sm">
+            <div class="text-3xl font-bold mb-2">25+</div>
+            <div class="text-gray-300">رياضة مختلفة</div>
+          </div>
+          <div class="bg-white bg-opacity-10 p-6 rounded-2xl backdrop-blur-sm">
+            <div class="text-3xl font-bold mb-2">15+</div>
+            <div class="text-gray-300">محافظة</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sports Categories Section -->
+    <section id="sports" class="py-20 bg-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+          <h3 class="text-5xl font-bold text-secondary mb-6">
+            الرياضات المتاحة
+          </h3>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            أكتر من 25 رياضة مختلفة تقدر تختار منها اللي يناسبك وتلاقي الشريك
+            المثالي
+          </p>
+        </div>
+        <div class="grid md:grid-cols-5 gap-6">
+          <div
+            class="text-center p-6 rounded-2xl bg-gradient-to-br from-primary to-success text-white hover:shadow-lg transition-all hover:-translate-y-2"
+          >
+            <i class="fas fa-futbol text-4xl mb-4"></i>
+            <h4 class="font-bold text-lg">فوتبول</h4>
+            <p class="text-sm text-gray-200 mt-2">2,500+ طلعة</p>
+          </div>
+          <div
+            class="text-center p-6 rounded-2xl bg-gradient-to-br from-accent to-yellow-500 text-white hover:shadow-lg transition-all hover:-translate-y-2"
+          >
+            <i class="fas fa-running text-4xl mb-4"></i>
+            <h4 class="font-bold text-lg">جري</h4>
+            <p class="text-sm text-gray-200 mt-2">1,800+ طلعة</p>
+          </div>
+          <div
+            class="text-center p-6 rounded-2xl bg-gradient-to-br from-secondary to-blue-600 text-white hover:shadow-lg transition-all hover:-translate-y-2"
+          >
+            <i class="fas fa-swimmer text-4xl mb-4"></i>
+            <h4 class="font-bold text-lg">سباحة</h4>
+            <p class="text-sm text-gray-200 mt-2">950+ طلعة</p>
+          </div>
+          <div
+            class="text-center p-6 rounded-2xl bg-gradient-to-br from-danger to-red-600 text-white hover:shadow-lg transition-all hover:-translate-y-2"
+          >
+            <i class="fas fa-table-tennis text-4xl mb-4"></i>
+            <h4 class="font-bold text-lg">تنس طاولة</h4>
+            <p class="text-sm text-gray-200 mt-2">750+ طلعة</p>
+          </div>
+          <div
+            class="text-center p-6 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 text-white hover:shadow-lg transition-all hover:-translate-y-2"
+          >
+            <i class="fas fa-dumbbell text-4xl mb-4"></i>
+            <h4 class="font-bold text-lg">جيم</h4>
+            <p class="text-sm text-gray-200 mt-2">1,200+ طلعة</p>
+          </div>
+          <div
+            class="text-center p-6 rounded-2xl bg-gradient-to-br from-green-500 to-green-700 text-white hover:shadow-lg transition-all hover:-translate-y-2"
+          >
+            <i class="fas fa-bicycle text-4xl mb-4"></i>
+            <h4 class="font-bold text-lg">دراجات</h4>
+            <p class="text-sm text-gray-200 mt-2">680+ طلعة</p>
+          </div>
+          <div
+            class="text-center p-6 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-700 text-white hover:shadow-lg transition-all hover:-translate-y-2"
+          >
+            <i class="fas fa-basketball-ball text-4xl mb-4"></i>
+            <h4 class="font-bold text-lg">باسكت</h4>
+            <p class="text-sm text-gray-200 mt-2">420+ طلعة</p>
+          </div>
+          <div
+            class="text-center p-6 rounded-2xl bg-gradient-to-br from-pink-500 to-pink-700 text-white hover:shadow-lg transition-all hover:-translate-y-2"
+          >
+            <i class="fas fa-heart text-4xl mb-4"></i>
+            <h4 class="font-bold text-lg">يوجا</h4>
+            <p class="text-sm text-gray-200 mt-2">380+ طلعة</p>
+          </div>
+          <div
+            class="text-center p-6 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-white hover:shadow-lg transition-all hover:-translate-y-2"
+          >
+            <i class="fas fa-volleyball-ball text-4xl mb-4"></i>
+            <h4 class="font-bold text-lg">فوليبول</h4>
+            <p class="text-sm text-gray-200 mt-2">320+ طلعة</p>
+          </div>
+          <div
+            class="text-center p-6 rounded-2xl bg-gradient-to-br from-teal-500 to-teal-700 text-white hover:shadow-lg transition-all hover:-translate-y-2"
+          >
+            <i class="fas fa-plus text-4xl mb-4"></i>
+            <h4 class="font-bold text-lg">المزيد</h4>
+            <p class="text-sm text-gray-200 mt-2">15+ رياضة أخرى</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-light">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+          <h3 class="text-5xl font-bold text-secondary mb-6">
+            الأسئلة الشائعة
+          </h3>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            إجابات على أهم الأسئلة اللي بيسألها المستخدمين عن طلعة
+          </p>
+        </div>
+        <div class="max-w-4xl mx-auto space-y-6">
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <button
+              class="w-full text-right p-6 focus:outline-none hover:bg-gray-50 transition-colors"
+              onclick="toggleFAQ(1)"
+            >
+              <div class="flex justify-between items-center">
+                <h4 class="text-xl font-bold text-secondary">
+                  إيه هو طلعة وإزاي يشتغل؟
+                </h4>
+                <i
+                  class="fas fa-chevron-down text-primary transform transition-transform"
+                  id="faq-icon-1"
+                ></i>
+              </div>
+            </button>
+            <div class="px-6 pb-6 hidden" id="faq-content-1">
+              <p class="text-gray-600">
+                طلعة هو تطبيق اجتماعي للرياضة مصمم خصيصاً للمصريين. يساعدك تلاقي
+                أنشطة رياضية في منطقتك، تنضم لمجموعات، أو تكون مجموعات جديدة. كل
+                ما تحتاجه هو تحميل التطبيق، تسجيل حسابك، واختيار الرياضات اللي
+                بتحبها.
+              </p>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <button
+              class="w-full text-right p-6 focus:outline-none hover:bg-gray-50 transition-colors"
+              onclick="toggleFAQ(2)"
+            >
+              <div class="flex justify-between items-center">
+                <h4 class="text-xl font-bold text-secondary">
+                  التطبيق مجاني ولا فيه رسوم؟
+                </h4>
+                <i
+                  class="fas fa-chevron-down text-primary transform transition-transform"
+                  id="faq-icon-2"
+                ></i>
+              </div>
+            </button>
+            <div class="px-6 pb-6 hidden" id="faq-content-2">
+              <p class="text-gray-600">
+                التطبيق مجاني بالكامل للتحميل والاستخدام. تقدر تنضم للأنشطة،
+                تكون مجموعات، وتكسب نقاط بدون أي رسوم. فيه نسخة مميزة اختيارية
+                بمميزات إضافية زي الأولوية في الانضمام للأنشطة المزدحمة ومكافآت
+                أكتر.
+              </p>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <button
+              class="w-full text-right p-6 focus:outline-none hover:bg-gray-50 transition-colors"
+              onclick="toggleFAQ(3)"
+            >
+              <div class="flex justify-between items-center">
+                <h4 class="text-xl font-bold text-secondary">
+                  إزاي أضمن أمان المستخدمين اللي هشارك معاهم؟
+                </h4>
+                <i
+                  class="fas fa-chevron-down text-primary transform transition-transform"
+                  id="faq-icon-3"
+                ></i>
+              </div>
+            </button>
+            <div class="px-6 pb-6 hidden" id="faq-content-3">
+              <p class="text-gray-600">
+                كل المستخدمين محتاجين يحققوا هويتهم برقم الموبايل والبريد
+                الإلكتروني. فيه نظام تقييم شامل يخليك تشوف تقييمات المستخدمين
+                الآخرين. كمان فيه فريق دعم متاح 24/7 وإمكانية الإبلاغ عن أي سلوك
+                غير مناسب.
+              </p>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <button
+              class="w-full text-right p-6 focus:outline-none hover:bg-gray-50 transition-colors"
+              onclick="toggleFAQ(4)"
+            >
+              <div class="flex justify-between items-center">
+                <h4 class="text-xl font-bold text-secondary">
+                  إيه هي المكافآت وإزاي أستبدلها؟
+                </h4>
+                <i
+                  class="fas fa-chevron-down text-primary transform transition-transform"
+                  id="faq-icon-4"
+                ></i>
+              </div>
+            </button>
+            <div class="px-6 pb-6 hidden" id="faq-content-4">
+              <p class="text-gray-600">
+                كل مرة تشارك في نشاط رياضي تكسب نقاط. النقاط دي تقدر تستبدلها
+                بخصومات في متاجر رياضية، اشتراكات جيم، معدات رياضية، أو كورسات
+                تدريب. كل ما تشارك أكتر، كل ما تكسب نقاط أكتر.
+              </p>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <button
+              class="w-full text-right p-6 focus:outline-none hover:bg-gray-50 transition-colors"
+              onclick="toggleFAQ(5)"
+            >
+              <div class="flex justify-between items-center">
+                <h4 class="text-xl font-bold text-secondary">
+                  التطبيق متاح في إيه محافظات؟
+                </h4>
+                <i
+                  class="fas fa-chevron-down text-primary transform transition-transform"
+                  id="faq-icon-5"
+                ></i>
+              </div>
+            </button>
+            <div class="px-6 pb-6 hidden" id="faq-content-5">
+              <p class="text-gray-600">
+                حالياً التطبيق متاح في القاهرة الكبرى، الإسكندرية، الجيزة،
+                والقليوبية. إحنا بنوسع باستمرار وهنوصل لكل محافظات مصر قريباً.
+                لو مش في منطقتك دلوقتي، سجل وهنخبرك أول ما نوصلك.
+              </p>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <button
+              class="w-full text-right p-6 focus:outline-none hover:bg-gray-50 transition-colors"
+              onclick="toggleFAQ(6)"
+            >
+              <div class="flex justify-between items-center">
+                <h4 class="text-xl font-bold text-secondary">
+                  لو عندي مشكلة أو اقتراح، أتواصل إزاي؟
+                </h4>
+                <i
+                  class="fas fa-chevron-down text-primary transform transition-transform"
+                  id="faq-icon-6"
+                ></i>
+              </div>
+            </button>
+            <div class="px-6 pb-6 hidden" id="faq-content-6">
+              <p class="text-gray-600">
+                تقدر تتواصل معانا من خلال التطبيق نفسه في قسم "الدعم"، أو
+                تبعتلنا إيميل على support@tal3a.app، أو تكلمنا على الواتساب.
+                فريق الدعم متاح 24/7 وبيرد بسرعة على كل الاستفسارات.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Download Section -->
+    <section
+      id="download"
+      class="py-20 bg-gradient-to-br from-primary to-success text-white"
+    >
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+          <h3 class="text-5xl font-bold mb-6">حمل طلعة دلوقتي</h3>
+          <p class="text-xl text-gray-200 max-w-3xl mx-auto">
+            ابدأ رحلتك الرياضية النهاردة وانضم لأكبر مجتمع رياضي في مصر
+          </p>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          <div class="space-y-8">
+            <div class="space-y-6">
+              <div class="flex items-center space-x-4">
+                <div class="bg-white bg-opacity-20 p-3 rounded-full">
+                  <i class="fas fa-mobile-alt text-2xl"></i>
+                </div>
+                <div>
+                  <h4 class="text-xl font-bold">متاح على iOS و Android</h4>
+                  <p class="text-gray-200">
+                    حمل التطبيق من متجر التطبيقات المفضل ليك
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-4">
+                <div class="bg-white bg-opacity-20 p-3 rounded-full">
+                  <i class="fas fa-star text-2xl"></i>
+                </div>
+                <div>
+                  <h4 class="text-xl font-bold">تقييم 4.8 من 5 نجوم</h4>
+                  <p class="text-gray-200">
+                    أكتر من 10,000 تقييم إيجابي من المستخدمين
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-4">
+                <div class="bg-white bg-opacity-20 p-3 rounded-full">
+                  <i class="fas fa-download text-2xl"></i>
+                </div>
+                <div>
+                  <h4 class="text-xl font-bold">مجاني بالكامل</h4>
+                  <p class="text-gray-200">
+                    التحميل والاستخدام مجاني مع إمكانية الترقية للنسخة المميزة
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4">
+              <button
+                class="bg-white text-primary px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center"
+              >
+                <i class="fab fa-apple ml-3 text-2xl"></i>
+                <div class="text-right">
+                  <div class="text-sm">حمل من</div>
+                  <div class="font-bold">App Store</div>
+                </div>
+              </button>
+              <button
+                class="bg-white text-primary px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center"
+              >
+                <i class="fab fa-google-play ml-3 text-2xl"></i>
+                <div class="text-right">
+                  <div class="text-sm">حمل من</div>
+                  <div class="font-bold">Google Play</div>
+                </div>
+              </button>
+            </div>
+            <div
+              class="bg-white bg-opacity-10 p-6 rounded-2xl backdrop-blur-sm"
+            >
+              <h5 class="text-lg font-bold mb-3">عرض خاص للمستخدمين الجدد!</h5>
+              <p class="text-gray-200 mb-4">
+                سجل في أول أسبوع واحصل على 500 نقطة مجانية + خصم 50% على أول
+                اشتراك مميز
+              </p>
+              <div class="flex items-center space-x-2">
+                <i class="fas fa-clock text-accent"></i>
+                <span class="text-sm">العرض ساري لفترة محدودة</span>
+              </div>
+            </div>
+          </div>
+          <div class="relative">
+            <img
+              class="w-full max-w-md mx-auto"
+              src="https://storage.googleapis.com/uxpilot-auth.appspot.com/2a4d49cc39-5567f35a2186c3970f97.png"
+              alt="multiple mobile phones showing Tal3a app interface with Egyptian sports activities, download promotion visual"
+            />
+            <div
+              class="absolute -top-8 -right-8 bg-accent text-dark p-4 rounded-full animate-bounce"
+            >
+              <i class="fas fa-gift text-2xl"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer" class="bg-secondary text-white py-16">
+      <div class="container mx-auto px-6">
+        <div class="grid md:grid-cols-4 gap-8 mb-12">
+          <div class="space-y-6">
+            <div class="flex items-center space-x-4">
+              <div class="bg-primary rounded-xl p-2">
+                <i class="fas fa-running text-white text-2xl"></i>
+              </div>
+              <h3 class="text-3xl font-bold">طلعة</h3>
+            </div>
+            <p class="text-gray-300 leading-relaxed">
+              صاحب الجدع اللي هيخليك تطلع تتمرن. انضم لأكبر مجتمع رياضي في مصر
+              وابدأ رحلتك الرياضية النهاردة.
+            </p>
+            <div class="flex space-x-4">
+              <span
+                class="bg-white bg-opacity-10 p-3 rounded-full hover:bg-opacity-20 transition-colors cursor-pointer"
+              >
+                <i class="fab fa-facebook text-xl"></i>
+              </span>
+              <span
+                class="bg-white bg-opacity-10 p-3 rounded-full hover:bg-opacity-20 transition-colors cursor-pointer"
+              >
+                <i class="fab fa-instagram text-xl"></i>
+              </span>
+              <span
+                class="bg-white bg-opacity-10 p-3 rounded-full hover:bg-opacity-20 transition-colors cursor-pointer"
+              >
+                <i class="fab fa-twitter text-xl"></i>
+              </span>
+              <span
+                class="bg-white bg-opacity-10 p-3 rounded-full hover:bg-opacity-20 transition-colors cursor-pointer"
+              >
+                <i class="fab fa-linkedin text-xl"></i>
+              </span>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-xl font-bold mb-6">الرياضات</h4>
+            <ul class="space-y-3">
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >فوتبول</span
+                >
+              </li>
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >جري</span
+                >
+              </li>
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >سباحة</span
+                >
+              </li>
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >باسكتبول</span
+                >
+              </li>
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >تنس</span
+                >
+              </li>
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >جيم</span
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-xl font-bold mb-6">الشركة</h4>
+            <ul class="space-y-3">
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >عن طلعة</span
+                >
+              </li>
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >وظائف</span
+                >
+              </li>
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >الشراكات</span
+                >
+              </li>
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >الصحافة</span
+                >
+              </li>
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >المدونة</span
+                >
+              </li>
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >تواصل معنا</span
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-xl font-bold mb-6">الدعم</h4>
+            <ul class="space-y-3">
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >مركز المساعدة</span
+                >
+              </li>
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >قوانين المجتمع</span
+                >
+              </li>
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >سياسة الخصوصية</span
+                >
+              </li>
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >شروط الاستخدام</span
+                >
+              </li>
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >الإبلاغ عن مشكلة</span
+                >
+              </li>
+              <li>
+                <span
+                  class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >أمان البيانات</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-gray-600 pt-8">
+          <div class="flex flex-col md:flex-row justify-between items-center">
+            <p class="text-gray-300 text-center md:text-right mb-4 md:mb-0">
+              © 2024 طلعة. جميع الحقوق محفوظة. صنع بـ ❤️ في مصر
+            </p>
+            <div class="flex space-x-4">
+              <select
+                class="bg-white bg-opacity-10 text-white px-4 py-2 rounded-lg border border-gray-600 focus:outline-none"
+              >
+                <option>العربية</option>
+                <option>English</option>
+              </select>
+              <button
+                class="bg-white bg-opacity-10 text-white px-4 py-2 rounded-lg border border-gray-600 hover:bg-opacity-20 transition-colors"
+              >
+                <i class="fas fa-moon ml-2"></i>
+                الوضع الليلي
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      function toggleFAQ(index) {
+        const content = document.getElementById(`faq-content-${index}`)
+        const icon = document.getElementById(`faq-icon-${index}`)
+
+        if (content.classList.contains('hidden')) {
+          content.classList.remove('hidden')
+          icon.style.transform = 'rotate(180deg)'
+        } else {
+          content.classList.add('hidden')
+          icon.style.transform = 'rotate(0deg)'
+        }
+      }
+
+      // Smooth scrolling for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault()
+          const target = document.querySelector(this.getAttribute('href'))
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            })
+          }
+        })
+      })
+
+      // Add scroll effect to header
+      window.addEventListener('scroll', function () {
+        const header = document.getElementById('header')
+        if (window.scrollY > 100) {
+          header.classList.add('bg-opacity-95', 'backdrop-blur-sm')
+        } else {
+          header.classList.remove('bg-opacity-95', 'backdrop-blur-sm')
+        }
+      })
+    </script>
+  </body>
+</html>
