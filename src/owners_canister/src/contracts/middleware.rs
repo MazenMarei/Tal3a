@@ -4,6 +4,12 @@ use ic_cdk::inspect_message;
 
 #[inspect_message]
 fn inspect_message() {
+    ic_cdk::api::debug_print(format!(
+        "Inspecting message from: {} , method: {}",
+        ic_cdk::api::msg_caller(),
+        ic_cdk::api::msg_method_name()
+    ));
+
     let caller = ic_cdk::api::msg_caller();
     let method_name = ic_cdk::api::msg_method_name();
     // * Block anonymous users from calling any update and query methods
