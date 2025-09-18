@@ -7,57 +7,63 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Link, createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-// import { useAuth } from '../contexts/AuthProvider'
+import LoginFlow from '../components/LoginFlow'
+
+type AuthProvider = 'nfid' | 'ii'
+
+interface UserData {
+  bio?: string
+  referralCode?: string
+}
 
 const LoginPage = () => {
   const { t, i18n } = useTranslation()
+  const navigate = useNavigate()
   const language = i18n.language
-  // const { login } = useAuth()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [showModal, setShowModal] = useState<{
+    show: boolean
+    provider: AuthProvider | null
+  }>({ show: false, provider: null })
   const [isLoading, setIsLoading] = useState(false)
-  const [showIIModal, setShowIIModal] = useState(false)
-  const [error, setError] = useState('')
+  const [loginStep, setLoginStep] = useState<'auth' | 'flow'>('auth')
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleAuthLogin = async (provider: AuthProvider) => {
     setIsLoading(true)
-    setError('')
-
     try {
-      // const success = await login(email, password)
+      // Simulate auth login
+      await new Promise((resolve) => setTimeout(resolve, 1500))
       const success = true
 
-      if (!success) {
-        setError(t('login.errors.invalidCredentials'))
+      if (success) {
+        setLoginStep('flow')
       }
     } catch (err) {
-      setError(t('login.errors.loginFailed'))
+      console.error('Login failed:', err)
     } finally {
       setIsLoading(false)
+      setShowModal({ show: false, provider: null })
     }
   }
 
-  const handleDemoLogin = async (demoEmail: string, demoPassword: string) => {
-    setEmail(demoEmail)
-    setPassword(demoPassword)
-    setIsLoading(true)
-    setError('')
+  const handleShowModal = (provider: AuthProvider) => {
+    setShowModal({ show: true, provider })
+  }
 
-    try {
-      // const success = await login(demoEmail, demoPassword)
-      const success = true
-      if (!success) {
-        setError(t('login.errors.invalidCredentials'))
-      }
-    } catch (err) {
-      setError(t('login.errors.loginFailed'))
-    } finally {
-      setIsLoading(false)
-    }
+  const closeModal = () => {
+    setShowModal({ show: false, provider: null })
+  }
+
+  const handleLoginComplete = (userData: UserData) => {
+    console.log('Login completed with data:', userData)
+    // Navigate to dashboard will be handled by LoginFlow
+  }
+
+  // Show login flow if user has authenticated
+  if (loginStep === 'flow') {
+    return <LoginFlow onComplete={handleLoginComplete} />
   }
 
   return (
@@ -130,9 +136,10 @@ const LoginPage = () => {
             {/* <!-- Internet Identity Login --> */}
             <div className="space-y-6 mb-8">
               <button
-                id="internet-identity-btn"
+                id="nfid-login-btn"
                 className="w-full bg-gradient-to-r from-primary to-secondary text-white py-4 px-6 rounded-xl font-bold text-lg hover:shadow-xl transition-all transform hover:scale-[1.02] flex items-center justify-center"
-                onClick={() => setShowIIModal(true)}
+                onClick={() => handleShowModal('nfid')}
+                disabled={isLoading}
               >
                 <img
                   src="./nfid_logo.png"
@@ -157,9 +164,10 @@ const LoginPage = () => {
               </div> */}
 
               <button
-                id="internet-identity-btn"
+                id="ii-login-btn"
                 className="w-full bg-gradient-to-r from-[#E81F79] to-[#5A2684] text-white py-4 px-6 rounded-xl font-bold text-lg hover:shadow-xl transition-all transform hover:scale-[1.02] flex items-center justify-center"
-                onClick={() => setShowIIModal(true)}
+                onClick={() => handleShowModal('ii')}
+                disabled={isLoading}
               >
                 <img
                   src="./ii_logo.png"
@@ -221,67 +229,124 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-      {/* Internet Identity Modal */}
-      {showIIModal && (
+      {/* Auth Modals */}
+      {showModal.show && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-6 z-50">
           <div className="bg-white dark:bg-gray-800 rounded-3xl max-w-md w-full p-8 relative">
             <button
-              onClick={() => setShowIIModal(false)}
+              onClick={closeModal}
               className="absolute top-4 left-4 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+              title="Close modal"
             >
               <FontAwesomeIcon icon={faXmark} className="text-xl" />
             </button>
 
             <div className="text-center">
               <div className="bg-gradient-to-br from-primary to-secondary w-20 h-20 rounded-2xl flex items-center justify-center text-white mx-auto mb-6">
-                <i className="text-4xl" data-fa-i2svg="">
-                  <svg
-                    className="svg-inline--fa fa-shield-halved"
-                    aria-hidden="true"
-                    focusable="false"
-                    data-prefix="fas"
-                    data-icon="shield-halved"
-                    role="img"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 512 512"
-                    data-fa-i2svg=""
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M256 0c4.6 0 9.2 1 13.4 2.9L457.7 82.8c22 9.3 38.4 31 38.3 57.2c-.5 99.2-41.3 280.7-213.6 363.2c-16.7 8-36.1 8-52.8 0C57.3 420.7 16.5 239.2 16 140c-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.8 1 251.4 0 256 0zm0 66.8V444.8C394 378 431.1 230.1 432 141.4L256 66.8l0 0z"
-                    ></path>
-                  </svg>
-                </i>
+                {showModal.provider === 'nfid' ? (
+                  <img
+                    src="./nfid_logo.png"
+                    alt="NFID Logo"
+                    className="w-12 h-12"
+                  />
+                ) : (
+                  <FontAwesomeIcon icon={faShield} className="text-4xl" />
+                )}
               </div>
 
               <h3 className="text-2xl font-bold text-secondary dark:text-white mb-4">
-                {t('login.internetIdentity.modal.title')}
+                {showModal.provider === 'nfid'
+                  ? 'تسجيل دخول عبر NFID'
+                  : 'تسجيل دخول آمن'}
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
-                {t('login.internetIdentity.modal.description')}
+                {showModal.provider === 'nfid'
+                  ? 'NFID يوفر طريقة سريعة وآمنة لتسجيل الدخول باستخدام محفظتك الرقمية'
+                  : 'Internet Identity يوفر أعلى مستويات الأمان والخصوصية'}
               </p>
 
               <div className="space-y-4 mb-8">
-                {['privacy', 'noPasswords', 'quickSecure'].map((feature) => (
-                  <div key={feature} className="flex items-center">
-                    <div className="bg-green-500 w-6 h-6 rounded-full flex items-center justify-center ml-3">
-                      <FontAwesomeIcon
-                        icon={faCheck}
-                        className="text-white text-xs"
-                      />
+                {showModal.provider === 'nfid' ? (
+                  <>
+                    <div className="flex items-center">
+                      <div className="bg-green-500 w-6 h-6 rounded-full flex items-center justify-center ml-3">
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          className="text-white text-xs"
+                        />
+                      </div>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        اتصال سريع بالمحفظة
+                      </span>
                     </div>
-                    <span className="text-sm text-gray-700 dark:text-gray-300">
-                      {t(`login.internetIdentity.modal.features.${feature}`)}
-                    </span>
-                  </div>
-                ))}
+                    <div className="flex items-center">
+                      <div className="bg-green-500 w-6 h-6 rounded-full flex items-center justify-center ml-3">
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          className="text-white text-xs"
+                        />
+                      </div>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        إدارة الهوية الرقمية
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="bg-green-500 w-6 h-6 rounded-full flex items-center justify-center ml-3">
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          className="text-white text-xs"
+                        />
+                      </div>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        أمان متقدم
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-center">
+                      <div className="bg-green-500 w-6 h-6 rounded-full flex items-center justify-center ml-3">
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          className="text-white text-xs"
+                        />
+                      </div>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        خصوصية كاملة
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="bg-green-500 w-6 h-6 rounded-full flex items-center justify-center ml-3">
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          className="text-white text-xs"
+                        />
+                      </div>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        بدون كلمات مرور
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="bg-green-500 w-6 h-6 rounded-full flex items-center justify-center ml-3">
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          className="text-white text-xs"
+                        />
+                      </div>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        أمان فائق
+                      </span>
+                    </div>
+                  </>
+                )}
               </div>
 
               <button
-                onClick={() => setShowIIModal(false)}
-                className="w-full bg-primary text-white py-4 px-6 rounded-xl font-bold hover:bg-secondary transition-all"
+                onClick={() => handleAuthLogin(showModal.provider!)}
+                disabled={isLoading}
+                className="w-full bg-primary text-white py-4 px-6 rounded-xl font-bold hover:bg-secondary transition-all disabled:opacity-50"
               >
-                {t('login.internetIdentity.modal.continue')}
+                {isLoading ? 'جاري التسجيل...' : 'متابعة'}
               </button>
             </div>
           </div>
