@@ -12,6 +12,12 @@ fn current_timestamp() -> u64 {
 pub fn initialize_canister() {
     let caller_principal = ic_cdk::api::msg_caller();
 
+    let owner = storage::get_owner(&caller_principal);
+    if owner.is_some() {
+        // Already initialized
+        return;
+    }
+
     // Set the deployer as the initial super admin
     storage::set_super_admin(caller_principal);
 
