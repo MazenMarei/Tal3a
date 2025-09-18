@@ -6,6 +6,12 @@ use candid::Principal;
 use ic_cdk;
 use ic_cdk::{query, update};
 
+// whoiam
+#[query]
+fn whoami() -> Principal {
+    ic_cdk::api::msg_caller()
+}
+
 #[query]
 fn get_user(principal_id: Principal) -> Result<PublicUser, Error> {
     let user = User::get_user(principal_id).map_err(|e| e)?;

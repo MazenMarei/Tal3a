@@ -109,4 +109,5 @@ service : {
   ping : () -> (Result);
   set_account_status : (bool) -> (Result);
   update_profile : (UpdatingUser) -> (Result);
+  whoami : () -> (principal) query;
 }

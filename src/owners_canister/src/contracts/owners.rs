@@ -1,4 +1,4 @@
-use crate::types::{Owner, OwnerRole, Permission, Error};
+use crate::types::{Owner, OwnerRole, Permission};
 use crate::services;
 use candid::Principal;
 use ic_cdk::{query, update};
