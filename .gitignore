@@ -7,3 +7,27 @@ count.txt
 .env
 .nitro
 .tanstack
+
+# DFX build outputs
+.dfx/
+target/
+
+# Rust build files
+Cargo.lock
+debug/
+release/
+
+# IC build artifacts
+*.wasm
+*.did.js
+*.did.d.ts
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
