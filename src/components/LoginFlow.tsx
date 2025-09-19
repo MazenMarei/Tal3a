@@ -7,24 +7,52 @@ interface LoginFlowProps {
 }
 
 interface UserData {
+  name: string
+  avatar?: string
   bio?: string
   referralCode?: string
-  // Add other fields as needed
+  location?: string
+  sports?: Array<string>
 }
 
 export default function LoginFlow({ onComplete }: LoginFlowProps) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [currentStep, setCurrentStep] = useState(1)
-  const [userData, setUserData] = useState<UserData>({})
+  const [userData, setUserData] = useState<UserData>({
+    name: '',
+    avatar: '',
+    bio: '',
+    referralCode: '',
+    location: '',
+    sports: [],
+  })
   const [isLoading, setIsLoading] = useState(false)
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
   // Get referral code from URL params
   const urlParams = new URLSearchParams(window.location.search)
   const referralFromUrl = urlParams.get('ref')
 
+  const validateStep = (step: number): boolean => {
+    const newErrors: { [key: string]: string } = {}
+
+    if (step === 2) {
+      if (!userData.name.trim()) {
+        newErrors.name = t('loginFlow.validation.nameRequired')
+      }
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
   const handleNext = () => {
-    if (currentStep < 5) {
+    if (currentStep === 2 && !validateStep(2)) {
+      return
+    }
+
+    if (currentStep < 4) {
       setCurrentStep(currentStep + 1)
     } else {
       handleComplete()
@@ -34,11 +62,9 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
   const handleComplete = async () => {
     setIsLoading(true)
     try {
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1500))
 
-      // Call fake function
-      const result = await submitUserData({
+      const result = submitUserData({
         ...userData,
         referralCode: userData.referralCode || referralFromUrl || undefined,
       })
@@ -54,10 +80,18 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
     }
   }
 
-  const submitUserData = async (data: UserData): Promise<boolean> => {
-    // Fake function that returns true
+  const submitUserData = (data: UserData): boolean => {
     console.log('Submitting user data:', data)
     return true
+  }
+
+  const handleSportToggle = (sport: string) => {
+    const currentSports = userData.sports || []
+    const newSports = currentSports.includes(sport)
+      ? currentSports.filter((s) => s !== sport)
+      : [...currentSports, sport]
+
+    setUserData({ ...userData, sports: newSports })
   }
 
   const renderStep = () => {
@@ -65,22 +99,27 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
       case 1:
         return (
           <div className="text-center">
+            <div className="bg-primary w-16 h-16 rounded-2xl flex items-center justify-center text-white mx-auto mb-6">
+              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
             <h2 className="text-3xl font-bold mb-3 text-secondary dark:text-white">
-              مرحباً بك في طلعة!
+              {t('loginFlow.welcome.title')}
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-8">
-              دعنا نعرف المزيد عنك لنقدم لك أفضل تجربة رياضية
+              {t('loginFlow.welcome.subtitle')}
             </p>
             <div className="space-y-4">
               <div className="bg-gray-50 dark:bg-gray-700 rounded-2xl p-6">
                 <h3 className="font-bold text-lg mb-2 text-secondary dark:text-white">
-                  ✨ ما ستحصل عليه
+                  {t('loginFlow.welcome.benefitsTitle')}
                 </h3>
                 <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                  <li>• العثور على شركاء الرياضة المناسبين</li>
-                  <li>• الانضمام لمجموعات رياضية في منطقتك</li>
-                  <li>• كسب مكافآت على كل نشاط</li>
-                  <li>• تتبع تقدمك الرياضي</li>
+                  <li>• {t('loginFlow.welcome.benefit1')}</li>
+                  <li>• {t('loginFlow.welcome.benefit2')}</li>
+                  <li>• {t('loginFlow.welcome.benefit3')}</li>
+                  <li>• {t('loginFlow.welcome.benefit4')}</li>
                 </ul>
               </div>
             </div>
@@ -90,24 +129,137 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
       case 2:
         return (
           <div className="text-center">
+            <div className="bg-primary w-16 h-16 rounded-2xl flex items-center justify-center text-white mx-auto mb-6">
+              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
             <h2 className="text-3xl font-bold mb-3 text-secondary dark:text-white">
-              نبذة تعريفية (اختياري)
+              {t('loginFlow.profile.title')}
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
-              أخبر الآخرين عن اهتماماتك الرياضية وأهدافك
+              {t('loginFlow.profile.subtitle')}
             </p>
-            <textarea
-              value={userData.bio || ''}
-              onChange={(e) =>
-                setUserData({ ...userData, bio: e.target.value })
-              }
-              placeholder="مثال: أحب كرة القدم وأبحث عن فريق للعب معه كل أسبوع..."
-              className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
-              rows={4}
-              maxLength={300}
-            />
-            <div className="text-right text-sm text-gray-500 mt-2">
-              {userData.bio?.length || 0}/300
+
+            <div className="space-y-6">
+              {/* Name Field */}
+              <div>
+                <label className="block text-right text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  {t('loginFlow.profile.nameLabel')} *
+                </label>
+                <input
+                  type="text"
+                  value={userData.name}
+                  onChange={(e) =>
+                    setUserData({ ...userData, name: e.target.value })
+                  }
+                  placeholder={t('loginFlow.profile.namePlaceholder')}
+                  className={`w-full p-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                />
+                {errors.name && (
+                  <p className="text-red-500 text-sm mt-1 text-right">
+                    {errors.name}
+                  </p>
+                )}
+              </div>
+
+              {/* Avatar Upload */}
+              <div>
+                <label className="block text-right text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  {t('loginFlow.profile.avatarLabel')} *
+                </label>
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="w-24 h-24 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center overflow-hidden">
+                    {userData.avatar ? (
+                      <img
+                        src={userData.avatar}
+                        alt="Avatar"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <svg
+                        className="w-12 h-12 text-gray-400"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                  <label className="cursor-pointer bg-gray-50 dark:bg-gray-700 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                    <div className="text-center">
+                      <svg
+                        className="mx-auto h-8 w-8 text-gray-400"
+                        stroke="currentColor"
+                        fill="none"
+                        viewBox="0 0 48 48"
+                      >
+                        <path
+                          d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                        {t('loginFlow.profile.avatarUpload')}
+                      </p>
+                    </div>
+                    <input type="file" accept="image/*" className="hidden" />
+                  </label>
+                </div>
+              </div>
+
+              {/* Bio Field (Optional) */}
+              <div>
+                <label className="block text-right text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  {t('loginFlow.profile.bioLabel')} ({t('common.optional')})
+                </label>
+                <textarea
+                  value={userData.bio}
+                  onChange={(e) =>
+                    setUserData({ ...userData, bio: e.target.value })
+                  }
+                  placeholder={t('loginFlow.profile.bioPlaceholder')}
+                  className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  rows={3}
+                  maxLength={300}
+                />
+                <div className="text-right text-sm text-gray-500 mt-1">
+                  {userData.bio?.length || 0}/300
+                </div>
+              </div>
+
+              {/* Referral Code (Optional) */}
+              <div>
+                <label className="block text-right text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  {t('loginFlow.profile.referralLabel')} ({t('common.optional')}
+                  )
+                </label>
+                <input
+                  type="text"
+                  value={userData.referralCode || referralFromUrl || ''}
+                  onChange={(e) =>
+                    setUserData({ ...userData, referralCode: e.target.value })
+                  }
+                  placeholder={t('loginFlow.profile.referralPlaceholder')}
+                  className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white text-center"
+                  maxLength={20}
+                />
+                {referralFromUrl && (
+                  <p className="text-sm text-green-600 mt-2">
+                    ✅ {t('loginFlow.profile.referralFound')}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         )
@@ -115,100 +267,137 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
       case 3:
         return (
           <div className="text-center">
+            <div className="bg-yellow-500 w-16 h-16 rounded-2xl flex items-center justify-center text-white mx-auto mb-6">
+              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
             <h2 className="text-3xl font-bold mb-3 text-secondary dark:text-white">
-              كود الدعوة (اختياري)
+              {t('loginFlow.location.title')}
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
-              إذا كان لديك كود دعوة من صديق، أدخله هنا للحصول على مكافآت إضافية
+              {t('loginFlow.location.subtitle')}
             </p>
-            <input
-              type="text"
-              value={userData.referralCode || referralFromUrl || ''}
-              onChange={(e) =>
-                setUserData({ ...userData, referralCode: e.target.value })
-              }
-              placeholder="أدخل كود الدعوة"
-              className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white text-center"
-              maxLength={20}
-            />
-            {referralFromUrl && (
-              <p className="text-sm text-green-600 mt-2">
-                ✅ تم العثور على كود الدعوة تلقائياً
-              </p>
-            )}
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-right text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  {t('loginFlow.location.cityLabel')}
+                </label>
+                <select
+                  value={userData.location}
+                  onChange={(e) =>
+                    setUserData({ ...userData, location: e.target.value })
+                  }
+                  className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                >
+                  <option value="">{t('loginFlow.location.selectCity')}</option>
+                  <option value="cairo">
+                    {t('loginFlow.location.cities.cairo')}
+                  </option>
+                  <option value="alexandria">
+                    {t('loginFlow.location.cities.alexandria')}
+                  </option>
+                  <option value="giza">
+                    {t('loginFlow.location.cities.giza')}
+                  </option>
+                  <option value="luxor">
+                    {t('loginFlow.location.cities.luxor')}
+                  </option>
+                  <option value="aswan">
+                    {t('loginFlow.location.cities.aswan')}
+                  </option>
+                </select>
+              </div>
+
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4">
+                <div className="flex items-center justify-center space-x-2">
+                  <svg
+                    className="w-5 h-5 text-blue-600"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <p className="text-sm text-blue-600 dark:text-blue-400">
+                    {t('loginFlow.location.gpsNote')}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         )
 
       case 4:
         return (
           <div className="text-center">
+            <div className="bg-blue-500 w-16 h-16 rounded-2xl flex items-center justify-center text-white mx-auto mb-6">
+              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
             <h2 className="text-3xl font-bold mb-3 text-secondary dark:text-white">
-              اختر اهتماماتك الرياضية
+              {t('loginFlow.sports.title')}
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
-              سنساعدك في العثور على الأنشطة المناسبة لك
+              {t('loginFlow.sports.subtitle')}
             </p>
+
             <div className="grid grid-cols-2 gap-4">
               {[
-                'كرة القدم',
-                'الجري',
-                'كرة السلة',
-                'التنس',
-                'السباحة',
-                'اليوجا',
-              ].map((sport) => (
-                <label
-                  key={sport}
-                  className="flex items-center space-x-3 p-3 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    className="form-checkbox h-5 w-5 text-primary"
-                  />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    {sport}
-                  </span>
-                </label>
-              ))}
+                { key: 'football', icon: '⚽', color: 'bg-green-500' },
+                { key: 'running', icon: '🏃', color: 'bg-blue-500' },
+                { key: 'basketball', icon: '🏀', color: 'bg-orange-500' },
+                { key: 'swimming', icon: '🏊', color: 'bg-cyan-500' },
+                { key: 'cycling', icon: '🚴', color: 'bg-purple-500' },
+                { key: 'yoga', icon: '🧘', color: 'bg-pink-500' },
+              ].map((sport) => {
+                const isSelected = userData.sports?.includes(sport.key) || false
+                return (
+                  <button
+                    key={sport.key}
+                    onClick={() => handleSportToggle(sport.key)}
+                    className={`p-4 rounded-xl border-2 transition-all ${
+                      isSelected
+                        ? 'border-primary bg-primary/10 dark:bg-primary/20'
+                        : 'border-gray-300 dark:border-gray-600 hover:border-primary/50'
+                    }`}
+                  >
+                    <div
+                      className={`w-12 h-12 rounded-xl ${sport.color} flex items-center justify-center text-white text-2xl mx-auto mb-2`}
+                    >
+                      {sport.icon}
+                    </div>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      {t(`loginFlow.sports.${sport.key}`)}
+                    </span>
+                    {isSelected && (
+                      <div className="mt-2">
+                        <svg
+                          className="w-5 h-5 text-primary mx-auto"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                  </button>
+                )
+              })}
             </div>
-          </div>
-        )
-
-      case 5:
-        return (
-          <div className="text-center">
-            <h2 className="text-3xl font-bold mb-3 text-secondary dark:text-white">
-              كل شيء جاهز! 🎉
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
-              أصبحت جاهزاً لبدء رحلتك الرياضية مع طلعة
-            </p>
-            <div className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-6 text-white mb-6">
-              <h3 className="font-bold text-lg mb-2">🎁 مكافأة الترحيب</h3>
-              <p className="text-sm opacity-90">
-                احصل على 100 نقطة مجانية لبدء رحلتك!
-              </p>
-            </div>
-            {userData.bio && (
-              <div className="text-left bg-gray-50 dark:bg-gray-700 rounded-xl p-4 mb-4">
-                <h4 className="font-bold text-sm text-gray-700 dark:text-gray-300 mb-2">
-                  نبذتك:
-                </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {userData.bio}
-                </p>
-              </div>
-            )}
-            {(userData.referralCode || referralFromUrl) && (
-              <div className="text-left bg-green-50 dark:bg-green-900/20 rounded-xl p-4 mb-4">
-                <h4 className="font-bold text-sm text-green-700 dark:text-green-300 mb-2">
-                  كود الدعوة:
-                </h4>
-                <p className="text-sm text-green-600 dark:text-green-400">
-                  {userData.referralCode || referralFromUrl}
-                </p>
-              </div>
-            )}
           </div>
         )
 
@@ -216,6 +405,8 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
         return null
     }
   }
+
+  const totalSteps = 4
 
   return (
     <section className="bg-gradient-to-b from-primary to-secondary text-white relative overflow-hidden font-cairo flex items-center min-h-[calc(100vh-5.5rem)] justify-center pt-20 lg:pt-0">
@@ -225,16 +416,18 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
           <div className="mb-8">
             <div className="flex justify-between items-center mb-4">
               <span className="text-sm opacity-80">
-                الخطوة {currentStep} من 5
+                {t('loginFlow.progress.step')} {currentStep}{' '}
+                {t('loginFlow.progress.of')} {totalSteps}
               </span>
               <span className="text-sm opacity-80">
-                {Math.round((currentStep / 5) * 100)}% مكتمل
+                {Math.round((currentStep / totalSteps) * 100)}%{' '}
+                {t('loginFlow.progress.complete')}
               </span>
             </div>
             <div className="w-full bg-white/20 rounded-full h-2">
               <div
                 className="bg-white rounded-full h-2 transition-all duration-300"
-                style={{ width: `${(currentStep / 5) * 100}%` }}
+                style={{ width: `${(currentStep / totalSteps) * 100}%` }}
               ></div>
             </div>
           </div>
@@ -250,7 +443,7 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
                   onClick={() => setCurrentStep(currentStep - 1)}
                   className="px-6 py-3 text-gray-600 dark:text-gray-300 hover:text-primary transition-colors"
                 >
-                  السابق
+                  {t('loginFlow.navigation.previous')}
                 </button>
               ) : (
                 <div></div>
@@ -262,10 +455,10 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
                 className="bg-primary text-white px-8 py-3 rounded-xl font-bold hover:bg-secondary transition-all disabled:opacity-50"
               >
                 {isLoading
-                  ? 'جاري الحفظ...'
-                  : currentStep === 5
-                    ? 'ابدأ الآن!'
-                    : 'التالي'}
+                  ? t('loginFlow.navigation.saving')
+                  : currentStep === totalSteps
+                    ? t('loginFlow.navigation.start')
+                    : t('loginFlow.navigation.next')}
               </button>
             </div>
           </div>

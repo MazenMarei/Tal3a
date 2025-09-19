@@ -1,7 +1,70 @@
 {
   "common": {
     "appName": "Tal3a",
-    "home": "Home"
+    "home": "Home",
+    "optional": "Optional"
+  },
+  "loginFlow": {
+    "progress": {
+      "step": "Step",
+      "of": "of",
+      "complete": "Complete"
+    },
+    "navigation": {
+      "previous": "Previous",
+      "next": "Next",
+      "start": "Let's Start!",
+      "saving": "Saving..."
+    },
+    "validation": {
+      "nameRequired": "Name is required"
+    },
+    "welcome": {
+      "title": "Welcome to Tal3a!",
+      "subtitle": "Let us know more about you to provide the best sports experience",
+      "benefitsTitle": "✨ What you'll get",
+      "benefit1": "Find the right sports partners",
+      "benefit2": "Join sports groups in your area",
+      "benefit3": "Earn rewards for every activity",
+      "benefit4": "Track your sports progress"
+    },
+    "profile": {
+      "title": "Welcome to Tal3a!",
+      "subtitle": "Let us get to know you better to provide you with a sports experience",
+      "nameLabel": "Your Full Name",
+      "namePlaceholder": "Enter your full name",
+      "avatarLabel": "Profile Picture",
+      "avatarUpload": "Upload your photo",
+      "bioLabel": "Bio",
+      "bioPlaceholder": "Example: I love football and looking for a team to play with every week...",
+      "referralLabel": "Referral Code",
+      "referralPlaceholder": "Enter referral code",
+      "referralFound": "Referral code found automatically"
+    },
+    "location": {
+      "title": "Where are you?",
+      "subtitle": "So we can help you find activities near you",
+      "cityLabel": "Governorate/City",
+      "selectCity": "Choose your governorate",
+      "gpsNote": "We'll use your location to show nearby activities",
+      "cities": {
+        "cairo": "Cairo",
+        "alexandria": "Alexandria",
+        "giza": "Giza",
+        "luxor": "Luxor",
+        "aswan": "Aswan"
+      }
+    },
+    "sports": {
+      "title": "What sports do you love?",
+      "subtitle": "Choose your favorite sports (you can select more than one)",
+      "football": "Football",
+      "running": "Running",
+      "basketball": "Basketball",
+      "swimming": "Swimming",
+      "cycling": "Cycling",
+      "yoga": "Yoga"
+    }
   },
   "nav": {
     "features": "Features",

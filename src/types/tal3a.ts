@@ -35,3 +35,4 @@ export interface LeaderboardEntry {
   user: User
   weeklyPoints: number
 }
+
