@@ -20,17 +20,11 @@
       "package": "user_canister",
       "type": "rust"
     },
-    "frontend_canister": {
-      "dependencies": [
-        "owners_canister",
-        "user_canister",
-        "social_canister",
-        "event_canister"
-      ],
-      "source": ["src/frontend_canister/dist"],
-      "type": "assets",
-      "workspace": "frontend_canister"
+    "admin_dashboard_canister": {
+      "source": ["src/admin_dashboard_canister/dist"],
+      "type": "assets"
     },
+
     "internet_identity": {
       "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
       "type": "custom",
@@ -44,9 +38,9 @@
     },
     "icrc1_ledger_canister": {
       "type": "custom",
-      "candid": "https://github.com/dfinity/ic/releases/download/latest/ledger.did",
-      "wasm": "https://github.com/dfinity/ic/releases/download/latest/ic-icrc1-ledger.wasm.gz",
-      "init_arg": "(variant { Init = record { token_symbol = \"Tal3a\"; token_name = \"Tal3a Token\"; minting_account = record { owner = principal \"37pjh-cuqnq-d7cch-i7xqr-rr33z-baztn-f6qux-zbcog-rrycd-rr64l-tqe\"; }; transfer_fee = \"TRANSFER_FEE\"; metadata = vec {}; feature_flags = opt record { icrc2 = true }; initial_balances = vec { record { record { owner = principal \"DEFAULT_ACCOUNT_ID\"; }, \"PRE_MINTED_TOKENS\" } }; archive_options = record { num_blocks_to_archive = \"NUM_OF_BLOCK_TO_ARCHIVE\"; trigger_threshold = \"TRIGGER_THRESHOLD\"; controller_id = principal \"ARCHIVE_CONTROLLER\"; cycles_for_archive_creation = opt \"10000000000000\"; } } })"
+      "candid": "https://github.com/dfinity/ic/releases/download/ledger-suite-icrc-2025-09-01/ledger.did",
+      "wasm": "https://github.com/dfinity/ic/releases/download/ledger-suite-icrc-2025-09-01/ic-icrc1-ledger.wasm.gz",
+      "init_arg": "(variant { Init = record { token_symbol = \"Tal3a\"; token_name = \"Tal3a Token\"; minting_account = record { owner = principal \"37pjh-cuqnq-d7cch-i7xqr-rr33z-baztn-f6qux-zbcog-rrycd-rr64l-tqe\" }; transfer_fee = 0; metadata = vec { }; feature_flags = opt record { icrc2 = true }; initial_balances = vec { record { record { owner = principal \"a2ttl-swgqe-2gnnl-skcbm-k76uz-5wufo-omrk2-2mgsk-sxs4q-n6usf-dqe\" }; 1000000000000 } }; archive_options = record { num_blocks_to_archive = 100000; trigger_threshold = 200000; controller_id = principal \"a2ttl-swgqe-2gnnl-skcbm-k76uz-5wufo-omrk2-2mgsk-sxs4q-n6usf-dqe\"; cycles_for_archive_creation = opt 10000000000000 } } })"
     }
   },
   "networks": {
