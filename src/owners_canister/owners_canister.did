@@ -1,57 +1,80 @@
-type OwnerRole = variant {
-  SuperAdmin;
-  Admin;
-  Moderator;
+type AdminRequest = record {
+  id : text;
+  status : AdminRequestStatus;
+  name : text;
+  requested_at : nat64;
+  processed_at : opt nat64;
+  processed_by : opt principal;
+  rejection_reason : opt text;
+  requester_principal : principal;
+  reason : text;
 };
-
-type Permission = variant {
-  ManageOwners;
-  ManageGroups;
-  ManageUsers;
-  ModerateContent;
-  ViewAnalytics;
-  SystemConfiguration;
+type AdminRequestStatus = variant { Approved; Rejected; Pending };
+type CreateAdminRequest = record { name : text; reason : text };
+type Error = record { code : nat16; error : text; message : text };
+type GroupAdmin = record {
+  permissions : vec GroupPermission;
+  "principal" : principal;
+  name : text;
+  added_at : nat64;
+  added_by : principal;
+  group_id : nat64;
 };
-
 type GroupPermission = variant {
+  ViewGroupAnalytics;
+  ManageEvents;
   ManageMembers;
   ModerateContent;
-  ManageEvents;
   ConfigureGroup;
-  ViewGroupAnalytics;
 };
-
 type Owner = record {
+  permissions : vec Permission;
   "principal" : principal;
-  "name" : text;
-  "role" : OwnerRole;
-  "created_at" : nat64;
-  "created_by" : principal;
-  "permissions" : vec Permission;
+  name : text;
+  role : OwnerRole;
+  created_at : nat64;
+  created_by : principal;
 };
-
-type GroupAdmin = record {
-  "principal" : principal;
-  "group_id" : nat64;
-  "name" : text;
-  "permissions" : vec GroupPermission;
-  "added_at" : nat64;
-  "added_by" : principal;
+type OwnerRole = variant { SuperAdmin; Admin; Moderator };
+type Permission = variant {
+  SystemConfiguration;
+  ManageUsers;
+  ViewAnalytics;
+  ModerateContent;
+  ManageGroups;
+  ManageOwners;
 };
-
-service : {
-  "add_owner" : (principal, text, OwnerRole, vec Permission) -> (variant { Ok; Err : text });
-  "remove_owner" : (principal) -> (variant { Ok; Err : text });
-  "get_all_owners" : () -> (variant { Ok : vec Owner; Err : text }) query;
-  "get_my_owner_info" : () -> (variant { Ok : Owner; Err : text }) query;
-  "update_owner_permissions" : (principal, vec Permission) -> (variant { Ok; Err : text });
-  
-  "add_group_admin" : (nat64, principal, text, vec GroupPermission) -> (variant { Ok; Err : text });
-  "remove_group_admin" : (nat64, principal) -> (variant { Ok; Err : text });
-  "get_group_admins" : (nat64) -> (variant { Ok : vec GroupAdmin; Err : text }) query;
-  "get_my_group_admin_info" : () -> (vec GroupAdmin) query;
-  "update_group_admin_permissions" : (nat64, principal, vec GroupPermission) -> (variant { Ok; Err : text });
-  
-  "is_owner" : (principal) -> (bool) query;
-  "is_group_admin" : (nat64, principal) -> (bool) query;
+type ProcessAdminRequest = record {
+  request_id : text;
+  approve : bool;
+  rejection_reason : opt text;
+};
+type Result = variant { Ok; Err : Error };
+type Result_1 = variant { Ok : vec AdminRequest; Err : Error };
+type Result_2 = variant { Ok : vec Owner; Err : Error };
+type Result_3 = variant { Ok : vec GroupAdmin; Err : Error };
+type Result_4 = variant { Ok : opt AdminRequest; Err : Error };
+type Result_5 = variant { Ok : Owner; Err : Error };
+type Result_6 = variant { Ok : AdminRequest; Err : Error };
+service : () -> {
+  add_group_admin : (nat64, principal, text, vec GroupPermission) -> (Result);
+  add_owner : (principal, text, OwnerRole, vec Permission) -> (Result);
+  delete_admin_request : (text) -> (Result);
+  get_all_admin_requests : () -> (Result_1) query;
+  get_all_owners : () -> (Result_2) query;
+  get_group_admins : (nat64) -> (Result_3) query;
+  get_my_admin_request : () -> (Result_4) query;
+  get_my_group_admin_info : () -> (vec GroupAdmin) query;
+  get_my_owner_info : () -> (Result_5) query;
+  get_pending_admin_requests : () -> (Result_1) query;
+  is_group_admin : (nat64, principal) -> (bool) query;
+  is_owner : (principal) -> (bool) query;
+  process_admin_request : (ProcessAdminRequest) -> (Result_6);
+  remove_group_admin : (nat64, principal) -> (Result);
+  remove_owner : (principal) -> (Result);
+  submit_admin_request : (CreateAdminRequest) -> (Result_6);
+  update_group_admin_permissions : (nat64, principal, vec GroupPermission) -> (
+      Result,
+    );
+  update_owner_permissions : (principal, vec Permission) -> (Result);
 }

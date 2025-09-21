@@ -63,16 +63,20 @@ pub fn add_owner(
 ) -> Result<(), Error> {
     // Check if caller is super admin
     if !is_super_admin(caller) {
-        return Err(Error::NotAuthorized(
-            "Only super admins can add owners".to_string(),
-        ));
+        return Err(Error {
+            code: 403,
+            error: "NotAuthorized".to_string(),
+            message: "Only super admins can add owners".to_string(),
+        });
     }
 
     // Check if owner already exists
     if storage::owner_exists(&new_owner_principal) {
-        return Err(Error::AlreadyExists(
-            "Principal is already an owner".to_string(),
-        ));
+        return Err(Error {
+            code: 409,
+            error: "AlreadyExists".to_string(),
+            message: "Principal is already an owner".to_string(),
+        });
     }
 
     // Validate permissions based on role
@@ -97,42 +101,57 @@ pub fn add_owner(
 pub fn remove_owner(caller: &Principal, owner_principal: Principal) -> Result<(), Error> {
     // Check if caller is super admin
     if !is_super_admin(caller) {
-        return Err(Error::NotAuthorized(
-            "Only super admins can remove owners".to_string(),
-        ));
+        return Err(Error {
+            code: 403,
+            error: "NotAuthorized".to_string(),
+            message: "Only super admins can remove owners".to_string(),
+        });
     }
 
-    let selected_owner = storage::get_owner(&owner_principal)
-        .ok_or_else(|| Error::NotFound("Owner not found".to_string()))?;
+    let selected_owner = storage::get_owner(&owner_principal).ok_or_else(|| Error {
+        code: 404,
+        message: "Owner not found".to_string(),
+        error: "NotFound".to_string(),
+    })?;
 
     // cannot remove the absolute super owner
     if selected_owner.role == OwnerRole::SuperAdmin
         && selected_owner.principal == selected_owner.created_by
     {
-        return Err(Error::NotAuthorized(
-            "Cannot remove the absolute super admin".to_string(),
-        ));
+        return Err(Error {
+            code: 403,
+            message: "Cannot remove the absolute super admin".to_string(),
+            error: "NotAuthorized".to_string(),
+        });
     }
 
     // cannot remove himself
     if owner_principal == *caller {
-        return Err(Error::InvalidInput(
-            "Super admins cannot remove themselves".to_string(),
-        ));
+        return Err(Error {
+            code: 400,
+            message: "Super admins cannot remove themselves".to_string(),
+            error: "InvalidInput".to_string(),
+        });
     }
 
     // Cannot remove self if you're the only super admin
     if owner_principal == *caller && storage::count_super_admins() <= 1 {
-        return Err(Error::InvalidInput(
-            "Cannot remove the last super admin".to_string(),
-        ));
+        return Err(Error {
+            code: 403,
+            message: "Cannot remove the last super admin".to_string(),
+            error: "NotAuthorized".to_string(),
+        });
     }
 
     // Remove the owner
     if storage::remove_owner(&owner_principal) {
         Ok(())
     } else {
-        Err(Error::NotFound("Owner not found".to_string()))
+        Err(Error {
+            code: 500,
+            message: "Failed to remove owner".to_string(),
+            error: "InternalError".to_string(),
+        })
     }
 }
 
@@ -140,9 +159,11 @@ pub fn remove_owner(caller: &Principal, owner_principal: Principal) -> Result<()
 pub fn get_all_owners(caller: &Principal) -> Result<Vec<Owner>, Error> {
     // Check if caller is an owner
     if !storage::owner_exists(caller) {
-        return Err(Error::NotAuthorized(
-            "Only owners can view the owners list".to_string(),
-        ));
+        return Err(Error {
+            code: 403,
+            error: "NotAuthorized".to_string(),
+            message: "Only owners can view the owners list".to_string(),
+        });
     }
 
     Ok(storage::get_all_owners())
@@ -150,7 +171,11 @@ pub fn get_all_owners(caller: &Principal) -> Result<Vec<Owner>, Error> {
 
 // Get owner info
 pub fn get_owner_info(caller: &Principal) -> Result<Owner, Error> {
-    storage::get_owner(caller).ok_or_else(|| Error::NotFound("You are not an owner".to_string()))
+    storage::get_owner(caller).ok_or_else(|| Error {
+        code: 404,
+        message: "Owner not found".to_string(),
+        error: "NotFound".to_string(),
+    })
 }
 
 // Update owner permissions
@@ -161,19 +186,58 @@ pub fn update_owner_permissions(
 ) -> Result<(), Error> {
     // Check if caller is super admin
     if !is_super_admin(caller) && !is_owner(*caller) {
-        return Err(Error::NotAuthorized(
-            "Only super admins can update owner permissions".to_string(),
-        ));
+        return Err(Error {
+            code: 403,
+            message: "Only super admins can update owner permissions".to_string(),
+            error: "NotAuthorized".to_string(),
+        });
+    }
+    let caller_owner = storage::get_owner(caller).ok_or_else(|| Error {
+        code: 404,
+        message: "Caller owner not found".to_string(),
+        error: "NotFound".to_string(),
+    })?;
+
+    if owner_principal == *caller && caller_owner.principal != caller_owner.created_by {
+        return Err(Error {
+            code: 400,
+            message: "Super admins cannot update their own permissions".to_string(),
+            error: "InvalidInput".to_string(),
+        });
     }
 
-    if owner_principal == *caller {
-        return Err(Error::InvalidInput(
-            "Super admins cannot update their own permissions".to_string(),
-        ));
+    let mut owner = storage::get_owner(&owner_principal).ok_or_else(|| Error {
+        code: 404,
+        message: "Owner not found".to_string(),
+        error: "NotFound".to_string(),
+    })?;
+    // check if the owner is the absolute super admin
+    if owner.role == OwnerRole::SuperAdmin && owner.principal == owner.created_by {
+        return Err(Error {
+            code: 403,
+            message: "Cannot update permissions of the absolute super admin".to_string(),
+            error: "NotAuthorized".to_string(),
+        });
     }
 
-    let mut owner = storage::get_owner(&owner_principal)
-        .ok_or_else(|| Error::NotFound("Owner not found".to_string()))?;
+    // check if the caller is a higher role than the target owner
+
+    if !is_higher_role(&caller_owner.role, &owner.role) {
+        return Err(Error {
+            code: 403,
+            message: "Cannot update permissions of an owner with equal or higher role".to_string(),
+            error: "NotAuthorized".to_string(),
+        });
+    }
+
+    // check if the owner is the last super admin
+    if owner.role == OwnerRole::SuperAdmin && storage::count_super_admins() <= 1 {
+        return Err(Error {
+            code: 403,
+            message: "Cannot update permissions of the last super admin".to_string(),
+            error: "NotAuthorized".to_string(),
+        });
+    }
 
     // Validate permissions based on role
     let valid_permissions = validate_role_permissions(&owner.role, new_permissions)?;
@@ -181,6 +245,16 @@ pub fn update_owner_permissions(
 
     storage::insert_owner(owner);
     Ok(())
+}
+
+// Check if first role is higher than second role
+fn is_higher_role(role1: &OwnerRole, role2: &OwnerRole) -> bool {
+    match (role1, role2) {
+        (OwnerRole::SuperAdmin, OwnerRole::Admin) => true,
+        (OwnerRole::SuperAdmin, OwnerRole::Moderator) => true,
+        (OwnerRole::Admin, OwnerRole::Moderator) => true,
+        _ => false,
+    }
 }
 
 // Validate permissions based on role
@@ -200,10 +274,11 @@ fn validate_role_permissions(
 
             for perm in &permissions {
                 if forbidden.contains(perm) {
-                    return Err(Error::InvalidInput(format!(
-                        "Admins cannot have {:?} permission",
-                        perm
-                    )));
+                    return Err(Error {
+                        code: 400,
+                        message: format!("Admins cannot have {:?} permission", perm),
+                        error: "InvalidInput".to_string(),
+                    });
                 }
             }
             Ok(permissions)
@@ -218,10 +293,11 @@ fn validate_role_permissions(
 
             for perm in &permissions {
                 if !allowed.contains(perm) {
-                    return Err(Error::InvalidInput(format!(
-                        "Moderators cannot have {:?} permission",
-                        perm
-                    )));
+                    return Err(Error {
+                        code: 400,
+                        message: format!("Moderators cannot have {:?} permission", perm),
+                        error: "InvalidInput".to_string(),
+                    });
                 }
             }
             Ok(permissions)
