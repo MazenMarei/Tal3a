@@ -10,11 +10,69 @@ use crate::types::{
     user::{RegisteringUser, UpdatingUser, User, UserRole},
 };
 use base64::Engine;
-use candid::Principal;
+use candid::{Nat, Principal};
 use ic_cdk::api::time;
 use ic_cdk::management_canister::raw_rand;
+use icrc_ledger_types::icrc1::account::Account;
+use icrc_ledger_types::icrc2::transfer_from::{TransferFromArgs, TransferFromError};
 
 impl User {
+    pub async fn give_welcome_bonus(user_principal: Principal) -> Result<u64, String> {
+        // ICRC1 Ledger canister ID
+        const LEDGER_CANISTER_ID: &str = "u6s2n-gx777-77774-qaaba-cai";
+
+        // Token amount to give new users (100 tokens)
+        const WELCOME_BONUS: u64 = 100_000;
+
+        // Treasury account that has the tokens
+        const TREASURY_ACCOUNT: &str =
+            "a2ttl-swgqe-2gnnl-skcbm-k76uz-5wufo-omrk2-2mgsk-sxs4q-n6usf-dqe";
+
+        let treasury_principal = Principal::from_text(TREASURY_ACCOUNT)
+            .map_err(|e| format!("Invalid treasury account: {}", e))?;
+
+        let transfer_args = TransferFromArgs {
+            spender_subaccount: None,
+            from: Account {
+                owner: treasury_principal,
+                subaccount: None,
+            },
+            to: Account {
+                owner: user_principal,
+                subaccount: None,
+            },
+            amount: WELCOME_BONUS.into(),
+            fee: None,
+            memo: Some(b"Welcome bonus".to_vec().into()),
+            created_at_time: None,
+        };
+
+        let ledger_principal = Principal::from_text(LEDGER_CANISTER_ID)
+            .map_err(|e| format!("Invalid ledger canister ID: {}", e))?;
+
+        // Use icrc2_transfer_from to transfer tokens from treasury to user
+        match ic_cdk::call::<(TransferFromArgs,), (Result<Nat, TransferFromError>,)>(
+            ledger_principal,
+            "icrc2_transfer_from",
+            (transfer_args,),
+        )
+        .await
+        {
+            Ok((Ok(block_index),)) => {
+                // Convert Nat to u64 for the return value
+                let block_num = block_index.0.to_u64_digits();
+                if block_num.len() > 0 {
+                    Ok(block_num[0])
+                } else {
+                    Ok(0)
+                }
+            },
+            Ok((Err(transfer_error),)) => Err(format!("Transfer failed: {:?}", transfer_error)),
+            Err((rejection_code, msg)) => {
+                Err(format!("Call failed: {:?}, {}", rejection_code, msg))
+            }
+        }
+    }
     pub fn new(registering_user: RegisteringUser) -> Result<Self, Error> {
         let principal_id = ic_cdk::api::msg_caller();
         if Self::get_user(principal_id).is_ok() {
@@ -79,6 +137,21 @@ impl User {
             activity: Vec::new(),
             manual_status: false,
         };
+
+        // Give welcome bonus asynchronously (ignore result here, log if needed)
+        let _ = ic_cdk::spawn(async move {
+            match Self::give_welcome_bonus(principal_id).await {
+                Ok(amount) => ic_cdk::api::debug_print(format!(
+                    "Welcome bonus of {} tokens given to {}",
+                    amount, principal_id
+                )),
+                Err(e) => ic_cdk::api::debug_print(format!(
+                    "Failed to give welcome bonus to {}: {}",
+                    principal_id, e
+                )),
+            }
+        });
+
         USERS.with(|users| {
             users.borrow_mut().insert(principal_id, new_user.clone());
             Ok(new_user)
