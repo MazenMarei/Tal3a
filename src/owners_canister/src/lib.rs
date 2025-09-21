@@ -6,9 +6,12 @@ mod types;
 // Re-export public API endpoints from contracts
 pub use contracts::*;
 
-use ic_cdk::init;
 use candid::Principal;
-use types::{Owner, OwnerRole, Permission, GroupAdmin, GroupPermission};
+use ic_cdk::init;
+use types::{
+    AdminRequest, CreateAdminRequest, Error, GroupAdmin, GroupPermission, Owner, OwnerRole,
+    Permission, ProcessAdminRequest,
+};
 
 #[init]
 fn init() {
