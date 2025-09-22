@@ -11,6 +11,7 @@ import Footer from '../components/Footer'
 import PrivacySection from '../components/PrivacySection'
 import RewardsSection from '../components/RewardsSection'
 import HowItWorks from '@/components/HowItWorks'
+import Header from '@/components/Header'
 
 export const Route = createFileRoute('/')({
   component: LandingPage,
@@ -20,21 +21,25 @@ function LandingPage() {
   const { language } = useAppContext()
 
   return (
-    <div
-      className="min-h-screen bg-light text-dark font-cairo"
-      dir={language === 'ar' ? 'rtl' : 'ltr'}
-    >
-      <HeroNew />
-      <ProblemStatement />
-      <FeaturesSection />
-      <HowItWorks />
-      <CommunitySection />
-      <SportsCategories />
-      <PrivacySection />
-      <RewardsSection />
-      <AppDownload />
-      <FAQSection />
-      <Footer />
-    </div>
+    <>
+      <Header />
+
+      <div
+        className="min-h-screen bg-light text-dark font-cairo"
+        dir={language === 'ar' ? 'rtl' : 'ltr'}
+      >
+        <HeroNew />
+        <ProblemStatement />
+        <FeaturesSection />
+        <HowItWorks />
+        <CommunitySection />
+        <SportsCategories />
+        <PrivacySection />
+        <RewardsSection />
+        <AppDownload />
+        <FAQSection />
+        <Footer />
+      </div>
+    </>
   )
 }

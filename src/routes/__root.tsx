@@ -8,7 +8,6 @@ import Header from '../components/Header'
 export const Route = createRootRoute({
   component: () => (
     <AppProvider>
-      <Header />
       <Outlet />
       <TanstackDevtools
         config={{

@@ -145,3 +145,20 @@ code {
   font-family:
     source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+/* Map Styling for Multilingual Support */
+.map-tiles-arabic {
+  /* Make Arabic OSM tiles lighter and cleaner to match CartoDB style */
+  filter: brightness(1.1) contrast(0.9) saturate(0.8);
+  background-color: #f8f9fa;
+}
+
+/* Leaflet popup styling for better consistency */
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.leaflet-popup-tip {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

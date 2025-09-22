@@ -1,6 +1,18 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faB,
+  faBasketball,
+  faBicycle,
+  faHeart,
+  faHouse,
+  faRunning,
+  faSoccerBall,
+  faSwimmer,
+} from '@fortawesome/free-solid-svg-icons'
+import { useAppContext } from '@/contexts/AppProvider'
 
 interface LoginFlowProps {
   onComplete: (userData: UserData) => void
@@ -16,6 +28,7 @@ interface UserData {
 }
 
 export default function LoginFlow({ onComplete }: LoginFlowProps) {
+  const { language } = useAppContext()
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [currentStep, setCurrentStep] = useState(1)
@@ -33,6 +46,15 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
   // Get referral code from URL params
   const urlParams = new URLSearchParams(window.location.search)
   const referralFromUrl = urlParams.get('ref')
+
+  // Cleanup blob URLs on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (userData.avatar && userData.avatar.startsWith('blob:')) {
+        URL.revokeObjectURL(userData.avatar)
+      }
+    }
+  }, [userData.avatar])
 
   const validateStep = (step: number): boolean => {
     const newErrors: { [key: string]: string } = {}
@@ -72,6 +94,8 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
       if (result) {
         onComplete(userData)
         navigate({ to: '/dashboard' })
+        console.log('should navigate to dashboard');
+        
       }
     } catch (error) {
       console.error('Failed to complete registration:', error)
@@ -100,9 +124,7 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
         return (
           <div className="text-center">
             <div className="bg-primary w-16 h-16 rounded-2xl flex items-center justify-center text-white mx-auto mb-6">
-              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+              <FontAwesomeIcon icon={faHouse} />
             </div>
             <h2 className="text-3xl font-bold mb-3 text-secondary dark:text-white">
               {t('loginFlow.welcome.title')}
@@ -146,34 +168,15 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
             </p>
 
             <div className="space-y-6">
-              {/* Name Field */}
-              <div>
-                <label className="block text-right text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {t('loginFlow.profile.nameLabel')} *
-                </label>
-                <input
-                  type="text"
-                  value={userData.name}
-                  onChange={(e) =>
-                    setUserData({ ...userData, name: e.target.value })
-                  }
-                  placeholder={t('loginFlow.profile.namePlaceholder')}
-                  className={`w-full p-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
-                />
-                {errors.name && (
-                  <p className="text-red-500 text-sm mt-1 text-right">
-                    {errors.name}
-                  </p>
-                )}
-              </div>
-
               {/* Avatar Upload */}
               <div>
-                <label className="block text-right text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {t('loginFlow.profile.avatarLabel')} *
-                </label>
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="w-24 h-24 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center overflow-hidden">
+                <div className="flex justify-center">
+                  <div
+                    onClick={() =>
+                      document.getElementById('avatar-input')?.click()
+                    }
+                    className="w-24 h-24 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center overflow-hidden cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors relative group"
+                  >
                     {userData.avatar ? (
                       <img
                         src={userData.avatar}
@@ -182,7 +185,7 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
                       />
                     ) : (
                       <svg
-                        className="w-12 h-12 text-gray-400"
+                        className="w-12 h-12 text-gray-400 group-hover:text-gray-500 transition-colors"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -193,29 +196,82 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
                         />
                       </svg>
                     )}
-                  </div>
-                  <label className="cursor-pointer bg-gray-50 dark:bg-gray-700 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                    <div className="text-center">
+                    {/* Camera overlay icon */}
+                    <div className="absolute inset-0  bg-opacity-0 group-hover:bg-black/50 rounded-full flex items-center justify-center transition-all">
                       <svg
-                        className="mx-auto h-8 w-8 text-gray-400"
-                        stroke="currentColor"
+                        className="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity"
                         fill="none"
-                        viewBox="0 0 48 48"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
                       >
                         <path
-                          d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                          strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
                         />
                       </svg>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                        {t('loginFlow.profile.avatarUpload')}
-                      </p>
                     </div>
-                    <input type="file" accept="image/*" className="hidden" />
-                  </label>
+                  </div>
+                  <input
+                    id="avatar-input"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0]
+                      if (file) {
+                        // Validate file type
+                        if (file.type.startsWith('image/')) {
+                          // Revoke previous URL to prevent memory leaks
+                          if (
+                            userData.avatar &&
+                            userData.avatar.startsWith('blob:')
+                          ) {
+                            URL.revokeObjectURL(userData.avatar)
+                          }
+
+                          const url = URL.createObjectURL(file)
+                          setUserData({ ...userData, avatar: url })
+                        } else {
+                          alert('Please select a valid image file')
+                        }
+                      }
+                    }}
+                  />
                 </div>
+              </div>
+
+              {/* Name Field */}
+              <div>
+                <label
+                  className={
+                    'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' +
+                    (language === 'ar' ? ' text-right' : ' text-left')
+                  }
+                >
+                  {t('loginFlow.profile.nameLabel')} *
+                </label>
+                <input
+                  type="text"
+                  value={userData.name}
+                  onChange={(e) =>
+                    setUserData({ ...userData, name: e.target.value })
+                  }
+                  placeholder={t('loginFlow.profile.namePlaceholder')}
+                  className={`w-full p-4 border rounded-xl text-secondary focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                />
+                {errors.name && (
+                  <p className="text-red-500 text-sm mt-1 text-right">
+                    {errors.name}
+                  </p>
+                )}
               </div>
 
               {/* Bio Field (Optional) */}
@@ -229,7 +285,7 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
                     setUserData({ ...userData, bio: e.target.value })
                   }
                   placeholder={t('loginFlow.profile.bioPlaceholder')}
-                  className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full p-4 border text-secondary border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
                   rows={3}
                   maxLength={300}
                 />
@@ -251,7 +307,7 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
                     setUserData({ ...userData, referralCode: e.target.value })
                   }
                   placeholder={t('loginFlow.profile.referralPlaceholder')}
-                  className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white text-center"
+                  className="w-full p-4 border text-secondary border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white text-center"
                   maxLength={20}
                 />
                 {referralFromUrl && (
@@ -293,7 +349,7 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
                   onChange={(e) =>
                     setUserData({ ...userData, location: e.target.value })
                   }
-                  className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full p-4 border text-secondary border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
                 >
                   <option value="">{t('loginFlow.location.selectCity')}</option>
                   <option value="cairo">
@@ -353,12 +409,16 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
 
             <div className="grid grid-cols-2 gap-4">
               {[
-                { key: 'football', icon: '⚽', color: 'bg-green-500' },
-                { key: 'running', icon: '🏃', color: 'bg-blue-500' },
-                { key: 'basketball', icon: '🏀', color: 'bg-orange-500' },
-                { key: 'swimming', icon: '🏊', color: 'bg-cyan-500' },
-                { key: 'cycling', icon: '🚴', color: 'bg-purple-500' },
-                { key: 'yoga', icon: '🧘', color: 'bg-pink-500' },
+                { key: 'football', icon: faSoccerBall, color: 'bg-green-500' },
+                { key: 'running', icon: faRunning, color: 'bg-blue-500' },
+                {
+                  key: 'basketball',
+                  icon: faBasketball,
+                  color: 'bg-orange-500',
+                },
+                { key: 'swimming', icon: faSwimmer, color: 'bg-cyan-500' },
+                { key: 'cycling', icon: faBicycle, color: 'bg-purple-500' },
+                { key: 'yoga', icon: faHeart, color: 'bg-pink-500' },
               ].map((sport) => {
                 const isSelected = userData.sports?.includes(sport.key) || false
                 return (
@@ -374,7 +434,7 @@ export default function LoginFlow({ onComplete }: LoginFlowProps) {
                     <div
                       className={`w-12 h-12 rounded-xl ${sport.color} flex items-center justify-center text-white text-2xl mx-auto mb-2`}
                     >
-                      {sport.icon}
+                      <FontAwesomeIcon icon={sport.icon} />
                     </div>
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       {t(`loginFlow.sports.${sport.key}`)}

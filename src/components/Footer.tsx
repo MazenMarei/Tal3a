@@ -64,7 +64,7 @@ export default function Footer() {
                   className="text-white text-2xl"
                 />
               </div>
-              <h3 className="text-3xl font-bold">طلعة</h3>
+              <h3 className="text-3xl font-bold">{t('common.appName')}</h3>
             </div>
             <p className="text-gray-300 leading-relaxed">
               {t('footer.description')}

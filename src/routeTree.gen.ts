@@ -14,6 +14,10 @@ import { Route as R404RouteImport } from './routes/404'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as authenticatedRouteRouteImport } from './routes/(authenticated)/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as authenticatedPromotionsRouteImport } from './routes/(authenticated)/promotions'
+import { Route as authenticatedNotificationsRouteImport } from './routes/(authenticated)/notifications'
+import { Route as authenticatedMapRouteImport } from './routes/(authenticated)/map'
+import { Route as authenticatedEventsRouteImport } from './routes/(authenticated)/events'
 import { Route as authenticatedDashboardRouteImport } from './routes/(authenticated)/dashboard'
 
 const LoginRoute = LoginRouteImport.update({
@@ -40,6 +44,27 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const authenticatedPromotionsRoute = authenticatedPromotionsRouteImport.update({
+  id: '/promotions',
+  path: '/promotions',
+  getParentRoute: () => authenticatedRouteRoute,
+} as any)
+const authenticatedNotificationsRoute =
+  authenticatedNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => authenticatedRouteRoute,
+  } as any)
+const authenticatedMapRoute = authenticatedMapRouteImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => authenticatedRouteRoute,
+} as any)
+const authenticatedEventsRoute = authenticatedEventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => authenticatedRouteRoute,
+} as any)
 const authenticatedDashboardRoute = authenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -52,6 +77,10 @@ export interface FileRoutesByFullPath {
   '/404': typeof R404Route
   '/login': typeof LoginRoute
   '/dashboard': typeof authenticatedDashboardRoute
+  '/events': typeof authenticatedEventsRoute
+  '/map': typeof authenticatedMapRoute
+  '/notifications': typeof authenticatedNotificationsRoute
+  '/promotions': typeof authenticatedPromotionsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof authenticatedRouteRouteWithChildren
@@ -59,6 +88,10 @@ export interface FileRoutesByTo {
   '/404': typeof R404Route
   '/login': typeof LoginRoute
   '/dashboard': typeof authenticatedDashboardRoute
+  '/events': typeof authenticatedEventsRoute
+  '/map': typeof authenticatedMapRoute
+  '/notifications': typeof authenticatedNotificationsRoute
+  '/promotions': typeof authenticatedPromotionsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,12 +101,34 @@ export interface FileRoutesById {
   '/404': typeof R404Route
   '/login': typeof LoginRoute
   '/(authenticated)/dashboard': typeof authenticatedDashboardRoute
+  '/(authenticated)/events': typeof authenticatedEventsRoute
+  '/(authenticated)/map': typeof authenticatedMapRoute
+  '/(authenticated)/notifications': typeof authenticatedNotificationsRoute
+  '/(authenticated)/promotions': typeof authenticatedPromotionsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$' | '/404' | '/login' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/$'
+    | '/404'
+    | '/login'
+    | '/dashboard'
+    | '/events'
+    | '/map'
+    | '/notifications'
+    | '/promotions'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$' | '/404' | '/login' | '/dashboard'
+  to:
+    | '/'
+    | '/$'
+    | '/404'
+    | '/login'
+    | '/dashboard'
+    | '/events'
+    | '/map'
+    | '/notifications'
+    | '/promotions'
   id:
     | '__root__'
     | '/'
@@ -82,6 +137,10 @@ export interface FileRouteTypes {
     | '/404'
     | '/login'
     | '/(authenticated)/dashboard'
+    | '/(authenticated)/events'
+    | '/(authenticated)/map'
+    | '/(authenticated)/notifications'
+    | '/(authenticated)/promotions'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -129,6 +188,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(authenticated)/promotions': {
+      id: '/(authenticated)/promotions'
+      path: '/promotions'
+      fullPath: '/promotions'
+      preLoaderRoute: typeof authenticatedPromotionsRouteImport
+      parentRoute: typeof authenticatedRouteRoute
+    }
+    '/(authenticated)/notifications': {
+      id: '/(authenticated)/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof authenticatedNotificationsRouteImport
+      parentRoute: typeof authenticatedRouteRoute
+    }
+    '/(authenticated)/map': {
+      id: '/(authenticated)/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof authenticatedMapRouteImport
+      parentRoute: typeof authenticatedRouteRoute
+    }
+    '/(authenticated)/events': {
+      id: '/(authenticated)/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof authenticatedEventsRouteImport
+      parentRoute: typeof authenticatedRouteRoute
+    }
     '/(authenticated)/dashboard': {
       id: '/(authenticated)/dashboard'
       path: '/dashboard'
@@ -141,10 +228,18 @@ declare module '@tanstack/react-router' {
 
 interface authenticatedRouteRouteChildren {
   authenticatedDashboardRoute: typeof authenticatedDashboardRoute
+  authenticatedEventsRoute: typeof authenticatedEventsRoute
+  authenticatedMapRoute: typeof authenticatedMapRoute
+  authenticatedNotificationsRoute: typeof authenticatedNotificationsRoute
+  authenticatedPromotionsRoute: typeof authenticatedPromotionsRoute
 }
 
 const authenticatedRouteRouteChildren: authenticatedRouteRouteChildren = {
   authenticatedDashboardRoute: authenticatedDashboardRoute,
+  authenticatedEventsRoute: authenticatedEventsRoute,
+  authenticatedMapRoute: authenticatedMapRoute,
+  authenticatedNotificationsRoute: authenticatedNotificationsRoute,
+  authenticatedPromotionsRoute: authenticatedPromotionsRoute,
 }
 
 const authenticatedRouteRouteWithChildren =
