@@ -507,8 +507,6 @@
     "totalPoints": "Total Points",
     "activityStreak": "Activity Streak",
     "weeklyGoal": "Weekly Goal",
-    "suggestedGroups": "Suggested Groups",
-    "upcomingTal3aat": "Upcoming Tal3aat",
     "viewAllTal3aat": "View All Tal3aat",
     "viewMoreActivities": "View More Activities",
     "showLess": "Show Less",
@@ -518,6 +516,65 @@
     "participants": "participants",
     "pts": "pts",
     "days": "days",
-    "tal3aat": "tal3aat"
+    "tal3aat": "tal3aat",
+    "noChallengesTitle": "No Challenges Available",
+    "noChallengesDescription": "Don't worry! We're constantly adding new and exciting challenges. Check back soon or explore other available activities.",
+    "exploreActivities": "Explore Activities",
+    "recommendedForYou": "Recommended for You",
+    "seeMore": "See More",
+    "womenOnly": "Women Only",
+    "readyForNewTal3a": "Ready for a new Tal3a?",
+    "newAchievements": "New achievements",
+    "weeklyStats": "Weekly Stats",
+    "writeComment": "Write a comment...",
+    "duration": "Duration",
+    "calories": "Calories",
+    "type": "Type",
+    "suggestedGroups": {
+      "title": "Suggested Groups",
+      "footballCairoGroup": "New Cairo Football",
+      "runningZamalekGroup": "Zamalek Morning Running",
+      "tennisMaadiGroup": "Maadi Tennis"
+    },
+    "upcomingTal3aat": {
+      "title": "Upcoming Tal3aat",
+      "footballMatch": "Football Match",
+      "todayAt6pm": "Today 6:00 PM",
+      "ahlyClub": "Ahly Club",
+      "morningRun": "Morning Run",
+      "tomorrowAt7am": "Tomorrow 7:00 AM",
+      "nileCornice": "Nile Corniche",
+      "tableTennis": "Table Tennis",
+      "fridayAt8pm": "Friday 8:00 PM",
+      "jaziraClub": "Jazira Club"
+    },
+    "achievements": {
+      "title": "Recent Achievements",
+      "firstChallengeComplete": "First Challenge Complete",
+      "activeMember": "Active Member",
+      "communityBuilder": "Community Builder"
+    },
+    "weather": {
+      "title": "Weather",
+      "partlySunny": "Partly Sunny",
+      "cairo": "Cairo",
+      "perfectForOutdoor": "Perfect for outdoor activities"
+    },
+    "comments": {
+      "title": "Comments",
+      "postTitle": "'s Post",
+      "noComments": "No comments yet",
+      "beFirst": "Be the first to comment!",
+      "like": "Like",
+      "liked": "Liked",
+      "reply": "Reply",
+      "loadMore": "Load More Comments"
+    },
+    "mobileBar": {
+      "create": "Create",
+      "search": "Search",
+      "map": "Map",
+      "notifications": "Notifications"
+    }
   }
 }

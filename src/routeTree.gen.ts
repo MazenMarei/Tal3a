@@ -15,10 +15,11 @@ import { Route as SplatRouteImport } from './routes/$'
 import { Route as authenticatedRouteRouteImport } from './routes/(authenticated)/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as authenticatedPromotionsRouteImport } from './routes/(authenticated)/promotions'
+import { Route as authenticatedProfileRouteImport } from './routes/(authenticated)/profile'
 import { Route as authenticatedNotificationsRouteImport } from './routes/(authenticated)/notifications'
 import { Route as authenticatedMapRouteImport } from './routes/(authenticated)/map'
 import { Route as authenticatedEventsRouteImport } from './routes/(authenticated)/events'
-import { Route as authenticatedDashboardRouteImport } from './routes/(authenticated)/dashboard'
+import { Route as authenticatedDashboardIndexRouteImport } from './routes/(authenticated)/dashboard/index'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -49,6 +50,11 @@ const authenticatedPromotionsRoute = authenticatedPromotionsRouteImport.update({
   path: '/promotions',
   getParentRoute: () => authenticatedRouteRoute,
 } as any)
+const authenticatedProfileRoute = authenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => authenticatedRouteRoute,
+} as any)
 const authenticatedNotificationsRoute =
   authenticatedNotificationsRouteImport.update({
     id: '/notifications',
@@ -65,33 +71,36 @@ const authenticatedEventsRoute = authenticatedEventsRouteImport.update({
   path: '/events',
   getParentRoute: () => authenticatedRouteRoute,
 } as any)
-const authenticatedDashboardRoute = authenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => authenticatedRouteRoute,
-} as any)
+const authenticatedDashboardIndexRoute =
+  authenticatedDashboardIndexRouteImport.update({
+    id: '/dashboard/',
+    path: '/dashboard/',
+    getParentRoute: () => authenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof authenticatedRouteRouteWithChildren
   '/$': typeof SplatRoute
   '/404': typeof R404Route
   '/login': typeof LoginRoute
-  '/dashboard': typeof authenticatedDashboardRoute
   '/events': typeof authenticatedEventsRoute
   '/map': typeof authenticatedMapRoute
   '/notifications': typeof authenticatedNotificationsRoute
+  '/profile': typeof authenticatedProfileRoute
   '/promotions': typeof authenticatedPromotionsRoute
+  '/dashboard': typeof authenticatedDashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof authenticatedRouteRouteWithChildren
   '/$': typeof SplatRoute
   '/404': typeof R404Route
   '/login': typeof LoginRoute
-  '/dashboard': typeof authenticatedDashboardRoute
   '/events': typeof authenticatedEventsRoute
   '/map': typeof authenticatedMapRoute
   '/notifications': typeof authenticatedNotificationsRoute
+  '/profile': typeof authenticatedProfileRoute
   '/promotions': typeof authenticatedPromotionsRoute
+  '/dashboard': typeof authenticatedDashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -100,11 +109,12 @@ export interface FileRoutesById {
   '/$': typeof SplatRoute
   '/404': typeof R404Route
   '/login': typeof LoginRoute
-  '/(authenticated)/dashboard': typeof authenticatedDashboardRoute
   '/(authenticated)/events': typeof authenticatedEventsRoute
   '/(authenticated)/map': typeof authenticatedMapRoute
   '/(authenticated)/notifications': typeof authenticatedNotificationsRoute
+  '/(authenticated)/profile': typeof authenticatedProfileRoute
   '/(authenticated)/promotions': typeof authenticatedPromotionsRoute
+  '/(authenticated)/dashboard/': typeof authenticatedDashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -113,22 +123,24 @@ export interface FileRouteTypes {
     | '/$'
     | '/404'
     | '/login'
-    | '/dashboard'
     | '/events'
     | '/map'
     | '/notifications'
+    | '/profile'
     | '/promotions'
+    | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$'
     | '/404'
     | '/login'
-    | '/dashboard'
     | '/events'
     | '/map'
     | '/notifications'
+    | '/profile'
     | '/promotions'
+    | '/dashboard'
   id:
     | '__root__'
     | '/'
@@ -136,11 +148,12 @@ export interface FileRouteTypes {
     | '/$'
     | '/404'
     | '/login'
-    | '/(authenticated)/dashboard'
     | '/(authenticated)/events'
     | '/(authenticated)/map'
     | '/(authenticated)/notifications'
+    | '/(authenticated)/profile'
     | '/(authenticated)/promotions'
+    | '/(authenticated)/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -195,6 +208,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authenticatedPromotionsRouteImport
       parentRoute: typeof authenticatedRouteRoute
     }
+    '/(authenticated)/profile': {
+      id: '/(authenticated)/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof authenticatedProfileRouteImport
+      parentRoute: typeof authenticatedRouteRoute
+    }
     '/(authenticated)/notifications': {
       id: '/(authenticated)/notifications'
       path: '/notifications'
@@ -216,30 +236,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authenticatedEventsRouteImport
       parentRoute: typeof authenticatedRouteRoute
     }
-    '/(authenticated)/dashboard': {
-      id: '/(authenticated)/dashboard'
+    '/(authenticated)/dashboard/': {
+      id: '/(authenticated)/dashboard/'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof authenticatedDashboardRouteImport
+      preLoaderRoute: typeof authenticatedDashboardIndexRouteImport
       parentRoute: typeof authenticatedRouteRoute
     }
   }
 }
 
 interface authenticatedRouteRouteChildren {
-  authenticatedDashboardRoute: typeof authenticatedDashboardRoute
   authenticatedEventsRoute: typeof authenticatedEventsRoute
   authenticatedMapRoute: typeof authenticatedMapRoute
   authenticatedNotificationsRoute: typeof authenticatedNotificationsRoute
+  authenticatedProfileRoute: typeof authenticatedProfileRoute
   authenticatedPromotionsRoute: typeof authenticatedPromotionsRoute
+  authenticatedDashboardIndexRoute: typeof authenticatedDashboardIndexRoute
 }
 
 const authenticatedRouteRouteChildren: authenticatedRouteRouteChildren = {
-  authenticatedDashboardRoute: authenticatedDashboardRoute,
   authenticatedEventsRoute: authenticatedEventsRoute,
   authenticatedMapRoute: authenticatedMapRoute,
   authenticatedNotificationsRoute: authenticatedNotificationsRoute,
+  authenticatedProfileRoute: authenticatedProfileRoute,
   authenticatedPromotionsRoute: authenticatedPromotionsRoute,
+  authenticatedDashboardIndexRoute: authenticatedDashboardIndexRoute,
 }
 
 const authenticatedRouteRouteWithChildren =

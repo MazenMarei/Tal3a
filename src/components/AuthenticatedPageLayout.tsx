@@ -1,7 +1,7 @@
-import { useAppContext } from '@/contexts/AppProvider'
-import Sidebar from './Sidebar'
-import Footer from './Footer'
 import { useState } from 'react'
+import Footer from './Footer'
+import Sidebar from './Sidebar'
+import { useAppContext } from '@/contexts/AppProvider'
 
 export default function AuthenticatedPageLayout({
   children,

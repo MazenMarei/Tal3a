@@ -95,7 +95,7 @@ const secondaryItems = [
   {
     id: 'notifications',
     label: 'sidebar.notifications',
-    href: '/notifications',
+    href: '/profile?tab=notifications',
     icon: faBell,
     color: 'text-yellow-600',
   },
@@ -235,7 +235,7 @@ export default function Sidebar({
             <ul className="space-y-1">
               {menuItems.map((item) =>
                 item.childs ? (
-                  <li>
+                  <li key={item.id}>
                     <button
                       onClick={() =>
                         setIsMenueOpen({
@@ -348,7 +348,9 @@ export default function Sidebar({
                         <span className="font-medium">{t(item.label)}</span>
                       )}
                       {isActive(item.href) && !isCollapsed && (
-                        <div className={`${language === 'ar' ? 'mr-auto' : 'ml-auto'} w-2 h-2 bg-white rounded-full`}></div>
+                        <div
+                          className={`${language === 'ar' ? 'mr-auto' : 'ml-auto'} w-2 h-2 bg-white rounded-full`}
+                        ></div>
                       )}
                     </Link>
                   </li>
@@ -449,10 +451,11 @@ export default function Sidebar({
                 <li key={item.id}>
                   <Link
                     to={item.href}
+                    onClick={() => setCurrentPath(item.href)}
                     className={cn(
                       'flex items-center px-3 py-2 rounded-lg transition-all duration-200 group',
                       isActive(item.href)
-                        ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-md'
+                        ? ' bg-primary text-white shadow-md'
                         : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600',
                     )}
                   >
@@ -468,7 +471,7 @@ export default function Sidebar({
                       <span className="font-medium">{t(item.label)}</span>
                     )}
                     {isActive(item.href) && !isCollapsed && (
-                      <div className="ml-auto w-2 h-2 bg-white rounded-full"></div>
+                      <div className={`${language === 'ar' ? 'mr-auto' : 'ml-auto'} w-2 h-2 bg-white rounded-full`}></div>
                     )}
                   </Link>
                 </li>

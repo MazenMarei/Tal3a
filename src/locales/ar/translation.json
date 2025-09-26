@@ -499,8 +499,6 @@
     "totalPoints": "إجمالي النقاط",
     "activityStreak": "سلسلة النشاط",
     "weeklyGoal": "الهدف الأسبوعي",
-    "suggestedGroups": "مجموعات مقترحة",
-    "upcomingTal3aat": "طلعات قادمة",
     "viewAllTal3aat": "عرض جميع الطلعات",
     "viewMoreActivities": "عرض المزيد من الأنشطة",
     "showLess": "عرض أقل",
@@ -510,6 +508,65 @@
     "participants": "مشارك",
     "pts": "نقطة",
     "days": "أيام",
-    "tal3aat": "طلعات"
+    "tal3aat": "طلعات",
+    "noChallengesTitle": "لا توجد تحديات حالياً",
+    "noChallengesDescription": "لا تقلق! نحن نضيف تحديات جديدة ومثيرة باستمرار. عد قريباً أو استكشف الأنشطة الأخرى المتاحة.",
+    "exploreActivities": "استكشف الأنشطة",
+    "recommendedForYou": "مقترح ليك",
+    "seeMore": "شوف المزيد",
+    "womenOnly": "بنات فقط",
+    "readyForNewTal3a": "جاهز لطلعة جديدة؟",
+    "newAchievements": "إنجازات جديدة",
+    "weeklyStats": "إحصائيات الأسبوع",
+    "writeComment": "اكتب تعليق...",
+    "duration": "المدة",
+    "calories": "سعرة",
+    "type": "النوع",
+    "suggestedGroups": {
+      "title": "مجموعات مقترحة",
+      "footballCairoGroup": "كرة قدم القاهرة الجديدة",
+      "runningZamalekGroup": "جري الزمالك الصباحي",
+      "tennisMaadiGroup": "تنس المعادي"
+    },
+    "upcomingTal3aat": {
+      "title": "طلعات قادمة",
+      "footballMatch": "مباراة كرة قدم",
+      "todayAt6pm": "اليوم 6:00 م",
+      "ahlyClub": "ملعب الأهلي",
+      "morningRun": "جري صباحي",
+      "tomorrowAt7am": "غداً 7:00 ص",
+      "nileCornice": "كورنيش النيل",
+      "tableTennis": "تنس طاولة",
+      "fridayAt8pm": "الجمعة 8:00 م",
+      "jaziraClub": "نادي الجزيرة"
+    },
+    "achievements": {
+      "title": "إنجازات حديثة",
+      "firstChallengeComplete": "أول تحدٍ مكتمل",
+      "activeMember": "عضو نشط",
+      "communityBuilder": "صانع مجتمع"
+    },
+    "weather": {
+      "title": "الطقس",
+      "partlySunny": "مشمس جزئياً",
+      "cairo": "القاهرة",
+      "perfectForOutdoor": "مناسب للأنشطة الخارجية"
+    },
+    "comments": {
+      "title": "التعليقات",
+      "postTitle": " منشور",
+      "noComments": "لا توجد تعليقات بعد",
+      "beFirst": "كن أول من يعلق!",
+      "like": "إعجاب",
+      "liked": "أعجبني",
+      "reply": "رد",
+      "loadMore": "عرض المزيد من التعليقات"
+    },
+    "mobileBar": {
+      "create": "إنشاء",
+      "search": "بحث",
+      "map": "خريطة",
+      "notifications": "إشعارات"
+    }
   }
 }
