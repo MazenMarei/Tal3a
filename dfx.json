@@ -24,17 +24,6 @@
       "source": ["src/admin_dashboard_canister/dist"],
       "type": "assets"
     },
-    "internet_identity": {
-      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
-      "type": "custom",
-      "specified_id": "rdmx6-jaaaa-aaaaa-aaadq-cai",
-      "remote": {
-        "id": {
-          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
-        }
-      },
-      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
-    },
     "icrc1_ledger_canister": {
       "type": "custom",
       "candid": "https://github.com/dfinity/ic/releases/download/ledger-suite-icrc-2025-09-01/ledger.did",
