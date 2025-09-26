@@ -1,15 +1,18 @@
-import path from "path";
+import path from "node:path";
+import { URL, fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import environment from "vite-plugin-environment";
-import { fileURLToPath, URL } from "url";
 import dotenv from "dotenv";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
+
 dotenv.config({ path: "../../.env" });
 
 export default defineConfig({
   base: "./",
   plugins: [
+    tanstackRouter({ autoCodeSplitting: true }),
     react(),
     tailwindcss(),
     environment("all", { prefix: "CANISTER_" }),

@@ -1,25 +1,33 @@
-# Various IDEs and Editors
-.vscode/
-.idea/
-**/*~
-
-# Mac OSX temporary files
+node_modules
 .DS_Store
-**/.DS_Store
+dist
+dist-ssr
+*.local
+count.txt
+.env
+.nitro
+.tanstack
 
-# dfx temporary files
+# DFX build outputs
 .dfx/
-
-# generated files
-**/declarations/
-
-# rust
 target/
 
-# frontend code
-node_modules/
-dist/
-.svelte-kit/
+# Rust build files
+Cargo.lock
+debug/
+release/
 
-# environment variables
-.env
+# IC build artifacts
+*.wasm
+*.did.js
+*.did.d.ts
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
