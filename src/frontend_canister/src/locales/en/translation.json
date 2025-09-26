@@ -1,0 +1,580 @@
+{
+  "common": {
+    "appName": "Tal3a",
+    "home": "Home",
+    "optional": "Optional"
+  },
+  "loginFlow": {
+    "progress": {
+      "step": "Step",
+      "of": "of",
+      "complete": "Complete"
+    },
+    "navigation": {
+      "previous": "Previous",
+      "next": "Next",
+      "start": "Let's Start!",
+      "saving": "Saving..."
+    },
+    "validation": {
+      "nameRequired": "Name is required"
+    },
+    "welcome": {
+      "title": "Welcome to Tal3a!",
+      "navigation": "Navigation",
+      "create": "Create",
+      "account": "Account",
+      "dashboard": "Dashboard",
+      "groups": "Groups",
+      "myGroups": "My Groups",
+      "searchGroups": "Search for Groups",
+      "events": "Events",
+      "posts": "Posts",
+      "map": "Map",
+      "promotions": "Promotions",
+      "createEvent": "Create Event",
+      "createGroup": "Create Group",
+      "createPost": "Create Post",
+      "profile": "Profile",
+      "notifications": "Notifications",
+      "settings": "Settings"
+    },
+    "subtitle": "Let us know more about you to provide the best sports experience",
+    "benefitsTitle": "✨ What you'll get",
+    "benefit1": "Find the right sports partners",
+    "benefit2": "Join sports groups in your area",
+    "benefit3": "Earn rewards for every activity",
+    "benefit4": "Track your sports progress"
+  },
+  "profile": {
+    "title": "Welcome to Tal3a!",
+    "subtitle": "Let us get to know you better to provide you with a sports experience",
+    "nameLabel": "Your Full Name",
+    "namePlaceholder": "Enter your full name",
+    "avatarLabel": "Profile Picture",
+    "avatarUpload": "Upload your photo",
+    "bioLabel": "Bio",
+    "bioPlaceholder": "Example: I love football and looking for a team to play with every week...",
+    "referralLabel": "Referral Code",
+    "referralPlaceholder": "Enter referral code",
+    "referralFound": "Referral code found automatically"
+  },
+  "location": {
+    "title": "Where are you?",
+    "subtitle": "So we can help you find activities near you",
+    "cityLabel": "Governorate/City",
+    "selectCity": "Choose your governorate",
+    "gpsNote": "We'll use your location to show nearby activities",
+    "cities": {
+      "cairo": "Cairo",
+      "alexandria": "Alexandria",
+      "giza": "Giza",
+      "luxor": "Luxor",
+      "aswan": "Aswan"
+    }
+  },
+
+  "nav": {
+    "features": "Features",
+    "howItWorks": "How It Works",
+    "community": "Community",
+    "joinCommunity": "Join the Community"
+  },
+  "hero": {
+    "title": "Let's Get Moving!",
+    "subtitle": "Your Buddy to Keep You Active",
+    "description": "Tal3a is the app that helps you find the perfect sports partner, join sports groups in your area, and earn rewards for every activity you do. It's not just about tracking stats; it's about making real friendships!",
+    "appStore": "Download from App Store",
+    "googlePlay": "Download from Google Play",
+    "users": "Active Users",
+    "sports": "Different Sports",
+    "matches": "Completed Matches",
+    "liveMatches": "Live Matches",
+    "dailyActivities": "Daily Activities",
+    "live": "LIVE",
+    "firstHalf": "1st Half",
+    "cta": "Discover Your Next Adventure"
+  },
+  "sports": {
+    "title": "Choose Your Sport",
+    "subtitle": "Find the perfect activity for you from our wide range of sports",
+    "football": "Football",
+    "footballCount": "1,250 active groups",
+    "running": "Running",
+    "runningCount": "890 active groups",
+    "swimming": "Swimming",
+    "swimmingCount": "420 active groups",
+    "tableTennis": "Table Tennis",
+    "tableTennisCount": "320 active groups",
+    "gym": "Gym & Fitness",
+    "gymCount": "670 active groups",
+    "cycling": "Cycling",
+    "cyclingCount": "510 active groups",
+    "basketball": "Basketball",
+    "basketballCount": "380 active groups",
+    "yoga": "Yoga",
+    "yogaCount": "290 active groups",
+    "volleyball": "Volleyball",
+    "volleyballCount": "180 active groups",
+    "more": "More Sports",
+    "moreCount": "50+ sports available"
+  },
+  "problemStatement": {
+    "title": "Why Choose Tal3a?",
+    "subtitle": "We solve the real problems that prevent you from staying active and connected",
+    "motivation": {
+      "title": "Lack of Motivation",
+      "description": "Many people struggle to stay motivated to exercise regularly. Tal3a provides a supportive community and rewards system to keep you engaged."
+    },
+    "organization": {
+      "title": "Difficulty in Organizing",
+      "description": "Finding and organizing sports activities can be challenging. Tal3a's smart scheduling and location-based features make it easy to join or create events."
+    },
+    "isolation": {
+      "title": "Social Isolation",
+      "description": "Exercising alone can be less enjoyable. Tal3a connects you with like-minded individuals, fostering friendships and a sense of belonging."
+    }
+  },
+  "features": {
+    "title": "Latest Activities Around You",
+    "subtitle": "Discover amazing sports activities happening near you",
+    "loading": "Loading activities...",
+    "error": "Error loading activities",
+    "participants": "participant",
+    "of": "of",
+    "join": "Join",
+    "main": {
+      "discover": {
+        "title": "Discover Activities",
+        "description": "Find sports events and groups near you with our smart location-based system"
+      },
+      "joinGroups": {
+        "title": "Join Groups",
+        "description": "Connect with like-minded athletes and join their activities instantly"
+      },
+      "earnRewards": {
+        "title": "Earn Rewards",
+        "description": "Get points, badges, and climb leaderboards as you stay active"
+      }
+    },
+    "additional": {
+      "nearbyLocations": {
+        "title": "Nearby Locations",
+        "description": "Find sports facilities and activities within your preferred distance"
+      },
+      "smartScheduling": {
+        "title": "Smart Scheduling",
+        "description": "AI-powered scheduling that fits your availability and preferences"
+      },
+      "trackProgress": {
+        "title": "Track Progress",
+        "description": "Monitor your fitness journey with detailed analytics and insights"
+      }
+    }
+  },
+  "community": {
+    "title": "Tal3a Community",
+    "subtitle": "Join Egypt's largest sports community and meet new friends who share your passion",
+    "userRating": "User Rating",
+    "testimonials": {
+      "ahmed": {
+        "name": "Ahmed Hassan",
+        "location": "Cairo, Egypt",
+        "testimonial": "Tal3a changed my life! I found an amazing football group and made lifelong friends. The app makes it so easy to stay active."
+      },
+      "fatma": {
+        "name": "Fatma Ali",
+        "location": "Alexandria, Egypt",
+        "testimonial": "As someone who loves running, Tal3a helped me find the perfect running partners. The community is so supportive and motivating!"
+      },
+      "karim": {
+        "name": "Karim Mohamed",
+        "location": "Giza, Egypt",
+        "testimonial": "The rewards system keeps me motivated every day. I've earned so many badges and climbed to the top of the leaderboard!"
+      }
+    },
+    "stats": {
+      "activeMembers": "Active Members",
+      "dailyActivities": "Daily Activities",
+      "differentSports": "Different Sports",
+      "governorates": "Governorates"
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about Tal3a Sports Community",
+    "whatIsTal3a": {
+      "question": "What is Tal3a?",
+      "answer": "Tal3a is a social sports platform that connects athletes and fitness enthusiasts. You can discover sports events, join groups, and build lasting friendships while staying active."
+    },
+    "isFree": {
+      "question": "Is Tal3a free to use?",
+      "answer": "Yes! Tal3a is completely free to download and use. You can join groups, participate in events, and earn rewards without any cost."
+    },
+    "userSafety": {
+      "question": "How does Tal3a ensure user safety?",
+      "answer": "We have strict verification processes, user ratings, and community guidelines. All events are moderated, and we provide safety tips for all activities."
+    },
+    "rewards": {
+      "question": "How do the rewards work?",
+      "answer": "You earn points by participating in activities, completing challenges, and being active in the community. Points unlock badges, leaderboard positions, and special perks."
+    },
+    "availability": {
+      "question": "In which cities is Tal3a available?",
+      "answer": "Tal3a is currently available in major Egyptian cities including Cairo, Alexandria, Giza, and expanding to more governorates regularly."
+    },
+    "contact": {
+      "question": "How can I contact support?",
+      "answer": "You can reach our support team through the app's help section, email us at support@tal3a.com, or message us on social media."
+    }
+  },
+  "appDownload": {
+    "title": "Download Tal3a Now",
+    "subtitle": "Get the app and start your fitness journey today",
+    "downloadFrom": "Download from",
+    "appPreviewAlt": "Tal3a App Preview",
+    "specialOffer": {
+      "title": "🎉 Launch Special!",
+      "description": "Join now and get 100 bonus points + exclusive founder badge",
+      "limitedTime": "Limited time offer"
+    },
+    "features": {
+      "crossPlatform": {
+        "title": "Cross Platform",
+        "description": "Available on iOS and Android"
+      },
+      "rating": {
+        "title": "5-Star Rated",
+        "description": "Loved by thousands of users"
+      },
+      "free": {
+        "title": "Completely Free",
+        "description": "No hidden costs or subscriptions"
+      }
+    }
+  },
+  "header": {
+    "getStarted": "Get Started",
+    "nav": {
+      "home": "Home",
+      "features": "Features",
+      "howItWorks": "How It Works",
+      "community": "Community",
+      "joinCommunity": "Join Community",
+      "sports": "Sports",
+      "download": "Download App"
+    }
+  },
+  "footer": {
+    "description": "Tal3a is the leading sports community platform in Egypt, connecting athletes and fitness enthusiasts across the country.",
+    "about": "About Tal3a",
+    "contact": "Contact Us",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "followUs": "Follow Us",
+    "copyright": "© 2024 Tal3a Sports Community. All rights reserved.",
+    "darkMode": "Dark Mode",
+    "support": {
+      "title": "Support",
+      "faq": "FAQ",
+      "helpCenter": "Help Center",
+      "reportIssue": "Report an Issue",
+      "status": "System Status",
+      "contact": "Contact Us",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "communityGuidelines": "Community Guidelines",
+      "dataSecurity": "Data Security"
+    },
+    "company": {
+      "title": "Company",
+      "about": "About Us",
+      "jobs": "Careers",
+      "blog": "Blog",
+      "press": "Press",
+      "investors": "Investors",
+      "partnerships": "Partnerships",
+      "contact": "Contact Us"
+    },
+    "sports": {
+      "title": "Sports",
+      "football": "Football",
+      "running": "Running",
+      "swimming": "Swimming",
+      "tennis": "Table Tennis",
+      "gym": "Gym & Fitness",
+      "cycling": "Cycling",
+      "basketball": "Basketball",
+      "yoga": "Yoga",
+      "volleyball": "Volleyball",
+      "moreSports": "More Sports"
+    }
+  },
+  "howItWorks": {
+    "title": "How does Tal3a work?",
+    "step1": {
+      "title": "Discover",
+      "description": "Find sports groups and activities around you"
+    },
+    "step2": {
+      "title": "Join",
+      "description": "Join any Tal3a with one click"
+    },
+    "step3": {
+      "title": "Earn",
+      "description": "Get points and badges for your continuous activity"
+    }
+  },
+  "gamification": {
+    "title": "Rewards & Achievement System",
+    "subtitle": "Earn points, NFT badges, and rank high on the leaderboard",
+    "points": "Points",
+    "badges": "Badges",
+    "leaderboard": "Leaderboard"
+  },
+  "privacy": {
+    "title": "Security is Our Priority",
+    "subtitle": "We ensure you have a safe and protected experience with the latest security technologies",
+    "secureLogin": {
+      "title": "Secure Login",
+      "description": "We use advanced Internet Identity technology to protect your data completely"
+    },
+    "identityVerification": {
+      "title": "Identity Verification",
+      "description": "Advanced verification system for private groups to ensure complete security"
+    },
+    "dataPrivacy": {
+      "title": "Data Privacy",
+      "description": "Your data is protected and encrypted, and we don't share it with any third parties"
+    },
+    "securityBadge": "100% Protected",
+    "securityLevel": "Security Level: Advanced"
+  },
+  "rewards": {
+    "title": "Rewards System",
+    "subtitle": "Every activity you participate in earns you points that you can redeem for real rewards from our partners",
+    "points": "points",
+    "earnPoints": {
+      "title": "How to Earn Points?",
+      "attendEvent": "Attend Event",
+      "organizeEvent": "Organize Event",
+      "inviteFriend": "Invite Friend",
+      "monthlyGoal": "Complete Monthly Goal"
+    },
+    "redeemPoints": {
+      "title": "Redeem Points",
+      "discount20": "20% Discount - Sports Stores",
+      "gymMembership": "Monthly Gym Membership",
+      "sportsEquipment": "Sports Equipment",
+      "personalTraining": "Personal Training Course"
+    },
+    "currentBalance": {
+      "title": "Current Balance",
+      "amount": "1,250 points"
+    },
+    "appPreviewAlt": "App rewards marketplace screen showing sports equipment and gym memberships",
+    "partners": {
+      "stores": {
+        "title": "50+ Partner Stores",
+        "count": "Certified Sports Stores"
+      },
+      "gyms": {
+        "title": "25+ Gyms",
+        "count": "Fitness Centers"
+      },
+      "clubs": {
+        "title": "15+ Clubs",
+        "count": "Sports Clubs"
+      },
+      "trainers": {
+        "title": "100+ Trainers",
+        "count": "Personal Trainers"
+      }
+    }
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "subtitle": "Sorry, we couldn't find the page you're looking for",
+    "description": "It looks like the page you're looking for has been moved, deleted, or the link is incorrect. Don't worry, you can go back to the home page or search for what you need.",
+    "backHome": "Back to Home",
+    "goBack": "Go Back",
+    "searchHelp": {
+      "title": "Need Help?",
+      "description": "Try these quick links to find what you're looking for:"
+    },
+    "quickLinks": {
+      "features": "Features",
+      "community": "Community",
+      "sports": "Sports",
+      "download": "Download"
+    }
+  },
+  "login": {
+    "welcome": {
+      "title": "Welcome to ",
+      "subtitle": "Your sports buddy that will help you find sports partners and earn rewards for every activity"
+    },
+    "stats": {
+      "users": "15K+ users",
+      "groups": "500+ groups",
+      "sports": "25+ sports"
+    },
+    "testimonial": {
+      "name": "Ahmed Mohamed",
+      "role": "Software Developer - Cairo",
+      "quote": "Tal3a completely transformed my sports life! Found a consistent football group in my neighborhood and we became real friends."
+    },
+    "form": {
+      "title": "Start Your Sports Journey",
+      "subtitle": "Step 1 of 5",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "signIn": "Sign In",
+      "signingIn": "Signing in...",
+      "or": "or"
+    },
+    "demo": {
+      "title": "Demo Authentication",
+      "admin": "Admin",
+      "user": "User"
+    },
+    "errors": {
+      "invalidCredentials": "Invalid email or password",
+      "loginFailed": "Login failed. Please try again."
+    },
+    "internetIdentity": {
+      "title": "Secure Login",
+      "subtitle": "Internet Identity",
+      "modal": {
+        "title": "Internet Identity",
+        "description": "A secure and advanced login system that completely protects your data. Works like Google login but with greater protection and no sharing of your personal information.",
+        "features": {
+          "privacy": "Complete privacy protection",
+          "noPasswords": "No need for passwords",
+          "quickSecure": "Quick and secure login"
+        },
+        "continue": "Continue with Internet Identity"
+      }
+    },
+    "social": {
+      "google": "Continue with Google",
+      "apple": "Continue with Apple"
+    },
+    "security": {
+      "title": "Complete data protection",
+      "description": "We use the latest security technologies to protect your personal information"
+    },
+    "terms": {
+      "text": "By continuing, you agree to our",
+      "privacy": "Privacy Policy",
+      "and": "and",
+      "terms": "Terms of Service"
+    }
+  },
+  "sidebar": {
+    "navigation": "Navigation",
+    "create": "Create",
+    "account": "Account",
+    "dashboard": "Dashboard",
+    "groups": "Groups",
+    "myGroups": "My Groups",
+    "searchGroups": "Search for Groups",
+    "events": "Events",
+    "posts": "Posts",
+    "map": "Map",
+    "promotions": "Promotions",
+    "createEvent": "Create Event",
+    "createGroup": "Create Group",
+    "createPost": "Create Post",
+    "profile": "Profile",
+    "notifications": "Notifications",
+    "settings": "Settings"
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "level": "Level",
+    "thisMonth": "This Month",
+    "points": "Points",
+    "groups": "Groups",
+    "globalRank": "Global Rank",
+    "activeDays": "Active Days",
+    "activeHours": "Active Hours",
+    "availableChallenges": "Available Challenges",
+    "activityFeed": "Activity Feed",
+    "pointsAndAchievements": "Points & Achievements",
+    "totalPoints": "Total Points",
+    "activityStreak": "Activity Streak",
+    "weeklyGoal": "Weekly Goal",
+    "viewAllTal3aat": "View All Tal3aat",
+    "viewMoreActivities": "View More Activities",
+    "showLess": "Show Less",
+    "join": "Join",
+    "participate": "Participate",
+    "members": "members",
+    "participants": "participants",
+    "pts": "pts",
+    "days": "days",
+    "tal3aat": "tal3aat",
+    "noChallengesTitle": "No Challenges Available",
+    "noChallengesDescription": "Don't worry! We're constantly adding new and exciting challenges. Check back soon or explore other available activities.",
+    "exploreActivities": "Explore Activities",
+    "recommendedForYou": "Recommended for You",
+    "seeMore": "See More",
+    "womenOnly": "Women Only",
+    "readyForNewTal3a": "Ready for a new Tal3a?",
+    "newAchievements": "New achievements",
+    "weeklyStats": "Weekly Stats",
+    "writeComment": "Write a comment...",
+    "duration": "Duration",
+    "calories": "Calories",
+    "type": "Type",
+    "suggestedGroups": {
+      "title": "Suggested Groups",
+      "footballCairoGroup": "New Cairo Football",
+      "runningZamalekGroup": "Zamalek Morning Running",
+      "tennisMaadiGroup": "Maadi Tennis"
+    },
+    "upcomingTal3aat": {
+      "title": "Upcoming Tal3aat",
+      "footballMatch": "Football Match",
+      "todayAt6pm": "Today 6:00 PM",
+      "ahlyClub": "Ahly Club",
+      "morningRun": "Morning Run",
+      "tomorrowAt7am": "Tomorrow 7:00 AM",
+      "nileCornice": "Nile Corniche",
+      "tableTennis": "Table Tennis",
+      "fridayAt8pm": "Friday 8:00 PM",
+      "jaziraClub": "Jazira Club"
+    },
+    "achievements": {
+      "title": "Recent Achievements",
+      "firstChallengeComplete": "First Challenge Complete",
+      "activeMember": "Active Member",
+      "communityBuilder": "Community Builder"
+    },
+    "weather": {
+      "title": "Weather",
+      "partlySunny": "Partly Sunny",
+      "cairo": "Cairo",
+      "perfectForOutdoor": "Perfect for outdoor activities"
+    },
+    "comments": {
+      "title": "Comments",
+      "postTitle": "'s Post",
+      "noComments": "No comments yet",
+      "beFirst": "Be the first to comment!",
+      "like": "Like",
+      "liked": "Liked",
+      "reply": "Reply",
+      "loadMore": "Load More Comments"
+    },
+    "mobileBar": {
+      "create": "Create",
+      "search": "Search",
+      "map": "Map",
+      "notifications": "Notifications"
+    }
+  }
+}
