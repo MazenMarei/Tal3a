@@ -1,60 +1,57 @@
-import "./polyfills.js";
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { AuthProvider } from "@/contexts/AuthContext";
-import App from "./App";
-import "./index.css";
+import { StrictMode } from 'react'
+import ReactDOM from 'react-dom/client'
+import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-// Debug crypto availability
-console.log("Crypto available:", typeof globalThis.crypto !== "undefined");
-console.log(
-  "Subtle crypto available:",
-  typeof globalThis.crypto?.subtle !== "undefined"
-);
-console.log("Crypto object:", globalThis.crypto);
+// Import the generated route tree
+import { routeTree } from './routeTree.gen.ts'
 
-// Configure QueryClient
+import './styles.css'
+import './i18n'
+import './fontawesome'
+import reportWebVitals from './reportWebVitals.ts'
+
+// Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 5 * 60 * 1000, // 5 minutes
-      gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
-      retry: (failureCount, error: any) => {
-        // Don't retry on 4xx errors (client errors)
-        if (error?.status >= 400 && error?.status < 500) {
-          return false;
-        }
-        return failureCount < 3;
-      },
-      refetchOnWindowFocus: false,
-      refetchOnMount: true,
-    },
-    mutations: {
-      retry: false, // Don't retry mutations by default
+      gcTime: 10 * 60 * 1000, // 10 minutes
     },
   },
-});
+})
 
-const rootElement = document.getElementById("root");
-if (rootElement) {
-  createRoot(rootElement).render(
-    <StrictMode>
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <App />
-          </AuthProvider>
-          {/* Add React Query Devtools in development */}
-          {process.env.NODE_ENV === "development" && (
-            <ReactQueryDevtools initialIsOpen={false} />
-          )}
-        </QueryClientProvider>
-      </BrowserRouter>
-    </StrictMode>
-  );
-} else {
-  throw new Error("Root element not found");
+// Create a new router instance
+const router = createRouter({
+  routeTree,
+  context: {},
+  defaultPreload: 'intent',
+  scrollRestoration: true,
+  defaultStructuralSharing: true,
+  defaultPreloadStaleTime: 0,
+})
+
+// Register the router instance for type safety
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router
+  }
 }
+
+// Render the app
+const rootElement = document.getElementById('app')
+if (rootElement && !rootElement.innerHTML) {
+  const root = ReactDOM.createRoot(rootElement)
+  root.render(
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </StrictMode>,
+  )
+}
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals()
