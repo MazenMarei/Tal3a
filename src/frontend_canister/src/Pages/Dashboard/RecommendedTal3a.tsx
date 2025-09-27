@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next'
 import RecommendedTal3aCard from './RecommededTal3aCard'
-import { useAppContext } from '@/contexts/AppProvider'
 
 export default function RecommendedTal3a({
   mockRecommendedTal3a,

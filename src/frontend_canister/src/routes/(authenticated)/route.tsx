@@ -1,8 +1,5 @@
+import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 import AuthenticatedPageLayout from '@/components/AuthenticatedPageLayout'
-import Footer from '@/components/Footer'
-import Sidebar from '@/components/Sidebar'
-import { useAppContext } from '@/contexts/AppProvider'
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
 const isAuthenticated = () => {
   return true // Replace with actual authentication logic

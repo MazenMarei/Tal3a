@@ -1,7 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
   faCalendar,
@@ -10,123 +9,122 @@ import {
   faGift,
   faInfoCircle,
   faTrash,
-} from '@fortawesome/free-solid-svg-icons'
+} from "@fortawesome/free-solid-svg-icons";
 
 // Mock notifications data
 const mockNotifications = [
   {
     id: 1,
-    type: 'group_invitation',
-    title: 'دعوة للانضمام إلى مجموعة',
+    type: "group_invitation",
+    title: "دعوة للانضمام إلى مجموعة",
     message: 'دعاك أحمد محمد للانضمام إلى مجموعة "فريق كرة القدم الأهلي"',
-    timestamp: '2024-01-15T10:30:00Z',
+    timestamp: "2024-01-15T10:30:00Z",
     read: false,
     avatar:
-      'https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg',
-    actionButtons: ['accept', 'decline'],
+      "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg",
+    actionButtons: ["accept", "decline"],
   },
   {
     id: 2,
-    type: 'event_reminder',
-    title: 'تذكير بحدث قادم',
-    message: 'لديك مباراة كرة قدم في الحديقة المركزية غداً الساعة 5:00 مساءً',
-    timestamp: '2024-01-15T09:15:00Z',
+    type: "event_reminder",
+    title: "تذكير بحدث قادم",
+    message: "لديك مباراة كرة قدم في الحديقة المركزية غداً الساعة 5:00 مساءً",
+    timestamp: "2024-01-15T09:15:00Z",
     read: false,
     icon: faCalendar,
-    color: 'text-blue-600',
+    color: "text-blue-600",
   },
   {
     id: 3,
-    type: 'achievement',
-    title: 'إنجاز جديد!',
+    type: "achievement",
+    title: "إنجاز جديد!",
     message:
       'تهانينا! لقد أكملت 10 طلعات رياضية وحصلت على شارة "الرياضي النشط"',
-    timestamp: '2024-01-14T18:45:00Z',
+    timestamp: "2024-01-14T18:45:00Z",
     read: true,
     icon: faCheckCircle,
-    color: 'text-green-600',
+    color: "text-green-600",
   },
   {
     id: 4,
-    type: 'promotion',
-    title: 'عرض خاص',
-    message: 'خصم 20% على جميع الأدوات الرياضية في متجر سبورت زون',
-    timestamp: '2024-01-14T14:20:00Z',
+    type: "promotion",
+    title: "عرض خاص",
+    message: "خصم 20% على جميع الأدوات الرياضية في متجر سبورت زون",
+    timestamp: "2024-01-14T14:20:00Z",
     read: true,
     icon: faGift,
-    color: 'text-pink-600',
+    color: "text-pink-600",
   },
   {
     id: 5,
-    type: 'system',
-    title: 'تحديث النظام',
-    message: 'تم تحديث التطبيق بميزات جديدة. تحقق من قسم الخريطة للاستكشاف',
-    timestamp: '2024-01-13T12:00:00Z',
+    type: "system",
+    title: "تحديث النظام",
+    message: "تم تحديث التطبيق بميزات جديدة. تحقق من قسم الخريطة للاستكشاف",
+    timestamp: "2024-01-13T12:00:00Z",
     read: true,
     icon: faInfoCircle,
-    color: 'text-gray-600',
+    color: "text-gray-600",
   },
   {
     id: 6,
-    type: 'group_activity',
-    title: 'نشاط المجموعة',
+    type: "group_activity",
+    title: "نشاط المجموعة",
     message: 'محمد علي نشر منشوراً جديداً في مجموعة "عشاق الجري"',
-    timestamp: '2024-01-13T08:30:00Z',
+    timestamp: "2024-01-13T08:30:00Z",
     read: true,
     avatar:
-      'https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg',
+      "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg",
   },
-]
+];
 
-export const Route = createFileRoute('/(authenticated)/notifications')({
+export const Route = createFileRoute("/(authenticated)/notifications")({
   component: NotificationsPage,
-})
+});
 
 function NotificationsPage() {
-  const { t } = useTranslation()
-  const [notifications, setNotifications] = useState(mockNotifications)
-  const [filter, setFilter] = useState<'all' | 'unread'>('all')
+  const [notifications, setNotifications] = useState(mockNotifications);
+  const [filter, setFilter] = useState<"all" | "unread">("all");
 
-  const unreadCount = notifications.filter((n) => !n.read).length
+  const unreadCount = notifications.filter((n) => !n.read).length;
   const filteredNotifications =
-    filter === 'unread' ? notifications.filter((n) => !n.read) : notifications
+    filter === "unread" ? notifications.filter((n) => !n.read) : notifications;
 
   const markAsRead = (id: number) => {
     setNotifications((prev) =>
       prev.map((notification) =>
-        notification.id === id ? { ...notification, read: true } : notification,
-      ),
-    )
-  }
+        notification.id === id ? { ...notification, read: true } : notification
+      )
+    );
+  };
 
   const markAllAsRead = () => {
     setNotifications((prev) =>
-      prev.map((notification) => ({ ...notification, read: true })),
-    )
-  }
+      prev.map((notification) => ({ ...notification, read: true }))
+    );
+  };
 
   const deleteNotification = (id: number) => {
-    setNotifications((prev) => prev.filter((n) => n.id !== id))
-  }
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  };
 
   const handleAction = (notificationId: number, action: string) => {
     // Handle notification actions (accept, decline, etc.)
-    console.log(`Action ${action} for notification ${notificationId}`)
-    markAsRead(notificationId)
-  }
+    console.log(`Action ${action} for notification ${notificationId}`);
+    markAsRead(notificationId);
+  };
 
   const formatTime = (timestamp: string) => {
-    const date = new Date(timestamp)
-    const now = new Date()
+    const date = new Date(timestamp);
+    const now = new Date();
     const diffInHours = Math.floor(
-      (now.getTime() - date.getTime()) / (1000 * 60 * 60),
-    )
+      (now.getTime() - date.getTime()) / (1000 * 60 * 60)
+    );
 
-    if (diffInHours < 1) return 'منذ قليل'
-    if (diffInHours < 24) return `منذ ${diffInHours} ساعة`
-    if (diffInHours < 48) return 'أمس'
-    return `منذ ${Math.floor(diffInHours / 24)} أيام`
-  }
+    if (diffInHours < 1) return "منذ قليل";
+    if (diffInHours < 24) return `منذ ${diffInHours} ساعة`;
+    if (diffInHours < 48) return "أمس";
+    return `منذ ${Math.floor(diffInHours / 24)} أيام`;
+  };
 
   const getNotificationIcon = (notification: any) => {
     if (notification.avatar) {
@@ -136,36 +134,36 @@ function NotificationsPage() {
           alt="Avatar"
           className="w-10 h-10 rounded-full object-cover"
         />
-      )
+      );
     }
 
     if (notification.icon) {
       return (
         <div
           className={`w-10 h-10 rounded-full flex items-center justify-center ${
-            notification.type === 'achievement'
-              ? 'bg-green-100'
-              : notification.type === 'event_reminder'
-                ? 'bg-blue-100'
-                : notification.type === 'promotion'
-                  ? 'bg-pink-100'
-                  : 'bg-gray-100'
+            notification.type === "achievement"
+              ? "bg-green-100"
+              : notification.type === "event_reminder"
+                ? "bg-blue-100"
+                : notification.type === "promotion"
+                  ? "bg-pink-100"
+                  : "bg-gray-100"
           }`}
         >
           <FontAwesomeIcon
             icon={notification.icon}
-            className={`text-sm ${notification.color || 'text-gray-600'}`}
+            className={`text-sm ${notification.color || "text-gray-600"}`}
           />
         </div>
-      )
+      );
     }
 
     return (
       <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
         <FontAwesomeIcon icon={faBell} className="text-white text-sm" />
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
@@ -178,7 +176,7 @@ function NotificationsPage() {
           <p className="text-gray-600 dark:text-gray-400">
             {unreadCount > 0
               ? `لديك ${unreadCount} إشعار غير مقروء`
-              : 'جميع الإشعارات مقروءة'}
+              : "جميع الإشعارات مقروءة"}
           </p>
         </div>
 
@@ -196,21 +194,21 @@ function NotificationsPage() {
       {/* Filter Tabs */}
       <div className="flex space-x-4 mb-6 border-b border-gray-200 dark:border-gray-700">
         <button
-          onClick={() => setFilter('all')}
+          onClick={() => setFilter("all")}
           className={`pb-2 px-1 font-medium transition-colors ${
-            filter === 'all'
-              ? 'text-primary border-b-2 border-primary'
-              : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+            filter === "all"
+              ? "text-primary border-b-2 border-primary"
+              : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
           }`}
         >
           جميع الإشعارات ({notifications.length})
         </button>
         <button
-          onClick={() => setFilter('unread')}
+          onClick={() => setFilter("unread")}
           className={`pb-2 px-1 font-medium transition-colors ${
-            filter === 'unread'
-              ? 'text-primary border-b-2 border-primary'
-              : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+            filter === "unread"
+              ? "text-primary border-b-2 border-primary"
+              : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
           }`}
         >
           غير مقروءة ({unreadCount})
@@ -229,9 +227,9 @@ function NotificationsPage() {
               لا توجد إشعارات
             </h3>
             <p className="text-gray-400 dark:text-gray-500">
-              {filter === 'unread'
-                ? 'جميع الإشعارات مقروءة'
-                : 'لا توجد إشعارات حتى الآن'}
+              {filter === "unread"
+                ? "جميع الإشعارات مقروءة"
+                : "لا توجد إشعارات حتى الآن"}
             </p>
           </div>
         ) : (
@@ -240,8 +238,8 @@ function NotificationsPage() {
               key={notification.id}
               className={`p-4 rounded-xl border transition-all duration-200 hover:shadow-md ${
                 notification.read
-                  ? 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                  : 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800'
+                  ? "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                  : "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800"
               }`}
             >
               <div className="flex items-start space-x-4">
@@ -257,8 +255,8 @@ function NotificationsPage() {
                       <h3
                         className={`font-semibold ${
                           notification.read
-                            ? 'text-gray-900 dark:text-white'
-                            : 'text-gray-900 dark:text-white'
+                            ? "text-gray-900 dark:text-white"
+                            : "text-gray-900 dark:text-white"
                         }`}
                       >
                         {notification.title}
@@ -297,13 +295,13 @@ function NotificationsPage() {
                   {notification.actionButtons && (
                     <div className="flex space-x-3 mt-3">
                       <button
-                        onClick={() => handleAction(notification.id, 'accept')}
+                        onClick={() => handleAction(notification.id, "accept")}
                         className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
                       >
                         قبول
                       </button>
                       <button
-                        onClick={() => handleAction(notification.id, 'decline')}
+                        onClick={() => handleAction(notification.id, "decline")}
                         className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
                       >
                         رفض
@@ -322,5 +320,5 @@ function NotificationsPage() {
         )}
       </div>
     </div>
-  )
+  );
 }

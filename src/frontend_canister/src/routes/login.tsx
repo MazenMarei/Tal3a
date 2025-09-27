@@ -5,73 +5,70 @@ import {
   faTrophy,
   faUser,
   faXmark,
-} from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import LoginFlow from '../components/LoginFlow'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import LoginFlow from "../components/LoginFlow";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
-type AuthProvider = 'nfid' | 'ii'
+type AuthProvider = "nfid" | "ii";
 
 interface UserData {
-  bio?: string
-  referralCode?: string
+  bio?: string;
+  referralCode?: string;
 }
 
 const LoginPage = () => {
-  const { t, i18n } = useTranslation()
-  const navigate = useNavigate()
-  const language = i18n.language
+  const { t } = useTranslation();
   const [showModal, setShowModal] = useState<{
-    show: boolean
-    provider: AuthProvider | null
-  }>({ show: false, provider: null })
-  const [isLoading, setIsLoading] = useState(false)
-  const [loginStep, setLoginStep] = useState<'auth' | 'flow'>('auth')
+    show: boolean;
+    provider: AuthProvider | null;
+  }>({ show: false, provider: null });
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginStep, setLoginStep] = useState<"auth" | "flow">("auth");
 
-  const handleAuthLogin = async (provider: AuthProvider) => {
-    setIsLoading(true)
+  // const handleAuthLogin = async (provider: AuthProvider) => {
+  const handleAuthLogin = async () => {
+    setIsLoading(true);
     try {
       // Simulate auth login
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-      const success = true
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // const success = true;
 
-      if (success) {
-        setLoginStep('flow')
-      }
+      setLoginStep("flow");
     } catch (err) {
-      console.error('Login failed:', err)
+      console.error("Login failed:", err);
     } finally {
-      setIsLoading(false)
-      setShowModal({ show: false, provider: null })
+      setIsLoading(false);
+      setShowModal({ show: false, provider: null });
     }
-  }
+  };
 
   const handleShowModal = (provider: AuthProvider) => {
-    setShowModal({ show: true, provider })
-  }
+    setShowModal({ show: true, provider });
+  };
 
   const closeModal = () => {
-    setShowModal({ show: false, provider: null })
-  }
+    setShowModal({ show: false, provider: null });
+  };
 
   const handleLoginComplete = (userData: UserData) => {
-    console.log('Login completed with data:', userData)
+    console.log("Login completed with data:", userData);
     // Navigate to dashboard will be handled by LoginFlow
-  }
+  };
 
   // Show login flow if user has authenticated
-  if (loginStep === 'flow') {
+  if (loginStep === "flow") {
     return (
       <>
         <Header></Header>
         <LoginFlow onComplete={handleLoginComplete} />
         <Footer></Footer>
       </>
-    )
+    );
   }
 
   return (
@@ -83,11 +80,11 @@ const LoginPage = () => {
             {/* Left Side - Welcome Content */}
             <div className="text-white">
               <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                {t('login.welcome.title')}{' '}
-                <span className="text-accent">{t('common.appName')}</span>
+                {t("login.welcome.title")}{" "}
+                <span className="text-accent">{t("common.appName")}</span>
               </h1>
               <p className="text-xl lg:text-2xl mb-8 opacity-90 leading-relaxed">
-                {t('login.welcome.subtitle')}
+                {t("login.welcome.subtitle")}
               </p>
 
               <div className="grid grid-cols-3 gap-6 mb-8 max-w-md mx-auto lg:mx-0">
@@ -95,19 +92,19 @@ const LoginPage = () => {
                   <div className="bg-white/20 dark:bg-gray-900/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3">
                     <FontAwesomeIcon icon={faUser} className="text-2xl" />
                   </div>
-                  <div className="text-sm">{t('login.stats.users')}</div>
+                  <div className="text-sm">{t("login.stats.users")}</div>
                 </div>
                 <div className="text-center">
                   <div className="bg-white/20 dark:bg-gray-900/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3">
                     <FontAwesomeIcon icon={faTrophy} className="text-2xl" />
                   </div>
-                  <div className="text-sm">{t('login.stats.groups')}</div>
+                  <div className="text-sm">{t("login.stats.groups")}</div>
                 </div>
                 <div className="text-center">
                   <div className="bg-white/20 dark:bg-gray-900/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3">
                     <FontAwesomeIcon icon={faMedal} className="text-2xl" />
                   </div>
-                  <div className="text-sm">{t('login.stats.sports')}</div>
+                  <div className="text-sm">{t("login.stats.sports")}</div>
                 </div>
               </div>
 
@@ -120,15 +117,15 @@ const LoginPage = () => {
                   />
                   <div className="text-right">
                     <div className="font-bold">
-                      {t('login.testimonial.name')}
+                      {t("login.testimonial.name")}
                     </div>
                     <div className="text-sm opacity-80">
-                      {t('login.testimonial.role')}
+                      {t("login.testimonial.role")}
                     </div>
                   </div>
                 </div>
                 <p className="text-sm opacity-90">
-                  {t('login.testimonial.quote')}
+                  {t("login.testimonial.quote")}
                 </p>
               </div>
             </div>
@@ -150,7 +147,7 @@ const LoginPage = () => {
                 <button
                   id="nfid-login-btn"
                   className="w-full bg-gradient-to-r from-primary to-secondary text-white py-4 px-6 rounded-xl font-bold text-lg hover:shadow-xl transition-all transform hover:scale-[1.02] flex items-center justify-center"
-                  onClick={() => handleShowModal('nfid')}
+                  onClick={() => handleShowModal("nfid")}
                   disabled={isLoading}
                 >
                   <img
@@ -178,7 +175,7 @@ const LoginPage = () => {
                 <button
                   id="ii-login-btn"
                   className="w-full bg-gradient-to-r from-[#E81F79] to-[#5A2684] text-white py-4 px-6 rounded-xl font-bold text-lg hover:shadow-xl transition-all transform hover:scale-[1.02] flex items-center justify-center"
-                  onClick={() => handleShowModal('ii')}
+                  onClick={() => handleShowModal("ii")}
                   disabled={isLoading}
                 >
                   <img
@@ -255,7 +252,7 @@ const LoginPage = () => {
 
               <div className="text-center">
                 <div className="bg-gradient-to-br from-primary to-secondary w-20 h-20 rounded-2xl flex items-center justify-center text-white mx-auto mb-6">
-                  {showModal.provider === 'nfid' ? (
+                  {showModal.provider === "nfid" ? (
                     <img
                       src="./nfid_logo.png"
                       alt="NFID Logo"
@@ -267,18 +264,18 @@ const LoginPage = () => {
                 </div>
 
                 <h3 className="text-2xl font-bold text-secondary dark:text-white mb-4">
-                  {showModal.provider === 'nfid'
-                    ? 'تسجيل دخول عبر NFID'
-                    : 'تسجيل دخول آمن'}
+                  {showModal.provider === "nfid"
+                    ? "تسجيل دخول عبر NFID"
+                    : "تسجيل دخول آمن"}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
-                  {showModal.provider === 'nfid'
-                    ? 'NFID يوفر طريقة سريعة وآمنة لتسجيل الدخول باستخدام محفظتك الرقمية'
-                    : 'Internet Identity يوفر أعلى مستويات الأمان والخصوصية'}
+                  {showModal.provider === "nfid"
+                    ? "NFID يوفر طريقة سريعة وآمنة لتسجيل الدخول باستخدام محفظتك الرقمية"
+                    : "Internet Identity يوفر أعلى مستويات الأمان والخصوصية"}
                 </p>
 
                 <div className="space-y-4 mb-8">
-                  {showModal.provider === 'nfid' ? (
+                  {showModal.provider === "nfid" ? (
                     <>
                       <div className="flex items-center">
                         <div className="bg-green-500 w-6 h-6 rounded-full flex items-center justify-center ml-3">
@@ -354,11 +351,12 @@ const LoginPage = () => {
                 </div>
 
                 <button
-                  onClick={() => handleAuthLogin(showModal.provider!)}
+                  // onClick={() => handleAuthLogin(showModal.provider!)}
+                  onClick={() => handleAuthLogin()}
                   disabled={isLoading}
                   className="w-full bg-primary text-white py-4 px-6 rounded-xl font-bold hover:bg-secondary transition-all disabled:opacity-50"
                 >
-                  {isLoading ? 'جاري التسجيل...' : 'متابعة'}
+                  {isLoading ? "جاري التسجيل..." : "متابعة"}
                 </button>
               </div>
             </div>
@@ -367,9 +365,9 @@ const LoginPage = () => {
       </section>
       <Footer></Footer>
     </>
-  )
-}
+  );
+};
 
-export const Route = createFileRoute('/login')({
+export const Route = createFileRoute("/login")({
   component: LoginPage,
-})
+});

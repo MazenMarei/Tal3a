@@ -1,17 +1,16 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
-import L from 'leaflet'
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import L from "leaflet";
 
 // Import Leaflet CSS
-import 'leaflet/dist/leaflet.css'
+import "leaflet/dist/leaflet.css";
 
 // Fix for default markers in React Leaflet
-import markerIcon from 'leaflet/dist/images/marker-icon.png'
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
-import markerShadow from 'leaflet/dist/images/marker-shadow.png'
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
 import {
   faBasketballBall,
@@ -33,130 +32,131 @@ import {
   faTableTennis,
   faTimes,
   faUsers,
-} from '@fortawesome/free-solid-svg-icons'
+} from "@fortawesome/free-solid-svg-icons";
 
-delete (L.Icon.Default.prototype as any)._getIconUrl
+delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconUrl: markerIcon,
   iconRetinaUrl: markerIcon2x,
   shadowUrl: markerShadow,
-})
+});
 
 // Mock events/tal3a data with coordinates (Cairo area) - [lat, lng] format for Leaflet
 const mockEvents = [
   {
     id: 1,
-    title: 'مباراة كرة قدم ودية',
-    type: 'football',
-    description: 'مباراة كرة قدم ودية في ملعب الحي - نحتاج 4 لاعبين إضافيين',
-    date: '2024-01-20',
-    time: '18:00',
-    duration: '90 دقيقة',
-    location: 'ملعب الحي - المعادي',
+    title: "مباراة كرة قدم ودية",
+    type: "football",
+    description: "مباراة كرة قدم ودية في ملعب الحي - نحتاج 4 لاعبين إضافيين",
+    date: "2024-01-20",
+    time: "18:00",
+    duration: "90 دقيقة",
+    location: "ملعب الحي - المعادي",
     coordinates: [29.9602, 31.2357] as [number, number],
     participants: 16,
     maxParticipants: 20,
-    organizer: 'أحمد محمد',
+    organizer: "أحمد محمد",
     avatar:
-      'https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg',
+      "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg",
     image:
-      'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=400&h=300&fit=crop',
-    difficulty: 'متوسط',
-    price: 'مجاني',
+      "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=400&h=300&fit=crop",
+    difficulty: "متوسط",
+    price: "مجاني",
     likes: 24,
     isLiked: false,
   },
   {
     id: 2,
-    title: 'جلسة يوجا في الحديقة',
-    type: 'yoga',
-    description: 'جلسة يوجا صباحية مريحة للمبتدئين والمتقدمين',
-    date: '2024-01-21',
-    time: '07:00',
-    duration: '60 دقيقة',
-    location: 'حديقة الأزهر',
+    title: "جلسة يوجا في الحديقة",
+    type: "yoga",
+    description: "جلسة يوجا صباحية مريحة للمبتدئين والمتقدمين",
+    date: "2024-01-21",
+    time: "07:00",
+    duration: "60 دقيقة",
+    location: "حديقة الأزهر",
     coordinates: [30.0291, 31.2621] as [number, number],
     participants: 8,
     maxParticipants: 15,
-    organizer: 'سارة أحمد',
+    organizer: "سارة أحمد",
     avatar:
-      'https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg',
+      "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg",
     image:
-      'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=300&fit=crop',
-    difficulty: 'مبتدئ',
-    price: '50 ج.م',
+      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=300&fit=crop",
+    difficulty: "مبتدئ",
+    price: "50 ج.م",
     likes: 18,
     isLiked: true,
   },
   {
     id: 3,
-    title: 'جري صباحي جماعي',
-    type: 'running',
-    description: 'جري صباحي لمسافة 5 كيلو في كورنيش النيل',
-    date: '2024-01-22',
-    time: '06:30',
-    duration: '45 دقيقة',
-    location: 'كورنيش النيل - الجزيرة',
+    title: "جري صباحي جماعي",
+    type: "running",
+    description: "جري صباحي لمسافة 5 كيلو في كورنيش النيل",
+    date: "2024-01-22",
+    time: "06:30",
+    duration: "45 دقيقة",
+    location: "كورنيش النيل - الجزيرة",
     coordinates: [30.0566, 31.2249] as [number, number],
     participants: 12,
     maxParticipants: 25,
-    organizer: 'محمد علي',
+    organizer: "محمد علي",
     avatar:
-      'https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg',
+      "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg",
     image:
-      'https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=400&h=300&fit=crop',
-    difficulty: 'متقدم',
-    price: 'مجاني',
+      "https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=400&h=300&fit=crop",
+    difficulty: "متقدم",
+    price: "مجاني",
     likes: 35,
     isLiked: false,
   },
   {
     id: 4,
-    title: 'تدريب سباحة',
-    type: 'swimming',
-    description: 'تدريب سباحة للمبتدئين في نادي الزمالك',
-    date: '2024-01-23',
-    time: '16:00',
-    duration: '60 دقيقة',
-    location: 'نادي الزمالك',
+    title: "تدريب سباحة",
+    type: "swimming",
+    description: "تدريب سباحة للمبتدئين في نادي الزمالك",
+    date: "2024-01-23",
+    time: "16:00",
+    duration: "60 دقيقة",
+    location: "نادي الزمالك",
     coordinates: [30.0626, 31.2308] as [number, number],
     participants: 6,
     maxParticipants: 10,
-    organizer: 'كريم حسام',
+    organizer: "كريم حسام",
     avatar:
-      'https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-4.jpg',
+      "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-4.jpg",
     image:
-      'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop',
-    difficulty: 'مبتدئ',
-    price: '100 ج.م',
+      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop",
+    difficulty: "مبتدئ",
+    price: "100 ج.م",
     likes: 14,
     isLiked: true,
   },
-]
+];
 
 const sportTypes = [
-  { key: 'all', label: 'جميع الأنشطة', icon: faMap },
-  { key: 'football', label: 'كرة القدم', icon: faFootballBall },
-  { key: 'running', label: 'جري', icon: faRunning },
-  { key: 'swimming', label: 'سباحة', icon: faSwimmer },
-  { key: 'basketball', label: 'كرة السلة', icon: faBasketballBall },
-  { key: 'cycling', label: 'ركوب دراجات', icon: faBicycle },
-  { key: 'yoga', label: 'يوجا', icon: faTableTennis },
-]
+  { key: "all", label: "جميع الأنشطة", icon: faMap },
+  { key: "football", label: "كرة القدم", icon: faFootballBall },
+  { key: "running", label: "جري", icon: faRunning },
+  { key: "swimming", label: "سباحة", icon: faSwimmer },
+  { key: "basketball", label: "كرة السلة", icon: faBasketballBall },
+  { key: "cycling", label: "ركوب دراجات", icon: faBicycle },
+  { key: "yoga", label: "يوجا", icon: faTableTennis },
+];
 
 // Custom marker icons for different sports
-const createCustomIcon = (type: string, color = '#10b981') => {
+const createCustomIcon = (type: string, color = "#10b981") => {
   const sportIcons = {
-    football: '⚽',
-    running: '🏃',
-    swimming: '🏊',
-    basketball: '🏀',
-    cycling: '🚴',
-    yoga: '🧘',
-    default: '📍',
-  }
+    football: "⚽",
+    running: "🏃",
+    swimming: "🏊",
+    basketball: "🏀",
+    cycling: "🚴",
+    yoga: "🧘",
+    default: "📍",
+  };
 
-  const icon = sportIcons[type as keyof typeof sportIcons] || sportIcons.default
+  const icon =
+    sportIcons[type as keyof typeof sportIcons] || sportIcons.default;
 
   return L.divIcon({
     html: `
@@ -176,12 +176,12 @@ const createCustomIcon = (type: string, color = '#10b981') => {
         ${icon}
       </div>
     `,
-    className: 'custom-marker',
+    className: "custom-marker",
     iconSize: [40, 40],
     iconAnchor: [20, 20],
     popupAnchor: [0, -20],
-  })
-}
+  });
+};
 
 // User location icon
 const createUserLocationIcon = () => {
@@ -204,54 +204,53 @@ const createUserLocationIcon = () => {
         }
       </style>
     `,
-    className: 'user-location-marker',
+    className: "user-location-marker",
     iconSize: [20, 20],
     iconAnchor: [10, 10],
-  })
-}
+  });
+};
 
 // Component to handle map centering
 function MapController({
   center,
   userLocation,
 }: {
-  center: [number, number]
-  userLocation: [number, number] | null
+  center: [number, number];
+  userLocation: [number, number] | null;
 }) {
-  const map = useMap()
+  const map = useMap();
 
   useEffect(() => {
     if (userLocation) {
-      map.setView(userLocation, 13, { animate: true })
+      map.setView(userLocation, 13, { animate: true });
     } else {
-      map.setView(center, 12, { animate: true })
+      map.setView(center, 12, { animate: true });
     }
-  }, [map, center, userLocation])
+  }, [map, center, userLocation]);
 
-  return null
+  return null;
 }
 
-export const Route = createFileRoute('/(authenticated)/map')({
+export const Route = createFileRoute("/(authenticated)/map")({
   component: MapPage,
-})
+});
 
 function MapPage() {
-  const { t } = useTranslation()
-  const [events, setEvents] = useState(mockEvents)
-  const [selectedSport, setSelectedSport] = useState('all')
-  const [isFullscreen, setIsFullscreen] = useState(false)
-  const [selectedEvent, setSelectedEvent] = useState<any>(null)
+  const [events, setEvents] = useState(mockEvents);
+  const [selectedSport, setSelectedSport] = useState("all");
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(
-    null,
-  )
-  const [isLocating, setIsLocating] = useState(false)
+    null
+  );
+  const [isLocating, setIsLocating] = useState(false);
   const [mapCenter, setMapCenter] = useState<[number, number]>([
     30.0444, 31.2357,
-  ]) // Cairo center
+  ]); // Cairo center
 
   const filteredEvents = events.filter(
-    (event) => selectedSport === 'all' || event.type === selectedSport,
-  )
+    (event) => selectedSport === "all" || event.type === selectedSport
+  );
 
   const toggleLike = (id: number) => {
     setEvents((prev) =>
@@ -262,68 +261,68 @@ function MapPage() {
               isLiked: !event.isLiked,
               likes: event.isLiked ? event.likes - 1 : event.likes + 1,
             }
-          : event,
-      ),
-    )
-  }
+          : event
+      )
+    );
+  };
 
   const getUserLocation = () => {
-    setIsLocating(true)
-    if (navigator.geolocation) {
+    setIsLocating(true);
+    try {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const { latitude, longitude } = position.coords
-          const newLocation: [number, number] = [latitude, longitude]
-          setUserLocation(newLocation)
-          setMapCenter(newLocation)
-          setIsLocating(false)
+          const { latitude, longitude } = position.coords;
+          const newLocation: [number, number] = [latitude, longitude];
+          setUserLocation(newLocation);
+          setMapCenter(newLocation);
+          setIsLocating(false);
         },
         (error) => {
-          console.error('Error getting location:', error)
+          console.error("Error getting location:", error);
           // Default to Cairo center if location fails
-          const defaultLocation: [number, number] = [30.0444, 31.2357]
-          setUserLocation(defaultLocation)
-          setMapCenter(defaultLocation)
-          setIsLocating(false)
-        },
-      )
-    } else {
+          const defaultLocation: [number, number] = [30.0444, 31.2357];
+          setUserLocation(defaultLocation);
+          setMapCenter(defaultLocation);
+          setIsLocating(false);
+        }
+      );
+    } catch (error) {
       // Default to Cairo center if geolocation not supported
-      const defaultLocation: [number, number] = [30.0444, 31.2357]
-      setUserLocation(defaultLocation)
-      setMapCenter(defaultLocation)
-      setIsLocating(false)
+      const defaultLocation: [number, number] = [30.0444, 31.2357];
+      setUserLocation(defaultLocation);
+      setMapCenter(defaultLocation);
+      setIsLocating(false);
     }
-  }
+  };
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'سهل':
-      case 'مبتدئ':
-        return 'bg-green-100 text-green-800'
-      case 'متوسط':
-        return 'bg-yellow-100 text-yellow-800'
-      case 'متقدم':
-      case 'صعب':
-        return 'bg-red-100 text-red-800'
+      case "سهل":
+      case "مبتدئ":
+        return "bg-green-100 text-green-800";
+      case "متوسط":
+        return "bg-yellow-100 text-yellow-800";
+      case "متقدم":
+      case "صعب":
+        return "bg-red-100 text-red-800";
       default:
-        return 'bg-gray-100 text-gray-800'
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr)
-    return date.toLocaleDateString('ar-EG', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-  }
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("ar-EG", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   return (
     <div
-      className={`${isFullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-gray-900' : 'p-6 max-w-full mx-10'}`}
+      className={`${isFullscreen ? "fixed inset-0 z-50 bg-white dark:bg-gray-900" : "p-6 max-w-full mx-10"}`}
     >
       {/* Header */}
       <div className="mb-6">
@@ -346,9 +345,9 @@ function MapPage() {
             >
               <FontAwesomeIcon
                 icon={faLocationCrosshairs}
-                className={`ml-2 ${isLocating ? 'animate-spin' : ''}`}
+                className={`ml-2 ${isLocating ? "animate-spin" : ""}`}
               />
-              {isLocating ? 'جاري التحديد...' : 'موقعي'}
+              {isLocating ? "جاري التحديد..." : "موقعي"}
             </button>
 
             <button
@@ -359,7 +358,7 @@ function MapPage() {
                 icon={isFullscreen ? faCompress : faExpand}
                 className="ml-2"
               />
-              {isFullscreen ? 'تصغير' : 'شاشة كاملة'}
+              {isFullscreen ? "تصغير" : "شاشة كاملة"}
             </button>
           </div>
         </div>
@@ -381,8 +380,8 @@ function MapPage() {
               onClick={() => setSelectedSport(sport.key)}
               className={`flex items-center px-4 py-2 rounded-full font-medium transition-all duration-200 ${
                 selectedSport === sport.key
-                  ? 'bg-primary text-white shadow-lg'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? "bg-primary text-white shadow-lg"
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
               <FontAwesomeIcon icon={sport.icon} className="ml-2" />
@@ -394,16 +393,16 @@ function MapPage() {
 
       {/* Main Content */}
       <div
-        className={`flex ${isFullscreen ? 'h-[calc(100vh-120px)]' : 'h-[600px]'} gap-6`}
+        className={`flex ${isFullscreen ? "h-[calc(100vh-120px)]" : "h-[600px]"} gap-6`}
       >
         {/* Map Section */}
         <div
-          className={`${isFullscreen ? 'w-full' : 'w-3/4'} relative rounded-xl overflow-hidden z-0`}
+          className={`${isFullscreen ? "w-full" : "w-3/4"} relative rounded-xl overflow-hidden z-0`}
         >
           <MapContainer
             center={mapCenter}
             zoom={12}
-            style={{ height: '100%', width: '100%' }}
+            style={{ height: "100%", width: "100%" }}
             className="rounded-xl"
           >
             {/* Clean minimal tile layer - CartoDB Positron */}
@@ -580,7 +579,7 @@ function MapPage() {
                 >
                   <FontAwesomeIcon
                     icon={faHeart}
-                    className={`text-sm ${selectedEvent.isLiked ? 'text-red-500' : 'text-gray-400'}`}
+                    className={`text-sm ${selectedEvent.isLiked ? "text-red-500" : "text-gray-400"}`}
                   />
                 </button>
                 <button className="w-8 h-8 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all">
@@ -641,7 +640,7 @@ function MapPage() {
                     className="w-5 ml-3 text-primary"
                   />
                   <span>
-                    {selectedEvent.participants}/{selectedEvent.maxParticipants}{' '}
+                    {selectedEvent.participants}/{selectedEvent.maxParticipants}{" "}
                     مشارك
                   </span>
                 </div>
@@ -687,5 +686,5 @@ function MapPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faBasketballBall,
@@ -134,7 +133,6 @@ export const Route = createFileRoute('/(authenticated)/events')({
 })
 
 function EventsPage() {
-  const { t } = useTranslation()
   const [events, setEvents] = useState(mockEvents)
   const [filteredEvents, setFilteredEvents] = useState(mockEvents)
   const [selectedSport, setSelectedSport] = useState('all')

@@ -18,6 +18,16 @@ export default defineConfig({
     environment("all", { prefix: "CANISTER_" }),
     environment("all", { prefix: "DFX_" }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom"], // Example: Split vendor libraries
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000, // Increase the chunk size limit
+  },
   envDir: "../",
   optimizeDeps: {
     esbuildOptions: {
