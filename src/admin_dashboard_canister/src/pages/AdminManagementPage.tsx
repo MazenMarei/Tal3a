@@ -7,7 +7,7 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useIsSuperAdmin } from "../hooks/useRoles";
-import { getOwnersActor } from "../../../frontend_canister/src/services/owners";
+import { OwnersService } from "@/services/owners";
 import { transformOwner, withErrorHandling } from "../utilities/transformers";
 import { useRemoveOwner } from "../hooks/useOwnerManagement";
 import { AddOwnerModal } from "../components/AddOwnerModal";
@@ -66,7 +66,8 @@ export const AdminManagementPage: React.FC = () => {
     queryKey: ["owners", "all"],
     queryFn: async (): Promise<Owner[]> => {
       return withErrorHandling(async () => {
-        const actor = await getOwnersActor();
+        const actor =
+          await OwnersService.getInstance().getOwnersCanisterActor();
         if (!actor)
           throw new Error("Failed to initialize owners canister actor");
 

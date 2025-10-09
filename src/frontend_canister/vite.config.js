@@ -33,6 +33,12 @@ export default defineConfig({
     esbuildOptions: {
       define: {
         global: "globalThis",
+        "process.env": {
+          ...Object.keys(process.env).reduce((acc, key) => {
+            acc[key] = JSON.stringify(process.env[key]);
+            return acc;
+          }, {}),
+        },
       },
     },
   },

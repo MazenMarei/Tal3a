@@ -6,7 +6,7 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getOwnersActor } from "../../../frontend_canister/src/services/owners";
+import { OwnersService } from "@/services/owners";
 import {
   transformAdminRequestArray,
   transformAdminRequest,
@@ -29,7 +29,7 @@ export function useAllAdminRequests(enabled: boolean = true) {
     queryKey: ["admin-requests", "all"],
     queryFn: async (): Promise<AdminRequest[]> => {
       return withErrorHandling(async () => {
-        const actor = await getOwnersActor();
+        const actor = await OwnersService.getInstance().getOwnersCanisterActor();
         if (!actor)
           throw new Error("Failed to initialize owners canister actor");
 
@@ -56,7 +56,7 @@ export function usePendingAdminRequests(enabled: boolean = true) {
     queryKey: ["admin-requests", "pending"],
     queryFn: async (): Promise<AdminRequest[]> => {
       return withErrorHandling(async () => {
-        const actor = await getOwnersActor();
+        const actor = await OwnersService.getInstance().getOwnersCanisterActor();
         if (!actor)
           throw new Error("Failed to initialize owners canister actor");
 
@@ -83,7 +83,7 @@ export function useAdminRequestStats(enabled: boolean = true) {
     queryKey: ["admin-requests", "stats"],
     queryFn: async (): Promise<AdminRequestStats> => {
       return withErrorHandling(async () => {
-        const actor = await getOwnersActor();
+        const actor = await OwnersService.getInstance().getOwnersCanisterActor();
         if (!actor)
           throw new Error("Failed to initialize owners canister actor");
 
@@ -118,7 +118,7 @@ export function useProcessAdminRequest() {
       params: ProcessAdminRequestParams
     ): Promise<AdminRequest> => {
       return withErrorHandling(async () => {
-        const actor = await getOwnersActor();
+        const actor = await OwnersService.getInstance().getOwnersCanisterActor();
         if (!actor)
           throw new Error("Failed to initialize owners canister actor");
 
@@ -159,7 +159,7 @@ export function useSubmitAdminRequest() {
       reason: string;
     }): Promise<AdminRequest> => {
       return withErrorHandling(async () => {
-        const actor = await getOwnersActor();
+        const actor = await OwnersService.getInstance().getOwnersCanisterActor();
         if (!actor)
           throw new Error("Failed to initialize owners canister actor");
 
@@ -247,7 +247,7 @@ export function useAdminRequestById(
     queryKey: ["admin-requests", "detail", requestId],
     queryFn: async (): Promise<AdminRequest | null> => {
       return withErrorHandling(async () => {
-        const actor = await getOwnersActor();
+        const actor = await OwnersService.getInstance().getOwnersCanisterActor();
         if (!actor)
           throw new Error("Failed to initialize owners canister actor");
 
@@ -275,7 +275,7 @@ export function usePrefetchAdminRequests() {
     queryClient.prefetchQuery({
       queryKey: ["admin-requests", "all"],
       queryFn: async () => {
-        const actor = await getOwnersActor();
+        const actor = await OwnersService.getInstance().getOwnersCanisterActor();
         if (!actor)
           throw new Error("Failed to initialize owners canister actor");
         const result = await actor.get_all_admin_requests();
@@ -293,7 +293,7 @@ export function usePrefetchAdminRequests() {
     queryClient.prefetchQuery({
       queryKey: ["admin-requests", "pending"],
       queryFn: async () => {
-        const actor = await getOwnersActor();
+        const actor = await OwnersService.getInstance().getOwnersCanisterActor();
         if (!actor)
           throw new Error("Failed to initialize owners canister actor");
         const result = await actor.get_pending_admin_requests();
@@ -311,7 +311,7 @@ export function usePrefetchAdminRequests() {
     queryClient.prefetchQuery({
       queryKey: ["admin-requests", "stats"],
       queryFn: async () => {
-        const actor = await getOwnersActor();
+        const actor = await OwnersService.getInstance().getOwnersCanisterActor();
         if (!actor)
           throw new Error("Failed to initialize owners canister actor");
         const allRequestsResult = await actor.get_all_admin_requests();
@@ -347,7 +347,7 @@ export function useDeleteAdminRequest() {
   return useMutation({
     mutationFn: async (requestId: string): Promise<void> => {
       return withErrorHandling(async () => {
-        const actor = await getOwnersActor();
+        const actor = await OwnersService.getInstance().getOwnersCanisterActor();
         if (!actor)
           throw new Error("Failed to initialize owners canister actor");
 

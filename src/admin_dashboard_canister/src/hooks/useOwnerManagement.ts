@@ -6,7 +6,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Principal } from "@dfinity/principal";
-import { getOwnersActor } from "../../../frontend_canister/src/services/owners";
+import { OwnersService } from "@/services/owners";
 import { withErrorHandling } from "../utilities/transformers";
 import type {
   Permission,
@@ -26,7 +26,7 @@ export const useAddOwner = () => {
   return useMutation({
     mutationFn: async (data: AddOwnerData) => {
       return withErrorHandling(async () => {
-        const actor = await getOwnersActor();
+        const actor = await OwnersService.getInstance().getOwnersCanisterActor();
         if (!actor) {
           throw new Error("Failed to initialize owners canister actor");
         }
@@ -83,7 +83,7 @@ export const useRemoveOwner = () => {
   return useMutation({
     mutationFn: async (principalText: string) => {
       return withErrorHandling(async () => {
-        const actor = await getOwnersActor();
+        const actor = await OwnersService.getInstance().getOwnersCanisterActor();
         if (!actor) {
           throw new Error("Failed to initialize owners canister actor");
         }
@@ -127,7 +127,7 @@ export const useUpdateOwnerPermissions = () => {
   return useMutation({
     mutationFn: async (data: { principal: string; permissions: string[] }) => {
       return withErrorHandling(async () => {
-        const actor = await getOwnersActor();
+        const actor = await OwnersService.getInstance().getOwnersCanisterActor();
         if (!actor) {
           throw new Error("Failed to initialize owners canister actor");
         }

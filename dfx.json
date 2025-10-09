@@ -24,6 +24,10 @@
       "source": ["src/admin_dashboard_canister/dist"],
       "type": "assets"
     },
+    "frontend_canister": {
+      "source": ["src/frontend_canister/dist"],
+      "type": "assets"
+    },
     "icrc1_ledger_canister": {
       "type": "custom",
       "candid": "https://github.com/dfinity/ic/releases/download/ledger-suite-icrc-2025-09-01/ledger.did",
@@ -39,7 +43,10 @@
         "user_canister": "bhg4e-ziaaa-aaaai-atlfq-cai",
         "social_canister": "bsbnj-yaaaa-aaaai-atlga-cai",
         "event_canister": "bval5-vyaaa-aaaai-atlgq-cai",
-        "frontend_canister": "b4dab-dqaaa-aaaai-atlha-cai"
+        "frontend_canister": "b4dab-dqaaa-aaaai-atlha-cai",
+        "admin_dashboard_canister": "b2l7k-3qaaa-aaaai-atlhq-cai",
+        "owners_canister": "b3h5y-sqaaa-aaaai-atl7a-cai",
+        "icrc1_ledger_canister": "37pjh-cuqnq-d7cch-i7xqr-rr33z"
       }
     }
   },

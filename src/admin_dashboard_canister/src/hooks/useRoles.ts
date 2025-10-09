@@ -5,7 +5,7 @@
  */
 
 import { useQuery } from "@tanstack/react-query";
-import { getOwnersActor } from "../../../frontend_canister/src/services/owners";
+import { OwnersService } from "@/services/owners";
 import { transformOwner, withErrorHandling } from "../utilities/transformers";
 import type { Owner, OwnerRole } from "../types/api";
 
@@ -17,7 +17,8 @@ export function useCurrentOwner(enabled: boolean = true) {
     queryKey: ["current-owner"],
     queryFn: async (): Promise<Owner | null> => {
       return withErrorHandling(async () => {
-        const actor = await getOwnersActor();
+        const actor =
+          await OwnersService.getInstance().getOwnersCanisterActor();
         if (!actor) return null;
 
         const result = await actor.get_my_owner_info();

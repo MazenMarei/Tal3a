@@ -1,16 +1,8 @@
 [workspace]
 members = [
-<<<<<<< HEAD
     "src/owners_canister",
     "src/social_canister",
     "src/user_canister",
     "src/event_canister"
 ]
 resolver = "2"
-=======
-    "src/user_canister",
-    "src/social_canister",
-    "src/event_canister"
-]
-resolver = "2"
->>>>>>> main

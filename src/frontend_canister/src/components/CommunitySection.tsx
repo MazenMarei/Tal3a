@@ -1,50 +1,50 @@
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 
 const CommunitySection = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const testimonials = [
     {
-      nameKey: 'community.testimonials.ahmed.name',
-      locationKey: 'community.testimonials.ahmed.location',
+      nameKey: "community.testimonials.ahmed.name",
+      locationKey: "community.testimonials.ahmed.location",
       avatar:
-        'https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg',
-      testimonialKey: 'community.testimonials.ahmed.testimonial',
+        "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg",
+      testimonialKey: "community.testimonials.ahmed.testimonial",
     },
     {
-      nameKey: 'community.testimonials.fatma.name',
-      locationKey: 'community.testimonials.fatma.location',
+      nameKey: "community.testimonials.fatma.name",
+      locationKey: "community.testimonials.fatma.location",
       avatar:
-        'https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg',
-      testimonialKey: 'community.testimonials.fatma.testimonial',
+        "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg",
+      testimonialKey: "community.testimonials.fatma.testimonial",
     },
     {
-      nameKey: 'community.testimonials.karim.name',
-      locationKey: 'community.testimonials.karim.location',
+      nameKey: "community.testimonials.karim.name",
+      locationKey: "community.testimonials.karim.location",
       avatar:
-        'https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg',
-      testimonialKey: 'community.testimonials.karim.testimonial',
+        "https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg",
+      testimonialKey: "community.testimonials.karim.testimonial",
     },
-  ]
+  ];
 
   const stats = [
     {
-      number: '50,000+',
-      labelKey: 'community.stats.activeMembers',
+      number: "50,000+",
+      labelKey: "community.stats.activeMembers",
     },
     {
-      number: '1,000+',
-      labelKey: 'community.stats.dailyActivities',
+      number: "1,000+",
+      labelKey: "community.stats.dailyActivities",
     },
     {
-      number: '25+',
-      labelKey: 'community.stats.differentSports',
+      number: "25+",
+      labelKey: "community.stats.differentSports",
     },
     {
-      number: '15+',
-      labelKey: 'community.stats.governorates',
+      number: "15+",
+      labelKey: "community.stats.governorates",
     },
-  ]
+  ];
 
   return (
     <section
@@ -53,9 +53,9 @@ const CommunitySection = () => {
     >
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h3 className="text-5xl font-bold mb-6">{t('community.title')}</h3>
+          <h3 className="text-5xl font-bold mb-6">{t("community.title")}</h3>
           <p className="text-xl text-gray-200 max-w-3xl mx-auto">
-            {t('community.subtitle')}
+            {t("community.subtitle")}
           </p>
         </div>
 
@@ -87,12 +87,12 @@ const CommunitySection = () => {
           <div className="relative">
             <img
               className="w-full rounded-3xl shadow-2xl"
-              src="https://storage.googleapis.com/uxpilot-auth.appspot.com/b888c51f16-5e4be7402a2bb0a2745d.png"
+              src="./communityPhoto.png"
               alt="diverse group of young Egyptian people celebrating after sports activity, community spirit, friendship and fitness"
             />
             <div className="absolute -top-4 -right-4 bg-accent text-dark p-4 rounded-2xl shadow-lg">
               <div className="text-2xl font-bold">4.8⭐</div>
-              <div className="text-sm">{t('community.userRating')}</div>
+              <div className="text-sm">{t("community.userRating")}</div>
             </div>
           </div>
         </div>
@@ -110,7 +110,7 @@ const CommunitySection = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default CommunitySection
+export default CommunitySection;
