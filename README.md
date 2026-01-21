@@ -60,6 +60,7 @@ In Egypt, people who want to play sports or stay active often face a lack of org
 ## 🏗️ Technical Architecture
 
 ### System Architecture Diagram
+![TAL3A PLATFORM ARCHITECTURE](https://github.com/MazenMarei/Tal3a/blob/main/Tal3a%20Architecture%20diagram.drawio)
 
 ```
                            TAL3A PLATFORM ARCHITECTURE
