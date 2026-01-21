@@ -57,10 +57,20 @@ In Egypt, people who want to play sports or stay active often face a lack of org
 - **Marathon Listings**: Official and community-organized races
 - **Tournament Information**: Local competitions and challenges
 
+
+
+
+<img width="1837" height="1362" alt="Tal3a User Flow drawio" src="https://github.com/user-attachments/assets/cd9868c1-4a38-4df4-b0ca-6a3e3d16b5a4" />
+
+
+
+
+
 ## 🏗️ Technical Architecture
 
 ### System Architecture Diagram
-![TAL3A PLATFORM ARCHITECTURE](https://github.com/MazenMarei/Tal3a/blob/main/Tal3a%20Architecture%20diagram.drawio)
+
+<img width="846" height="1521" alt="Tal3a Architecture diagram drawio (2)" src="https://github.com/user-attachments/assets/c81adcee-c574-4fcb-8a9b-e40dfc8adebb" />
 
 ```
                            TAL3A PLATFORM ARCHITECTURE
